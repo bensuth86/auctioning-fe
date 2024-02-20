@@ -1,14 +1,24 @@
-// Select either business or customer user type
-// Link to either Business / Customer Login pages
+import React from "react";
+import { View } from "react-native";
+import Button from "../helpers";
+import { styles } from "../style-sheet"
 
-function WelcomePage() {
+function WelcomePage({ navigation }) {
 
-    return(
-        
+    return (
         <View style={styles.container}>
-            <h1> Select from Business or Customer account</h1>
-        </View>
-    )
+            <Button
+            btnText="Customer account" 
+            onPress={() => 
+                navigation.navigate('Login', {usertype: 'Customer'})}
+            />
+            <Button
+            btnText="Business account" 
+            onPress={() => {navigation.navigate('Login', {usertype: 'Business'})}} 
+            />
+
+        </View>      
+      )
 }
 
 export default WelcomePage
