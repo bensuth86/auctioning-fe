@@ -6,6 +6,8 @@ import WelcomePage from './components/Welcome-page';
 import Login from "./components/Login-page";
 import CustomerHomepage from "./components/Customer-homepage";
 import BusinessHomepage from "./components/Business-homepage";
+import CustomerSeating from "./components/Customer-seating-selection";
+import CustomerAuctionPage from "./components/Customer-auctionpage";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +19,8 @@ function App() {
       <Stack.Screen name="Login" component={Login} options={{title: "Enter account details"}}/>
       <Stack.Screen name="CustomerHomepage" component={CustomerHomepage} options={{title: "Customer Home"}}/>
       <Stack.Screen name="BusinessHomepage" component={BusinessHomepage} options={{title: "Business Home"}}/>
+      <Stack.Screen name="SeatingPage" component={CustomerSeating} options={{title: "Seating Selection"}}/>
+      <Stack.Screen name="AuctionPage" component={CustomerAuctionPage} options={{title: "Auction"}}/>
     </Stack.Navigator>
   </NavigationContainer>
   );
