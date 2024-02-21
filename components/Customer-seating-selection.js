@@ -22,75 +22,69 @@ function CustomerSeating({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={seatStyles.seatsContainer}>
-        {seatingPlan.map((row, i) => {
-          return (
-            <View key={i}>
-              <View key={i} style={seatStyles.rowContainer}>
-                {row.map((seat) => {
-                  const isAvailable = availableSeats.includes(seat)
-                  const isAuctioning = auctionSeats.includes(seat)
-                  const isSelected = selectedSeats.includes(seat)
-                  return (
-                    <View key={seat}>
-                      {isAvailable && !isAuctioning ? (
-                        <SeatButton
-                          seatStyle={
+      {seatingPlan.map((row, i) => {
+        return (
+          <View key={i}>
+            <View key={i} style={seatStyles.rowContainer}>
+              {row.map((seat) => {
+                const isAvailable = availableSeats.includes(seat)
+                const isAuctioning = auctionSeats.includes(seat)
+                const isSelected = selectedSeats.includes(seat)
+                return (
+                  <View key={seat}>
+                    {isAvailable && !isAuctioning ? (
+                      <SeatButton
+                        seatStyle={
+                          isSelected
+                            ? seatStyles.selectedSeatButton
+                            : seatStyles.availableSeatButton
+                        }
+                        key={seat}
+                        btnText={currentPrice}
+                        onPress={() => {
+                          {
                             isSelected
-                              ? seatStyles.selectedSeatButton
-                              : seatStyles.availableSeatButton
+                              ? setSelectedSeats(
+                                  selectedSeats.filter((item) => seat !== item)
+                                )
+                              : setSelectedSeats([...selectedSeats, seat])
                           }
-                          key={seat}
-                          btnText={currentPrice}
-                          onPress={() => {
-                            {
-                              isSelected
-                                ? setSelectedSeats(
-                                    selectedSeats.filter(
-                                      (item) => seat !== item
-                                    )
-                                  )
-                                : setSelectedSeats([...selectedSeats, seat])
-                            }
-                          }}
-                        ></SeatButton>
-                      ) : isAuctioning ? (
-                        <SeatButton
-                          seatStyle={
+                        }}
+                      ></SeatButton>
+                    ) : isAuctioning ? (
+                      <SeatButton
+                        seatStyle={
+                          isSelected
+                            ? [seatStyles.selectedAuctionSeatButton]
+                            : seatStyles.auctionSeatButton
+                        }
+                        key={seat}
+                        btnText={currentPrice}
+                        onPress={() => {
+                          {
                             isSelected
-                              ? [seatStyles.selectedAuctionSeatButton]
-                              : seatStyles.auctionSeatButton
+                              ? setSelectedSeats(
+                                  selectedSeats.filter((item) => seat !== item)
+                                )
+                              : setSelectedSeats([...selectedSeats, seat])
                           }
-                          key={seat}
-                          btnText={currentPrice}
-                          onPress={() => {
-                            {
-                              isSelected
-                                ? setSelectedSeats(
-                                    selectedSeats.filter(
-                                      (item) => seat !== item
-                                    )
-                                  )
-                                : setSelectedSeats([...selectedSeats, seat])
-                            }
-                          }}
-                        ></SeatButton>
-                      ) : (
-                        <DisabledSeatButton
-                          disabled={true}
-                          seatStyle={seatStyles.unavailableSeatButton}
-                          key={seat}
-                          btnText={'     '}
-                        ></DisabledSeatButton>
-                      )}
-                    </View>
-                  )
-                })}
-              </View>
+                        }}
+                      ></SeatButton>
+                    ) : (
+                      <DisabledSeatButton
+                        disabled={true}
+                        seatStyle={seatStyles.unavailableSeatButton}
+                        key={seat}
+                        btnText={'     '}
+                      ></DisabledSeatButton>
+                    )}
+                  </View>
+                )
+              })}
             </View>
-          )
-        })}
-      </View>
+          </View>
+        )
+      })}
       {selectedSeats.map((selectedSeat) => {
         const isAuctioning = auctionSeats.includes(selectedSeat)
         isAuctioning
