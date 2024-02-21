@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Text, TextInput, View} from 'react-native';
 import { styles } from "../style-sheet"
-import Button from "../helpers";
+import {Button} from "../helpers";
 
 function Login({navigation, route}) {
     
