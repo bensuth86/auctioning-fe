@@ -10,7 +10,7 @@ function CustomerSignUp({ navigation }) {
   const [errors, setErrors] = useState({})
   const [isFormValid, setIsFormValid] = useState(false)
   const [visible, setVisible] = useState(false)
-  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarMessage, setSnackbarMessage] = useState('')
 
   useEffect(() => {
     validateForm()
@@ -37,13 +37,13 @@ function CustomerSignUp({ navigation }) {
         .then(() => {
           navigation.navigate('CustomerHomepage')
           console.log('Form submitted successfully!')
-          setSnackbarMessage('Form submitted successfully!');
-          setVisible(true);
+          setSnackbarMessage('Form submitted successfully!')
+          setVisible(true)
         })
         .catch((error) => {
           console.error('Error submitting form:', error)
-          setSnackbarMessage('Failed to submit form. Please try again.');
-          setVisible(true);
+          setSnackbarMessage('Failed to submit form. Please try again.')
+          setVisible(true)
         })
     } else {
       console.log('Form has errors. Please correct them.')
@@ -72,12 +72,12 @@ function CustomerSignUp({ navigation }) {
       >
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
-        {Object.values(errors).map((error, index) => (
+      {Object.values(errors).map((error, index) => (
         <Text key={index} style={styles.error}>
-        {error}
+          {error}
         </Text>
       ))}
-        <Snackbar
+      <Snackbar
         visible={visible}
         onDismiss={() => setVisible(false)}
         action={{
