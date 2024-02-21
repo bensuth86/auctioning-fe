@@ -20,7 +20,7 @@ function CustomerSeating({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={seatStyles.seatsContainer}>
+      <View>
         {seatingPlan.map((row, i) => {
           return (
             <View key={i}>
