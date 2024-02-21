@@ -4,6 +4,7 @@ import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from "react-nati
 import { Button } from "../helpers";
 import { styles } from "../style-sheet";
 import { getEventsByUserId } from "../utils"
+import EventsCard from "./Customer-events-card";
 
 function CustomerHomepage({ navigation }) {
 
@@ -23,7 +24,16 @@ function CustomerHomepage({ navigation }) {
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1}}>       
             <View style={styles.container}>
-                <View></View>
+                { eventsList.map((event) => {
+                    return (
+                        <EventsCard key={event.event_id} event={event} />
+                        // <View key={event.event_id}>
+                        //     <Text>{event.film_title}</Text>
+                        // </View>                       
+                    )
+
+                }) 
+                }
                 <Button
                 btnText="View Seating" 
                 onPress={() => 
