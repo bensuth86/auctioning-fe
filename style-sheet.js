@@ -25,6 +25,6 @@ export const styles = StyleSheet.create({
       borderColor: '#777',
       padding: 8,
       margin: 10, 
-      width: 200,
+      width: 200
     }
     })
