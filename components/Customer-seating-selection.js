@@ -24,14 +24,14 @@ function CustomerSeating({ navigation }) {
       <View style={seatStyles.seatsContainer}>
         {seatingPlan.map((row, i) => {
           return (
-            <>
+            <View key={i}>
               <View key={i} style={seatStyles.rowContainer}>
                 {row.map((seat) => {
                   const isAvailable = availableSeats.includes(seat)
                   const isAuctioning = auctionSeats.includes(seat)
                   const isSelected = selectedSeats.includes(seat)
                   return (
-                    <>
+                    <View key={seat}>
                       {isAvailable && !isAuctioning ? (
                         <SeatButton
                           seatStyle={
@@ -82,15 +82,15 @@ function CustomerSeating({ navigation }) {
                           btnText={'     '}
                         ></DisabledSeatButton>
                       )}
-                    </>
+                    </View>
                   )
                 })}
               </View>
-            </>
+            </View>
           )
         })}
       </View>
-      {selectedSeats.forEach((selectedSeat) => {
+      {selectedSeats.map((selectedSeat) => {
         const isAuctioning = auctionSeats.includes(selectedSeat)
         isAuctioning
           ? auctionSelection.push(selectedSeat)
