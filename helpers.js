@@ -14,12 +14,36 @@ export function Button({ btnText, onPress }) {
   )
 }
 
-export function seatButton({ btnText, onPress }) {
+export function SeatButton({ btnText, onPress, seatStyle }) {
   return (
     <TouchableOpacity onPress={onPress}>
-      <View style={styles.button}>
+      <View style={seatStyle}>
         <Text style={styles.buttontext}>{btnText}</Text>
       </View>
     </TouchableOpacity>
   )
+}
+
+export function DisabledSeatButton({ btnText, seatStyle }) {
+  return (
+    <View style={seatStyle}>
+      <Text style={styles.buttontext}>{btnText}</Text>
+    </View>
+  )
+}
+
+export function generateSeatGrid(rows, columns) {
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  let seatGrid = []
+
+  for (let i = 0; i < rows; i++) {
+    let row = []
+    for (let j = 0; j < columns; j++) {
+      let seat = alphabet[i] + (j + 1)
+      row.push(seat)
+    }
+    seatGrid.push(row)
+  }
+
+  return seatGrid
 }
