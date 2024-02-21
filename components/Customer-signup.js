@@ -1,46 +1,58 @@
-import { useState, useEffect } from 'react'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, TextInput, Text, TouchableOpacity } from 'react-native'
 import { styles } from '../style-sheet'
+import { postUser } from '../utils'
+import { Snackbar } from 'react-native-paper'
 
 function CustomerSignUp({ navigation }) {
   const [userName, setUserName] = useState('')
-  const [password, setPassword] = useState('')
+  const [postcode, setPostcode] = useState('')
   const [errors, setErrors] = useState({})
-  const [isFormValid, setIsFormValid] = useState(false); 
-
+  const [isFormValid, setIsFormValid] = useState(false)
+  const [visible, setVisible] = useState(false)
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   useEffect(() => {
     validateForm()
-  }, [userName, password])
+  }, [userName, postcode])
 
   const validateForm = () => {
     let errors = {}
 
     if (!userName) {
-      errors.name = 'Username is required.'
+      errors.name = 'Username is required'
     }
-    if (!password) {
-      errors.password = 'Password is required.'
-    } else if (password.length < 6) {
-      errors.password = 'Password must be at least 6 characters.'
+    if (!postcode) {
+      errors.postcode = 'Postcode is required'
+    } else if (postcode.length < 5) {
+      errors.postcode = 'Postcode must be at least 5 characters'
     }
     setErrors(errors)
-    setIsFormValid(Object.keys(errors).length === 0); 
+    setIsFormValid(Object.keys(errors).length === 0)
   }
 
-  const handleSubmit = () => { 
-    if (isFormValid) { 
-        navigation.navigate('CustomerHomepage')
-        console.log('Form submitted successfully!'); 
-    } else { 
-        console.log('Form has errors. Please correct them.'); 
-    } 
-}; 
+  const handleSubmit = () => {
+    if (isFormValid) {
+      postUser({ username: userName, postcode: postcode })
+        .then(() => {
+          navigation.navigate('CustomerHomepage')
+          console.log('Form submitted successfully!')
+          setSnackbarMessage('Form submitted successfully!');
+          setVisible(true);
+        })
+        .catch((error) => {
+          console.error('Error submitting form:', error)
+          setSnackbarMessage('Failed to submit form. Please try again.');
+          setVisible(true);
+        })
+    } else {
+      console.log('Form has errors. Please correct them.')
+    }
+  }
 
   return (
     <View style={styles.container}>
-        <Text>Sign up to see all Auctions</Text>
+      <Text>Sign up to see all Auctions</Text>
       <TextInput
         style={styles.textbox}
         placeholder="Username"
@@ -49,22 +61,32 @@ function CustomerSignUp({ navigation }) {
       />
       <TextInput
         style={styles.textbox}
-        placeholder="Password"
-        value={password}
-        onChangeText={(password) => setPassword(password)}
+        placeholder="Postcode"
+        value={postcode}
+        onChangeText={(postcode) => setPostcode(postcode)}
       />
-      <TouchableOpacity 
-         style={[styles.button, { opacity: isFormValid ? 1 : 0.5 }]} 
-         disabled={!isFormValid} 
-         onPress={handleSubmit}
-        > 
-            <Text style={styles.buttonText}>Submit</Text> 
-        </TouchableOpacity> 
-      {Object.values(errors).map((error, index) => (
+      <TouchableOpacity
+        style={[styles.button, { opacity: isFormValid ? 1 : 0.5 }]}
+        disabled={!isFormValid}
+        onPress={handleSubmit}
+      >
+        <Text style={styles.buttonText}>Submit</Text>
+      </TouchableOpacity>
+        {Object.values(errors).map((error, index) => (
         <Text key={index} style={styles.error}>
-          {error}
+        {error}
         </Text>
       ))}
+        <Snackbar
+        visible={visible}
+        onDismiss={() => setVisible(false)}
+        action={{
+          label: 'Dismiss',
+          onPress: () => setVisible(false),
+        }}
+      >
+        {snackbarMessage}
+      </Snackbar>
     </View>
   )
 }
