@@ -19,11 +19,11 @@ function CustomerHomepage({ navigation }) {
         })
     }, [id])
     
-    if (isLoading) return <View>Loading...</View>
+    if (isLoading) return <Text>Loading...</Text>
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1}}>       
             <View style={styles.container}>
-
+                <View></View>
                 <Button
                 btnText="View Seating" 
                 onPress={() => 
