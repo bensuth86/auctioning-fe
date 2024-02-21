@@ -25,4 +25,8 @@ function getEventsByUserId(id) {
     })
 }
 
-export {getBusinessById, getUsersById, getEventsByUserId}
+function postUser({userName, postcode}){
+    return prjApi.post('/users', { userName, postcode }).then((res) => {return res.data})
+}
+
+export {getBusinessById, getUsersById, getEventsByUserId, postUser}
