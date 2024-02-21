@@ -17,6 +17,8 @@ function CustomerSeating({ navigation }) {
   const currentPrice = '£2' //GET /auctions/:auctions/event/:event_id
   const [selectionIsAuction, setSelectionIsAuction] = useState([])
   const [selectionIsAvailable, setSelectionIsAvailable] = useState([])
+  const auctionSelection = []
+  const availableSelection = []
 
   return (
     <View style={styles.container}>
@@ -92,10 +94,10 @@ function CustomerSeating({ navigation }) {
       {selectedSeats.map((selectedSeat) => {
         const isAuctioning = auctionSeats.includes(selectedSeat)
         isAuctioning
-          ? setSelectionIsAuction(selectedSeat)
-          : setSelectionIsAvailable(selectedSeat)
+          ? auctionSelection.push(selectedSeat)
+          : availableSelection.push(selectedSeat)
       })}
-      {selectionIsAuction.length && selectionIsAvailable.length ? (
+      {auctionSelection.length && availableSelection.length ? (
         <View style={seatStyles.errorContainer}>
           <Text style={seatStyles.textbox}>
             You cannot select tickets both in auction and not in auction.
