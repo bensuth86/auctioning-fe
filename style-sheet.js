@@ -19,12 +19,27 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold',
         letterSpacing: 0.25,
         color: 'white',
+        
+        
       },
     textbox: { // for text entry
       borderWidth: 1,
       borderColor: '#777',
       padding: 8,
       margin: 10, 
-      width: 200
+      width: 200,
+      
+    },
+    eventcard: { // customer events card
+      flex: 1,
+      flexDirection: "column", // aligned vertically
+      flexWrap: "wrap", // fit items within container
+      backgroundColor: "#fff",
+      alignItems: "center",
+      justifyContent: "flex-start",
+      marginTop: 10,
+      borderWidth: 3,
+      borderRadius: 8,
+      padding: 20,      
     }
     })
