@@ -3,16 +3,16 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Button from "../helpers";
 import { styles } from "../style-sheet";
 
-function CustomerHomepage({ navigation }) {
+function CustomerSeating({ navigation }) {
     return (
         <View style={styles.container}>
             <Button
-            btnText="View Seating" 
+            btnText="View Auction" 
             onPress={() => 
-                navigation.navigate('SeatingPage')}
+                navigation.navigate('AuctionPage')}
             />
         </View>
     )
 }
 
-export default CustomerHomepage;
+export default CustomerSeating;
