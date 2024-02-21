@@ -7,6 +7,7 @@ const prjApi = axios.create({
 function getBusinessById(id) {
     return prjApi.get(`/businesses/${id}`)
     .then((response) => {
+        console.log(response.data.business)
         return response.data.business
     })
 }
@@ -29,4 +30,13 @@ function postUser({userName, postcode}){
     return prjApi.post('/users', { userName, postcode }).then((res) => {return res.data})
 }
 
-export {getBusinessById, getUsersById, getEventsByUserId, postUser}
+function getEventByEventId(id) {
+    return prjApi.get(`/events/${id}`).then((response) => {
+        // console.log(response.data.event)
+        return response.data.event
+    })
+}
+
+
+
+export {getBusinessById, getUsersById, getEventsByUserId, postUser, getEventByEventId}
