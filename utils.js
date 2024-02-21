@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const prjApi = axios.create({
-    baseURL: "",   
+    baseURL: "https://auctioning-be.onrender.com/api",   
 })
 
 function getBusinessById(id) {
@@ -18,4 +18,11 @@ function getUsersById(id) {
     })
 }
 
-export {getBusinessById, getUsersById}
+function getEventsByUserId(id) {
+    return prjApi.get(`/events/near/${id}`)
+    .then((response) => {
+        return response.data.events
+    })
+}
+
+export {getBusinessById, getUsersById, getEventsByUserId}
