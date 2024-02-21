@@ -4,6 +4,7 @@ import { Button, SeatButton, DisabledSeatButton } from '../helpers'
 import { styles } from '../style-sheet'
 import { seatStyles } from '../style-sheet-seats.js'
 import { useState } from 'react'
+import SelectedEvent from './Customer-seating-selected-event.js'
 
 function CustomerSeating({ navigation }) {
   const availableSeats = ['A1', 'B1', 'B2', 'B3'] // GET /api/events/:event_id (available_seats selected by business user)
@@ -20,6 +21,7 @@ function CustomerSeating({ navigation }) {
 
   return (
     <View style={styles.container}>
+        <SelectedEvent/>
       <View>
         {seatingPlan.map((row, i) => {
           return (
