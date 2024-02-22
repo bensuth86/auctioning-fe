@@ -37,6 +37,12 @@ function getEventByEventId(id) {
     })
 }
 
+function getAllUsers() {
+    return prjApi.get('/users').then((response) => {
+        return response
+    })
+}
 
 
-export {getBusinessById, getUsersById, getEventsByUserId, postUser, getEventByEventId}
+
+export {getBusinessById, getUsersById, getEventsByUserId, postUser, getEventByEventId, getAllUsers}
