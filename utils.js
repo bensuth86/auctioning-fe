@@ -1,48 +1,59 @@
-import axios from "axios"
+import axios from 'axios'
 
 const prjApi = axios.create({
-    baseURL: "https://auctioning-be.onrender.com/api",   
+  baseURL: 'https://auctioning-be.onrender.com/api',
 })
 
 function getBusinessById(id) {
-    return prjApi.get(`/businesses/${id}`)
-    .then((response) => {
-        console.log(response.data.business)
-        return response.data.business
-    })
+  return prjApi.get(`/businesses/${id}`).then((response) => {
+    console.log(response.data.business)
+    return response.data.business
+  })
 }
 
 function getUsersById(id) {
-    return prjApi.get(`/users/${id}`)
-    .then((response) => {
-        return response.data.user
-    })
+  return prjApi.get(`/users/${id}`).then((response) => {
+    return response.data.user
+  })
 }
 
 function getEventsByUserId(id) {
-    return prjApi.get(`/events/near/${id}`)
-    .then((response) => {
-        return response.data.events
-    })
+  return prjApi.get(`/events/near/${id}`).then((response) => {
+    return response.data.events
+  })
 }
 
-function postUser({userName, postcode}){
-    return prjApi.post('/users', { userName, postcode }).then((res) => {return res.data})
+function postUser({ userName, postcode }) {
+  return prjApi.post('/users', { userName, postcode }).then((res) => {
+    return res.data
+  })
 }
 
 function getEventByEventId(id) {
-    return prjApi.get(`/events/${id}`).then((response) => {
-        // console.log(response.data.event)
-        return response.data.event
-    })
+  return prjApi.get(`/events/${id}`).then((response) => {
+    // console.log(response.data.event)
+    return response.data.event
+  })
 }
 
 function getAllUsers() {
-    return prjApi.get('/users').then((response) => {
-        return response
-    })
+  return prjApi.get('/users').then((response) => {
+    return response
+  })
 }
 
+function getAuctionsByEventId(id) {
+  return prjApi.get(`/auctions/event/${id}`).then((response) => {
+    return response.data.auctions
+  })
+}
 
-
-export {getBusinessById, getUsersById, getEventsByUserId, postUser, getEventByEventId, getAllUsers}
+export {
+  getBusinessById,
+  getUsersById,
+  getEventsByUserId,
+  getAuctionsByEventId,
+  postUser,
+  getEventByEventId,
+  getAllUsers,
+}

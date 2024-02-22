@@ -14,18 +14,16 @@ import { Image } from 'react-native'
 import { selectedMovieStyle } from '../style-sheet-selected-movie'
 import { getBusinessById } from '../utils'
 
-function SelectedEvent() {
+function SelectedEvent({ event_id }) {
   const [selectedEvent, setSelectedEvent] = useState({})
   const [selectedBusiness, setSelectedBusiness] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const ID = 2
 
   useEffect(() => {
-    getEventByEventId(ID).then((response) => {
-      console.log(response)
+    getEventByEventId(event_id).then((response) => {
       setSelectedEvent(response)
       getBusinessById(response.business_id).then((response) => {
-        console.log(response)
         setSelectedBusiness(response)
         setIsLoading(false)
       })
@@ -47,7 +45,7 @@ function SelectedEvent() {
         </View>
         <View style={selectedMovieStyle.eventInfo}>
           <Text style={selectedMovieStyle.text}>
-            {selectedBusiness.business_name}, 
+            {selectedBusiness.business_name},
           </Text>
           <Text style={selectedMovieStyle.text}>
             {selectedBusiness.postcode}
