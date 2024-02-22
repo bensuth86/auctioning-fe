@@ -45,27 +45,32 @@ function CustomerHomepage({ navigation }) {
       </View>
     )
 
-return (
-        <ScrollView contentContainerStyle={{ flexGrow: 1}}>
-        <View style={styles.container}>
-            <View>
-                <Text>Hello {currentCustomer.username}</Text>       
-                <Button btnText={"Log out"} onPress={() => logUserOut()}/>
-            </View>       
-            <View style={eventStyles.eventslist}>
-                { eventsList.map((event) => {
-                    return (
-                        <TouchableOpacity onPress={() => navigation.navigate("SeatingPage", { id: event.event_id, business_id: event.business_id})}>
-                            <EventsCard key={event.event_id} event={event} /> 
-                        </TouchableOpacity>                 
-                    )
-                }) 
-                }
-            </View>
+  return (
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <View style={styles.container}>
+        <View>
+          <Text>Hello {currentCustomer.username}</Text>
+          <Button btnText={'Log out'} onPress={() => logUserOut()} />
         </View>
-        </ScrollView> 
-    )
-
+        <View style={eventStyles.eventslist}>
+          {eventsList.map((event) => {
+            return (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('SeatingPage', {
+                    event_id: event.event_id,
+                    business_id: event.business_id,
+                  })
+                }
+              >
+                <EventsCard key={event.event_id} event={event} />
+              </TouchableOpacity>
+            )
+          })}
+        </View>
+      </View>
+    </ScrollView>
+  )
 }
 
 export default CustomerHomepage

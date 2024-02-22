@@ -10,18 +10,10 @@ import {
   getBusinessById,
   getAuctionsByEventId,
 } from '../utils.js'
-import { Route } from '@react-navigation/native'
 
 function CustomerSeating({ navigation, route }) {
   const { event_id, business_id } = route.params
-  const [availableSeats, setAvailableSeats] = useState([
-    'A1',
-    'A2',
-    'A3',
-    'B1',
-    'B2',
-    'B3',
-  ])
+  const [availableSeats, setAvailableSeats] = useState([])
   const [selectedSeats, setSelectedSeats] = useState([]) // pass down to auction page, which patches it into a new auction
   const [auctionSeats, setAuctionSeats] = useState(['A1', 'B2', 'B3']) // GET /api/auctions/:event_id (map over each auction and push seat_selection into array)
   const [seatingPlan, setSeatingPlan] = useState([])
@@ -32,32 +24,53 @@ function CustomerSeating({ navigation, route }) {
   const currentHighestBidder = 'user1' //GET /api/:auctions/:event_id current_highest_bidder from auction with that seat in it
   const [loading, setIsLoading] = useState('true')
   const [auctionInfo, setAuctionInfo] = useState([])
+  const [err, setErr] = useState('false')
 
   useEffect(() => {
-    getBusinessById(business_id).then((response) => {
-      setSeatingPlan(response.seating_layout)
-    })
-    getEventByEventId(event_id).then((response) => {
-      setAvailableSeats(response.available_seats)
-      setStartingPrice(response.start_price)
-    })
-    getAuctionsByEventId(event_id).then((response) => {
-      response.map((auction) => {
-        // setAuctionInfo([
-        //   [
-        //     auction.auction_id,
-        //     [auction.seat_selection],
-        //     auction.current_price,
-        //     auction.current_highest_bidder,
-        //   ],
-        // ])
-        auction.seat_selection.map((seat) => {
-          setAuctionSeats([...auctionSeats, seat])
-        })
+    getBusinessById(business_id)
+      .then((response) => {
+        setIsLoading(false)
+        setSeatingPlan(response.seating_layout)
       })
-    })
-    setIsLoading(false)
-  }, [business_id, event_id])
+      .catch(() => {
+        setErr('true')
+      })
+  }, [business_id])
+
+  useEffect(() => {
+    getEventByEventId(event_id)
+      .then((response) => {
+        console.log(response)
+        setIsLoading(false)
+        console.log(response.available_seats)
+        setAvailableSeats(response.available_seats)
+        setStartingPrice(response.start_price)
+      })
+      .catch(() => {
+        setErr('true')
+      })
+  }, [event_id])
+
+  console.log(availableSeats, '<---- available seats')
+  console.log(startingPrice, '<--- start price')
+
+  //   useEffect(() => {
+  //     getAuctionsByEventId(event_id).then((response) => {
+  //       //   response.map((auction) => {
+  //       //     // setAuctionInfo([
+  //       //     //   [
+  //       //     //     auction.auction_id,
+  //       //     //     [auction.seat_selection],
+  //       //     //     auction.current_price,
+  //       //     //     auction.current_highest_bidder,
+  //       //     //   ],
+  //       //     // ]) auction.seat_selection.map((seat) => {
+
+  //       //   })
+  //       setAuctionSeats([...auctionSeats, seat])
+  //     })
+  //   }, [])
+
   //   console.log(auctionInfo, '<---auctionInfo')
   //   console.log(auctionSeats, '<---- auctionSeats')
   //websockets here to change price/current user
