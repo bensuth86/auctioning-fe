@@ -23,11 +23,14 @@ function getEventsByUserId(id) {
   })
 }
 
-
-function postUser({username, postcode, device_token}){
-    console.log(username, postcode, device_token);
-    return prjApi.post('/users', { username, postcode, device_token }).then((res) => {return res.data})
-
+function postUser({ username, postcode, device_token }) {
+  console.log(username, postcode, device_token)
+  return prjApi
+    .post('/users', { username, postcode, device_token })
+    .then((res) => {
+      return res.data
+    })
+}
 
 function getEventByEventId(id) {
   return prjApi.get(`/events/${id}`).then((response) => {
