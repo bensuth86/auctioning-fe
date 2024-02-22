@@ -78,13 +78,15 @@ function CustomerSeating({ navigation }) {
                             key={seat}
                             btnText={`${currentPrice}${currentHighestBidder}`}
                             onPress={() =>
-                              isSelected
-                                ? setSelectedSeats(
-                                    selectedSeats.filter(
-                                      (item) => seat !== item
+                              selectedSeats.length
+                                ? isSelected
+                                  ? setSelectedSeats(
+                                      selectedSeats.filter(
+                                        (item) => seat !== item
+                                      )
                                     )
-                                  )
-                                : setSelectedSeats([...selectedSeats, seat])
+                                  : setSelectedSeats([...selectedSeats, seat])
+                                : navigation.navigate('AuctionPage')
                             }
                           ></SeatButton>
                         ) : (
@@ -166,16 +168,16 @@ function CustomerSeating({ navigation }) {
               that group of tickets.
             </Text>
           </View>
-        ) : auctionSelection.length === 1 && !availableSelection.length ? (
-          <Button
-            key={'auctionButton'}
-            btnText="Go to auction"
-            onPress={() => navigation.navigate('AuctionPage')}
-          />
         ) : !auctionSelection.length && availableSelection.length ? (
           <Button
             key={'auctionButton'}
             btnText="Start new auction"
+            onPress={() => navigation.navigate('AuctionPage')}
+          />
+        ) : auctionSelection.length === 1 ? (
+          <Button
+            key={'auctionButton'}
+            btnText="Go to auction"
             onPress={() => navigation.navigate('AuctionPage')}
           />
         ) : null}
