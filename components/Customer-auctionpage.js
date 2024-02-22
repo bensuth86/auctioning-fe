@@ -1,10 +1,61 @@
-import React from 'react'
+// import React, { useState } from 'react'
 import { View, Text, TouchableOpacity, Alert, ScrollView } from 'react-native'
 import { styles } from '../style-sheet'
 import { auctionStyles } from '../auction-stylesheet'
 import { TextInput } from 'react-native'
+import { useState } from 'react'
 
 function CustomerAuctionPage({ navigation }) {
+///api/auctions/event/:event_id
+// {
+//   "auction_id": 5,
+//   "event_id": 10,
+//   "seat_selection": [
+//   "B1",
+//   "B2"
+//   ],
+//   "current_price": "5",
+//   "time_started": "2024-02-22T12:02:02.472Z",
+//   "time_ending": "2024-03-08T11:03:02.472Z",
+//   "current_highest_bidder": 7,
+//   "users_involved": [
+//   1,
+//   2
+//   ],
+//   "active": true,
+//   "bid_counter": 4
+//   }
+
+  const [userBid, setUserBid] = useState('')
+  const [highestBid, setHighestBid] = useState(null)
+  const [errorMessage, setErrorMessage] = useState('')
+
+  const startingPrice = 3 // passed down as params from the event id (I think)
+  const priceCap = startingPrice * 4 // multiply starting price by 4 (anything over will be blocked)
+  const seatingSelection = ['A1', 'A2', 'A3'] // passed down as params from the event id (I think) - used as length to calculate overall ticket price
+  const biddingCounter = 0
+
+  function submitBid() {
+    if (userBid >= startingPrice && userBid <= priceCap && userBid > highestBid) {
+      setHighestBid(`${userBid}`)
+      setErrorMessage('')
+    }
+    if (userBid <= highestBid) {
+      setErrorMessage(`You need to place a bid greater than £${highestBid}.`)
+    }
+    if (userBid < startingPrice) {
+      setErrorMessage(`You need to place a minimum bid of £${startingPrice}.`)
+    }
+    if (userBid > priceCap) {
+      setErrorMessage(`You have exceeded the price cap of this auction. Please enter an amount less than £${priceCap}.`)
+    }
+    setUserBid('')
+  }
+
+  function handleTextChange(text) {
+    setUserBid(text)
+  }
+
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
@@ -36,13 +87,23 @@ function CustomerAuctionPage({ navigation }) {
               Film name, date (all film info)
             </Text>
             <Text style={{ textAlign: 'center', color: 'white' }}>
-              Seat selection
+              Seat selections: {seatingSelection.join(', ')}
             </Text>
           </View>
           <View style={auctionStyles.biddingInfoContainer}>
             <View style={auctionStyles.highestBidInfoContainer}>
-              <Text style={{ textAlign: 'center' }}>Current highest bid: </Text>
-              <Text style={{ textAlign: 'center', fontSize: 25 }}>£76</Text>
+              {!highestBid ? (
+                <View>
+                  <Text style={{ textAlign: 'center' }}>Starting bid: </Text>
+                  <Text style={{ textAlign: 'center', fontSize: 25 }}>£{startingPrice}</Text>
+                </View>
+              ):(
+                <View>
+                  <Text style={{ textAlign: 'center' }}>Current highest bid: </Text>
+                  <Text style={{ textAlign: 'center', fontSize: 25 }}>£{highestBid}</Text>
+                </View>
+              )}
+              <Text style={{ textAlign: 'center' }}>Bidding counter: {biddingCounter}</Text>
             </View>
             <View style={auctionStyles.otherBidInfoContainer}>
               <View
@@ -66,18 +127,20 @@ function CustomerAuctionPage({ navigation }) {
             </View>
           </View>
           <View style={auctionStyles.biddingForm}>
-            <Text style={{ marginRight: 5 }}>£</Text>
+            <Text style={{ marginRight: 5 }}></Text>
             <TextInput
               style={auctionStyles.bidInput}
               placeholder="Enter your bid here"
+              onChangeText={handleTextChange}
+              value={userBid}
             />
-            <TouchableOpacity title="submit">
+            <TouchableOpacity title="submit" onPress={() => submitBid()}>
               <Text style={{ marginLeft: 10 }}>→</Text>
             </TouchableOpacity>
           </View>
           <View style={auctionStyles.statusContainer}>
-            <Text style={{ textAlign: 'center' }}>
-              status messages (errors etc...)
+            <Text style={{ textAlign: 'center', color: 'red' }}>
+              {errorMessage}
             </Text>
           </View>
           <View style={auctionStyles.timerContainer}>
