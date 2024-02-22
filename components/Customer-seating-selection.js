@@ -16,8 +16,6 @@ function CustomerSeating({ navigation }) {
     ['C1', 'C2', 'C3', 'C4'],
   ] // GET /api/businesses (seating_layout)
   const currentPrice = '£2' //GET /auctions/:auctions/event/:event_id
-  const [selectionIsAuction, setSelectionIsAuction] = useState([])
-  const [selectionIsAvailable, setSelectionIsAvailable] = useState([])
   const auctionSelection = []
   const availableSelection = []
 
