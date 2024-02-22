@@ -1,15 +1,13 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
-import { useParams } from 'react-router-dom'
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
+import { View, ScrollView, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Button } from "../helpers";
 import { styles } from "../style-sheet";
 import { eventStyles } from "../style-sheet-events";
 import { getEventsByUserId } from "../utils"
 
 import EventsCard from "./Customer-events-card";
-import CustomerSeating from "./Customer-seating-selection"
 import CustomerContext from "../Contexts/LoggedInCustomerContext";
 import { useContext } from "react";
 
@@ -43,9 +41,9 @@ function CustomerHomepage({ navigation }) {
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1}}>
         <View style={styles.container}>
-        <View>
-            <Text>Hello {currentCustomer.username}</Text>       
-            <Button btnText={"Log out"} onPress={() => logUserOut()}/>
+            <View>
+                <Text>Hello {currentCustomer.username}</Text>       
+                <Button btnText={"Log out"} onPress={() => logUserOut()}/>
             </View>       
             <View style={eventStyles.eventslist}>
                 { eventsList.map((event) => {
@@ -56,13 +54,8 @@ function CustomerHomepage({ navigation }) {
                     )
                 }) 
                 }
-                <Button
-                btnText="View Seating" 
-                onPress={() => 
-                    navigation.navigate('SeatingPage')}
-                />
-                </View>
             </View>
+        </View>
         </ScrollView> 
     )
 }
