@@ -3,23 +3,35 @@ import { View, TextInput, Text, TouchableOpacity } from 'react-native'
 import { styles } from '../style-sheet'
 import { postUser } from '../utils'
 import { Snackbar } from 'react-native-paper'
+import * as Notifications from 'expo-notifications';
 
 function CustomerSignUp({ navigation }) {
-  const [userName, setUserName] = useState('')
+  const [username, setUserName] = useState('')
   const [postcode, setPostcode] = useState('')
   const [errors, setErrors] = useState({})
   const [isFormValid, setIsFormValid] = useState(false)
   const [visible, setVisible] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
+  const [token, setToken] = useState('')
 
   useEffect(() => {
     validateForm()
-  }, [userName, postcode])
+    registerForPushNotificationsAsync(); // Calling the function to get the Expo push token
+  }, [username, postcode])
+
+  async function registerForPushNotificationsAsync() {
+    try {
+      const expoPushToken = await Notifications.getExpoPushTokenAsync();
+      setToken(expoPushToken.data);
+    } catch (error) {
+      console.error('Error getting Expo push token:', error);
+    }
+  }
 
   const validateForm = () => {
     let errors = {}
 
-    if (!userName) {
+    if (!username) {
       errors.name = 'Username is required'
     }
     if (!postcode) {
@@ -33,7 +45,7 @@ function CustomerSignUp({ navigation }) {
 
   const handleSubmit = () => {
     if (isFormValid) {
-      postUser({ username: userName, postcode: postcode })
+      postUser({ username: username, postcode: postcode, device_token: token })
         .then(() => {
           navigation.navigate('CustomerHomepage')
           console.log('Form submitted successfully!')
@@ -56,8 +68,8 @@ function CustomerSignUp({ navigation }) {
       <TextInput
         style={styles.textbox}
         placeholder="Username"
-        value={userName}
-        onChangeText={(userName) => setUserName(userName)}
+        value={username}
+        onChangeText={(username) => setUserName(username)}
       />
       <TextInput
         style={styles.textbox}
