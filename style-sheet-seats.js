@@ -89,7 +89,7 @@ export const seatStyles = StyleSheet.create({
     marginBottom: 100,
     width: 'auto',
     borderColor: 'red',
-    borderWidth: '2px',
+    borderWidth: 3,
   },
   seatKey: {
     width: 10,
