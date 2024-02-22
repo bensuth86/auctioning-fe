@@ -32,24 +32,30 @@ function CustomerHomepage({ navigation }) {
         setCurrentCustomer({ username: null, user_id: null });        
     }
     
-    // if (isLoading) return <Text>Loading...</Text>
-    return (
-        <ScrollView contentContainerStyle={{ flexGrow: 1}}>
-            <View>
-            <Text>Hello {currentCustomer.username}</Text>       
-            <Button btnText={"Log out"} onPress={() => logUserOut()}/>
-            </View>
-            <View style={styles.container}>
-
-    }, [id])
 
     if (isLoading) return (
         <View style={styles.container}> 
             <ActivityIndicator/>
         </View>)
 
+
+    // return (
+        // <ScrollView contentContainerStyle={{ flexGrow: 1}}>
+            {/* <View>
+            <Text>Hello {currentCustomer.username}</Text>       
+            <Button btnText={"Log out"} onPress={() => logUserOut()}/>
+            </View> */}
+            // <View style={styles.container}>
+
+    {/* }, ) */}
+
     return (
-        <ScrollView contentContainerStyle={{ flexGrow: 1}}>       
+        <ScrollView contentContainerStyle={{ flexGrow: 1}}>
+        <View style={styles.container}>
+        <View>
+            <Text>Hello {currentCustomer.username}</Text>       
+            <Button btnText={"Log out"} onPress={() => logUserOut()}/>
+            </View>       
             <View style={eventStyles.eventslist}>
                 { eventsList.map((event) => {
                     return (
@@ -62,6 +68,7 @@ function CustomerHomepage({ navigation }) {
                 onPress={() => 
                     navigation.navigate('SeatingPage')}
                 />
+                </View>
             </View>
         </ScrollView> 
     )
