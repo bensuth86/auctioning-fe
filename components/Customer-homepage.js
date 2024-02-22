@@ -20,7 +20,7 @@ function CustomerHomepage({ navigation }) {
         })
     }, [id])
     
-    if (isLoading) return <Text>Loading...</Text>
+    // if (isLoading) return <Text>Loading...</Text>
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1}}>       
             <View style={styles.container}>

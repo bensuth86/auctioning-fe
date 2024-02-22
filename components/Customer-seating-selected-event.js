@@ -1,5 +1,11 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native'
 import { styles } from '../style-sheet'
 import { getEventByEventId } from '../utils'
 import { useState } from 'react'
@@ -12,34 +18,47 @@ function SelectedEvent() {
   const [selectedEvent, setSelectedEvent] = useState({})
   const [selectedBusiness, setSelectedBusiness] = useState({})
   const [isLoading, setIsLoading] = useState(true)
-  const ID = 3
+  const ID = 2
 
   useEffect(() => {
     getEventByEventId(ID).then((response) => {
-        setSelectedEvent(response)
-        getBusinessById(response.business_id).then((response) => {
-            setSelectedBusiness(response)
-            setIsLoading(false)
-        })
+      console.log(response)
+      setSelectedEvent(response)
+      getBusinessById(response.business_id).then((response) => {
+        console.log(response)
+        setSelectedBusiness(response)
+        setIsLoading(false)
+      })
     })
   }, [ID])
 
-  if (isLoading) return <Text>Loading...</Text>
+  if (isLoading) return <ActivityIndicator />
   return (
-    <View>
-      <Text style={{ textAlign: 'center' }}>Selected event:</Text>
+    <View style={{ width: '100%' }}>
+      <Text style={{ textAlign: 'center', fontSize: 25, marginBottom: 10 }}>
+        {selectedEvent.film_title}
+      </Text>
       <View style={selectedMovieStyle.eventContainer}>
-        <Image
-          source={{ uri: selectedEvent.poster }}
-          style={{ width: 150, height: 222 }}
-        />
+        <View style={selectedMovieStyle.imageContainer}>
+          <Image
+            source={{ uri: selectedEvent.poster }}
+            style={{ width: 112.5, height: 166.5 }}
+          />
+        </View>
         <View style={selectedMovieStyle.eventInfo}>
-          <Text>{selectedEvent.film_title}</Text>
-          <Text>Rating: {selectedEvent.certificate}</Text>
-          <Text>Run time: {selectedEvent.run_time} minutes</Text>
+          <Text style={selectedMovieStyle.text}>
+            {selectedBusiness.business_name}, 
+          </Text>
+          <Text style={selectedMovieStyle.text}>
+            {selectedBusiness.postcode}
+          </Text>
+          <Text style={selectedMovieStyle.text}>
+            Rating: {selectedEvent.certificate}
+          </Text>
+          <Text style={selectedMovieStyle.text}>
+            Run time: {selectedEvent.run_time} minutes
+          </Text>
           <Text>Start time: {selectedEvent.start_time}</Text>
-          <Text>Business: {selectedBusiness.business_name}</Text>
-          <Text>POSTCODE: {selectedBusiness.postcode}</Text>
         </View>
       </View>
     </View>

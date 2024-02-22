@@ -91,4 +91,13 @@ export const seatStyles = StyleSheet.create({
     borderColor: 'red',
     borderWidth: '2px',
   },
+  seatKey: {
+    width: 10,
+    height: 10,
+    marginRight: 5
+  },
+  keyContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  }
 })
