@@ -32,6 +32,14 @@ export function DisabledSeatButton({ btnText, seatStyle }) {
   )
 }
 
+export function DisabledButton({ btnText }) {
+  return (
+    <View style={styles.button}>
+      <Text style={styles.buttontext}>{btnText}</Text>
+    </View>
+  )
+}
+
 export function generateSeatGrid(rows, columns) {
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
   let seatGrid = []
