@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity, Alert, ScrollView } from 'react-native'
 import { Button, SeatButton, DisabledSeatButton } from '../helpers'
 import { styles } from '../style-sheet'
 import { seatStyles } from '../style-sheet-seats.js'
@@ -20,9 +20,15 @@ function CustomerSeating({ navigation }) {
   const [selectionIsAvailable, setSelectionIsAvailable] = useState([])
 
   return (
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
     <View style={styles.container}>
-        <SelectedEvent/>
+      <View style={{ maxWidth: 300 }}>
+        <SelectedEvent />
+      </View>
+      <View style={{marginTop: 20, marginBottom: 20}}>
       <View>
+        <Text style={{ textAlign: 'center', marginBottom: 10 }}>Seating: </Text>
+      </View>
         {seatingPlan.map((row, i) => {
           return (
             <View key={i}>
@@ -104,12 +110,52 @@ function CustomerSeating({ navigation }) {
           </Text>
         </View>
       ) : null}
+      <View style={{ marginTop: 10 }}>
+        <View style={seatStyles.keyContainer}>
+          <View
+            style={[seatStyles.seatKey, { backgroundColor: '#7bc47f' }]}
+          ></View>
+          <Text>Available</Text>
+        </View>
+        <View style={seatStyles.keyContainer}>
+          <View
+            style={[seatStyles.seatKey, { backgroundColor: '#FFBF00' }]}
+          ></View>
+          <Text>Auction in process</Text>
+        </View>
+        <View style={seatStyles.keyContainer}>
+          <View
+            style={[seatStyles.seatKey, { borderWidth: 2, borderColor: 'red' }]}
+          ></View>
+          <Text>Selected</Text>
+        </View>
+        <View style={seatStyles.keyContainer}>
+          <View
+            style={[seatStyles.seatKey, { backgroundColor: '#D0D0D0' }]}
+          ></View>
+          <Text>Unavailable</Text>
+        </View>
+      </View>
+      <TouchableOpacity
+        onPress={() => {
+          Alert.alert(
+            'Selection instructions',
+            'This is where all of the info for seat selections will be.'
+          )
+        }}
+        title="?"
+      >
+        <Text>?</Text>
+      </TouchableOpacity>
+      <Text>Selected seats:</Text>
+      <Text>Price per seat: £</Text>
       <Button
         key={'auctionButton'}
         btnText="View Auction"
         onPress={() => navigation.navigate('AuctionPage')}
       />
     </View>
+    </ScrollView>
   )
 }
 
