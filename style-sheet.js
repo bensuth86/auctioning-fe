@@ -30,16 +30,5 @@ export const styles = StyleSheet.create({
       width: 200,
       
     },
-    eventcard: { // customer events card
-      flex: 1,
-      flexDirection: "column", // aligned vertically
-      flexWrap: "wrap", // fit items within container
-      backgroundColor: "#fff",
-      alignItems: "center",
-      justifyContent: "flex-start",
-      marginTop: 10,
-      borderWidth: 3,
-      borderRadius: 8,
-      padding: 20,      
-    }
+
     })
