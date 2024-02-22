@@ -5,6 +5,15 @@ import { auctionStyles } from '../auction-stylesheet'
 import { TextInput } from 'react-native'
 
 function CustomerAuctionPage({ navigation }) {
+  const socket = io("https://auctioning-be.onrender.com/");
+  const [bid, setBed] = useState(1)
+
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log(socket.connected); // true
+    });
+  }, [bid])
+
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
@@ -42,7 +51,7 @@ function CustomerAuctionPage({ navigation }) {
           <View style={auctionStyles.biddingInfoContainer}>
             <View style={auctionStyles.highestBidInfoContainer}>
               <Text style={{ textAlign: 'center' }}>Current highest bid: </Text>
-              <Text style={{ textAlign: 'center', fontSize: 25 }}>£76</Text>
+              <Text style={{ textAlign: 'center', fontSize: 25 }}>{bid}</Text>
             </View>
             <View style={auctionStyles.otherBidInfoContainer}>
               <View

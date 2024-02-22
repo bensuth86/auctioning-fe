@@ -45,7 +45,7 @@ function CustomerHomepage({ navigation }) {
       </View>
     )
 
-  return (
+  return (<>
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
         <View>
@@ -75,7 +75,7 @@ function CustomerHomepage({ navigation }) {
       </View>
     </ScrollView>
   )
-        <ScrollView contentContainerStyle={{ flexGrow: 1}}>
+        <ScrollView>
         <View style={styles.container}>
             <View>
                 <Text>Hello {currentCustomer.username}</Text>       
@@ -92,7 +92,7 @@ function CustomerHomepage({ navigation }) {
                 }
             </View>
         </View>
-        </ScrollView> 
+        </ScrollView> </>
     )
 
 }
