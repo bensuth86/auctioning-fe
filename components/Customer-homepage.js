@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom'
@@ -8,9 +9,9 @@ import { eventStyles } from "../style-sheet-events";
 import { getEventsByUserId } from "../utils"
 
 import EventsCard from "./Customer-events-card";
+import CustomerSeating from "./Customer-seating-selection"
 import CustomerContext from "../Contexts/LoggedInCustomerContext";
 import { useContext } from "react";
-
 
 
 function CustomerHomepage({ navigation }) {
@@ -39,17 +40,6 @@ function CustomerHomepage({ navigation }) {
             <ActivityIndicator/>
         </View>)
 
-
-    // return (
-        // <ScrollView contentContainerStyle={{ flexGrow: 1}}>
-            {/* <View>
-            <Text>Hello {currentCustomer.username}</Text>       
-            <Button btnText={"Log out"} onPress={() => logUserOut()}/>
-            </View> */}
-            // <View style={styles.container}>
-
-    {/* }, ) */}
-
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1}}>
         <View style={styles.container}>
@@ -60,7 +50,9 @@ function CustomerHomepage({ navigation }) {
             <View style={eventStyles.eventslist}>
                 { eventsList.map((event) => {
                     return (
-                        <EventsCard key={event.event_id} event={event} />                  
+                        <TouchableOpacity onPress={() => navigation.navigate("SeatingPage", { id: event.event_id, business_id: event.business_id})}>
+                            <EventsCard key={event.event_id} event={event} /> 
+                        </TouchableOpacity>                 
                     )
                 }) 
                 }
