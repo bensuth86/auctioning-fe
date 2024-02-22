@@ -59,7 +59,7 @@ export const seatStyles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderColor: 'red',
-    borderWidth: '3px',
+    borderWidth: 3,
   },
   selectedAuctionSeatButton: {
     margin: 8,
@@ -70,7 +70,7 @@ export const seatStyles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderColor: 'red',
-    borderWidth: '3px',
+    borderWidth: 3,
   },
   buttontext: {
     fontSize: 16,
@@ -89,15 +89,15 @@ export const seatStyles = StyleSheet.create({
     marginBottom: 100,
     width: 'auto',
     borderColor: 'red',
-    borderWidth: '2px',
+    borderWidth: 3,
   },
   seatKey: {
     width: 10,
     height: 10,
-    marginRight: 5
+    marginRight: 5,
   },
   keyContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  }
+  },
 })
