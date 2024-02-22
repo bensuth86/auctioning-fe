@@ -6,7 +6,6 @@ const prjApi = axios.create({
 
 function getBusinessById(id) {
   return prjApi.get(`/businesses/${id}`).then((response) => {
-    console.log(response.data.business)
     return response.data.business
   })
 }
@@ -17,14 +16,21 @@ function getUsersById(id) {
   })
 }
 
-function getEventsByUserId(id) {
-  return prjApi.get(`/events/near/${id}`).then((response) => {
+function getEventsByUserId(id, radius) {
+  let url = null;
+
+  if (!radius) {
+    url = `/events/near/${id}`
+  } else {
+    url = `/events/near/${id}?distance=${radius}`
+  }
+  return prjApi.get(url).then((response) => {
     return response.data.events
   })
 }
 
 function postUser({ username, postcode, device_token }) {
-  console.log(username, postcode, device_token)
+  // console.log(username, postcode, device_token)
   return prjApi
     .post('/users', { username, postcode, device_token })
     .then((res) => {

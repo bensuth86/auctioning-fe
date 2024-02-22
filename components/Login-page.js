@@ -24,7 +24,7 @@ function Login({ navigation, route }) {
           let foundMatch = false;
           response.data.users.forEach((user) => {
             if (loginName === user.username) {
-              setCurrentCustomer({ username: user.username, user_id: user.user_id });
+              setCurrentCustomer({ username: user.username, user_id: user.user_id, postcode: user.postcode });
               navigation.navigate('CustomerHomepage');
               // setMatch(true);
               foundMatch = true;

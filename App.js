@@ -15,7 +15,7 @@ import { useState } from "react";
 const Stack = createNativeStackNavigator();
 
 function App() {
-  const [currentCustomer, setCurrentCustomer] = useState({ username: null, user_id: null });
+  const [currentCustomer, setCurrentCustomer] = useState({ username: null, user_id: null, postcode: null });
 
   return (
     <CustomerContext.Provider value={{ currentCustomer, setCurrentCustomer }}>

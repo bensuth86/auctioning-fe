@@ -36,6 +36,9 @@ function CustomerAuctionPage({ navigation }) {
   const biddingCounter = 0
 
   function submitBid() {
+    if (isNaN(userBid)) {
+      setErrorMessage(`Please enter a number.`)
+    }
     if (userBid >= startingPrice && userBid <= priceCap && userBid > highestBid) {
       setHighestBid(`${userBid}`)
       setErrorMessage('')
@@ -133,6 +136,7 @@ function CustomerAuctionPage({ navigation }) {
               placeholder="Enter your bid here"
               onChangeText={handleTextChange}
               value={userBid}
+              keyboardType="numeric"
             />
             <TouchableOpacity title="submit" onPress={() => submitBid()}>
               <Text style={{ marginLeft: 10 }}>→</Text>
