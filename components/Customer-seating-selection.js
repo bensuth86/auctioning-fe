@@ -78,15 +78,13 @@ function CustomerSeating({ navigation }) {
                             key={seat}
                             btnText={`${currentPrice}${currentHighestBidder}`}
                             onPress={() =>
-                              selectedSeats.length
-                                ? isSelected
-                                  ? setSelectedSeats(
-                                      selectedSeats.filter(
-                                        (item) => seat !== item
-                                      )
+                              isSelected
+                                ? setSelectedSeats(
+                                    selectedSeats.filter(
+                                      (item) => seat !== item
                                     )
-                                  : setSelectedSeats([...selectedSeats, seat])
-                                : navigation.navigate('AuctionPage')
+                                  )
+                                : setSelectedSeats([...selectedSeats, seat])
                             }
                           ></SeatButton>
                         ) : (
@@ -161,7 +159,20 @@ function CustomerSeating({ navigation }) {
               </Text>
             </View>
           </>
-        ) : selectedSeats.length ? (
+        ) : auctionSelection.length > 1 && !availableSelection.length ? (
+          <View style={seatStyles.errorContainer}>
+            <Text style={seatStyles.textbox}>
+              Please only select one seat in auction to go to the auction for
+              that group of tickets.
+            </Text>
+          </View>
+        ) : auctionSelection.length === 1 && !availableSelection.length ? (
+          <Button
+            key={'auctionButton'}
+            btnText="Go to auction"
+            onPress={() => navigation.navigate('AuctionPage')}
+          />
+        ) : !auctionSelection.length && availableSelection.length ? (
           <Button
             key={'auctionButton'}
             btnText="Start new auction"
