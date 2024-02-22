@@ -40,7 +40,6 @@ function postUser({ username, postcode, device_token }) {
 
 function getEventByEventId(id) {
   return prjApi.get(`/events/${id}`).then((response) => {
-    // console.log(response.data.event)
     return response.data.event
   })
 }

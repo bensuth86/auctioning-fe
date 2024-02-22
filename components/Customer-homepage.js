@@ -68,6 +68,7 @@ function CustomerHomepage({ navigation }) {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
+
         <View style={homeStyles.navigation}>
           <View style={homeStyles.topNavigation}>
             <Text>Hello {currentCustomer.username}</Text>
@@ -101,6 +102,16 @@ function CustomerHomepage({ navigation }) {
                   navigation.navigate('SeatingPage', {
                     id: event.event_id,
                     business_id: event.business_id,
+                    event_id: event.event_id,
+                    business_id: event.business_id,
+                    start_price: event.start_price,
+                    active: event.active,
+                    available_seats: event.available_seats,
+                    start_time: event.start_time,
+                    film_title: event.film_title,
+                    poster: event.poster,
+                    run_time: event.run_time,
+                    certificate: event.certificate,
                   })
                 }
               >
