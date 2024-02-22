@@ -9,11 +9,17 @@ import BusinessHomepage from "./components/Business-homepage";
 import CustomerSeating from "./components/Customer-seating-selection";
 import CustomerAuctionPage from "./components/Customer-auctionpage";
 import CustomerSignUp from "./components/Customer-signup";
+import CustomerContext from "./Contexts/LoggedInCustomerContext";
+import { useState } from "react";
 
 const Stack = createNativeStackNavigator();
 
 function App() {
-  return (    
+  const [currentCustomer, setCurrentCustomer] = useState({ username: null, user_id: null });
+
+  return (
+    <CustomerContext.Provider value={{ currentCustomer, setCurrentCustomer }}>
+    
   <NavigationContainer>
     <Stack.Navigator>
       <Stack.Screen name="Welcome_page" component={WelcomePage} options={{title: "Welcome to Blost cinema auctions"}}/>
@@ -25,6 +31,7 @@ function App() {
       <Stack.Screen name="CustomerSignUpPage" component={CustomerSignUp} options={{title: "Customer Sign Up"}}/>
     </Stack.Navigator>
   </NavigationContainer>
+  </CustomerContext.Provider>
   );
 }
 
