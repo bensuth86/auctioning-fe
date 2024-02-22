@@ -78,15 +78,13 @@ function CustomerSeating({ navigation }) {
                             key={seat}
                             btnText={`${currentPrice}${currentHighestBidder}`}
                             onPress={() =>
-                              selectedSeats.length
-                                ? isSelected
-                                  ? setSelectedSeats(
-                                      selectedSeats.filter(
-                                        (item) => seat !== item
-                                      )
+                              isSelected
+                                ? setSelectedSeats(
+                                    selectedSeats.filter(
+                                      (item) => seat !== item
                                     )
-                                  : setSelectedSeats([...selectedSeats, seat])
-                                : navigation.navigate('AuctionPage')
+                                  )
+                                : setSelectedSeats([...selectedSeats, seat])
                             }
                           ></SeatButton>
                         ) : (
