@@ -1,15 +1,20 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, Alert, ScrollView } from 'react-native'
-import { Button, SeatButton, DisabledSeatButton } from '../helpers'
+import {
+  Button,
+  SeatButton,
+  DisabledSeatButton,
+  DisabledButton,
+} from '../helpers'
 import { styles } from '../style-sheet'
 import { seatStyles } from '../style-sheet-seats.js'
 import { useState } from 'react'
 import SelectedEvent from './Customer-seating-selected-event.js'
 
 function CustomerSeating({ navigation }) {
-  const availableSeats = ['A1', 'B1', 'B2', 'B3'] // GET /api/events/:event_id (available_seats selected by business user)
+  const availableSeats = ['A1', 'A2', 'A3', 'B1', 'B2', 'B3'] // GET /api/events/:event_id (available_seats selected by business user)
   const [selectedSeats, setSelectedSeats] = useState([]) // PATCH /api/auctions/:event_id (seat_selection)
-  const auctionSeats = ['A1', 'B2', 'B3'] // GET /api/auctions/:event_id (seat_selection)
+  const auctionSeats = ['A1', 'B2', 'B3'] // GET /api/auctions/:event_id (map over each auction and push seat_selection into array)
   const seatingPlan = [
     ['A1', 'A2', 'A3', 'A4'],
     ['B1', 'B2', 'B3', 'B4'],
@@ -18,6 +23,7 @@ function CustomerSeating({ navigation }) {
   const currentPrice = '£2' //GET /auctions/:auctions/event/:event_id
   const auctionSelection = []
   const availableSelection = []
+  const currentHighestBidder = 'user1' //GET /api/:auctions/:event_id current_highest_bidder from auction with that seat in it
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -66,22 +72,22 @@ function CustomerSeating({ navigation }) {
                           <SeatButton
                             seatStyle={
                               isSelected
-                                ? [seatStyles.selectedAuctionSeatButton]
+                                ? seatStyles.selectedAuctionSeatButton
                                 : seatStyles.auctionSeatButton
                             }
                             key={seat}
-                            btnText={currentPrice}
-                            onPress={() => {
-                              {
-                                isSelected
+                            btnText={`${currentPrice}${currentHighestBidder}`}
+                            onPress={() =>
+                              selectedSeats.length
+                                ? isSelected
                                   ? setSelectedSeats(
                                       selectedSeats.filter(
                                         (item) => seat !== item
                                       )
                                     )
                                   : setSelectedSeats([...selectedSeats, seat])
-                              }
-                            }}
+                                : navigation.navigate('AuctionPage')
+                            }
                           ></SeatButton>
                         ) : (
                           <DisabledSeatButton
@@ -99,19 +105,6 @@ function CustomerSeating({ navigation }) {
             )
           })}
         </View>
-        {selectedSeats.map((selectedSeat) => {
-          const isAuctioning = auctionSeats.includes(selectedSeat)
-          isAuctioning
-            ? auctionSelection.push(selectedSeat)
-            : availableSelection.push(selectedSeat)
-        })}
-        {auctionSelection.length && availableSelection.length ? (
-          <View style={seatStyles.errorContainer}>
-            <Text style={seatStyles.textbox}>
-              You cannot select tickets both in auction and not in auction.
-            </Text>
-          </View>
-        ) : null}
         <View style={{ marginTop: 10 }}>
           <View style={seatStyles.keyContainer}>
             <View
@@ -154,11 +147,27 @@ function CustomerSeating({ navigation }) {
         </TouchableOpacity>
         <Text>Selected seats:</Text>
         <Text>Price per seat: £</Text>
-        <Button
-          key={'auctionButton'}
-          btnText="View Auction"
-          onPress={() => navigation.navigate('AuctionPage')}
-        />
+        {selectedSeats.map((selectedSeat) => {
+          const isAuctioning = auctionSeats.includes(selectedSeat)
+          isAuctioning
+            ? auctionSelection.push(selectedSeat)
+            : availableSelection.push(selectedSeat)
+        })}
+        {auctionSelection.length && availableSelection.length ? (
+          <>
+            <View style={seatStyles.errorContainer}>
+              <Text style={seatStyles.textbox}>
+                You cannot select tickets both in auction and not in auction.
+              </Text>
+            </View>
+          </>
+        ) : selectedSeats.length ? (
+          <Button
+            key={'auctionButton'}
+            btnText="Start new auction"
+            onPress={() => navigation.navigate('AuctionPage')}
+          />
+        ) : null}
       </View>
     </ScrollView>
   )
