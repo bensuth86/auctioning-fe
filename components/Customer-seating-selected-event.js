@@ -18,7 +18,6 @@ function SelectedEvent({ event_id }) {
   const [selectedEvent, setSelectedEvent] = useState({})
   const [selectedBusiness, setSelectedBusiness] = useState({})
   const [isLoading, setIsLoading] = useState(true)
-  const ID = 2
 
   useEffect(() => {
     getEventByEventId(event_id).then((response) => {
@@ -28,9 +27,15 @@ function SelectedEvent({ event_id }) {
         setIsLoading(false)
       })
     })
-  }, [ID])
+  }, [event_id])
 
-  if (isLoading) return <ActivityIndicator />
+  if (isLoading)
+    return (
+      <>
+        <Text>Event loading...</Text>
+        <ActivityIndicator />
+      </>
+    )
   return (
     <View style={{ width: '100%' }}>
       <Text style={{ textAlign: 'center', fontSize: 25, marginBottom: 10 }}>

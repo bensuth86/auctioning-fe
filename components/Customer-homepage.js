@@ -60,6 +60,14 @@ function CustomerHomepage({ navigation }) {
                   navigation.navigate('SeatingPage', {
                     event_id: event.event_id,
                     business_id: event.business_id,
+                    start_price: event.start_price,
+                    active: event.active,
+                    available_seats: event.available_seats,
+                    start_time: event.start_time,
+                    film_title: event.film_title,
+                    poster: event.poster,
+                    run_time: event.run_time,
+                    certificate: event.certificate,
                   })
                 }
               >
