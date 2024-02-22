@@ -1,35 +1,72 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, Alert, ScrollView } from 'react-native'
-import {
-  Button,
-  SeatButton,
-  DisabledSeatButton,
-  DisabledButton,
-} from '../helpers'
+import { Button, SeatButton, DisabledSeatButton } from '../helpers'
 import { styles } from '../style-sheet'
 import { seatStyles } from '../style-sheet-seats.js'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import SelectedEvent from './Customer-seating-selected-event.js'
+import {
+  getEventByEventId,
+  getBusinessById,
+  getAuctionsByEventId,
+} from '../utils.js'
+import { Route } from '@react-navigation/native'
 
-function CustomerSeating({ navigation }) {
-  const availableSeats = ['A1', 'A2', 'A3', 'B1', 'B2', 'B3'] // GET /api/events/:event_id (available_seats selected by business user)
-  const [selectedSeats, setSelectedSeats] = useState([]) // PATCH /api/auctions/:event_id (seat_selection)
-  const auctionSeats = ['A1', 'B2', 'B3'] // GET /api/auctions/:event_id (map over each auction and push seat_selection into array)
-  const seatingPlan = [
-    ['A1', 'A2', 'A3', 'A4'],
-    ['B1', 'B2', 'B3', 'B4'],
-    ['C1', 'C2', 'C3', 'C4'],
-  ] // GET /api/businesses (seating_layout)
+function CustomerSeating({ navigation, route }) {
+  const { event_id, business_id } = route.params
+  const [availableSeats, setAvailableSeats] = useState([
+    'A1',
+    'A2',
+    'A3',
+    'B1',
+    'B2',
+    'B3',
+  ])
+  const [selectedSeats, setSelectedSeats] = useState([]) // pass down to auction page, which patches it into a new auction
+  const [auctionSeats, setAuctionSeats] = useState(['A1', 'B2', 'B3']) // GET /api/auctions/:event_id (map over each auction and push seat_selection into array)
+  const [seatingPlan, setSeatingPlan] = useState([])
   const currentPrice = '£2' //GET /auctions/:auctions/event/:event_id
   const auctionSelection = []
   const availableSelection = []
+  const [startingPrice, setStartingPrice] = useState([])
   const currentHighestBidder = 'user1' //GET /api/:auctions/:event_id current_highest_bidder from auction with that seat in it
+  const [loading, setIsLoading] = useState('true')
+  const [auctionInfo, setAuctionInfo] = useState([])
+
+  useEffect(() => {
+    getBusinessById(business_id).then((response) => {
+      setSeatingPlan(response.seating_layout)
+    })
+    getEventByEventId(event_id).then((response) => {
+      setAvailableSeats(response.available_seats)
+      setStartingPrice(response.start_price)
+    })
+    getAuctionsByEventId(event_id).then((response) => {
+      response.map((auction) => {
+        // setAuctionInfo([
+        //   [
+        //     auction.auction_id,
+        //     [auction.seat_selection],
+        //     auction.current_price,
+        //     auction.current_highest_bidder,
+        //   ],
+        // ])
+        auction.seat_selection.map((seat) => {
+          setAuctionSeats([...auctionSeats, seat])
+        })
+      })
+    })
+    setIsLoading(false)
+  }, [business_id, event_id])
+  //   console.log(auctionInfo, '<---auctionInfo')
+  //   console.log(auctionSeats, '<---- auctionSeats')
+  //websockets here to change price/current user
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
         <View style={{ maxWidth: 300 }}>
-          <SelectedEvent />
+          <SelectedEvent event_id={event_id} />
         </View>
         <View style={{ marginTop: 20, marginBottom: 20 }}>
           <View>
@@ -170,13 +207,21 @@ function CustomerSeating({ navigation }) {
           <Button
             key={'auctionButton'}
             btnText="Start new auction"
-            onPress={() => navigation.navigate('AuctionPage')}
+            onPress={() =>
+              navigation.navigate('AuctionPage', { seat_selection: '4' })
+            }
           />
         ) : auctionSelection.length === 1 ? (
           <Button
             key={'auctionButton'}
             btnText="Go to auction"
-            onPress={() => navigation.navigate('AuctionPage')}
+            onPress={() =>
+              navigation.navigate('AuctionPage', {
+                seat_selection: '4',
+                user_id: '',
+                auction_id: '',
+              })
+            }
           />
         ) : null}
       </View>
