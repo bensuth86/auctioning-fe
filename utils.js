@@ -104,7 +104,7 @@ export {
   postBusiness,
   postNewAuction,
   getAuctionByAuctionId,
-  updateBid
+  updateBid,
   getAllBusinesses,
   getAllEventsByBusinessId
 }
