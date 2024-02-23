@@ -72,6 +72,15 @@ function getAuctionByAuctionId(id) {
   })
 }
 
+
+function updateBid(auctionID, info) {
+  console.log('>>>>>>', auctionID, info)
+  return prjApi.patch(`/auctions/${auctionID}`, info).then((response) => {
+      return response
+  })
+}
+
+
 function getAllBusinesses() {
   return prjApi.get('/businesses').then((response) => {
     return response
@@ -95,6 +104,7 @@ export {
   postBusiness,
   postNewAuction,
   getAuctionByAuctionId,
+  updateBid
   getAllBusinesses,
   getAllEventsByBusinessId
 }
