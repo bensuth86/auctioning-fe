@@ -28,5 +28,17 @@ export const styles = StyleSheet.create({
       margin: 10, 
       width: 200,
     },
-
+    dropdownContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginHorizontal: 10,
+    },
+    dropdown: {
+      minWidth: 50,
+      maxWidth: 50,
+      width: 50,
+      marginHorizontal: 10,
+      borderWidth: 1,
+      borderColor: '#777',
+    },
     })
