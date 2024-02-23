@@ -1,12 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, Alert, ScrollView } from 'react-native'
 import { styles } from '../style-sheet'
 import { auctionStyles } from '../auction-stylesheet'
 import { TextInput } from 'react-native'
+import { useEffect, useState } from 'react'
+import { Button } from '../helpers'
+import { useContext } from 'react'
+import CustomerContext from '../Contexts/LoggedInCustomerContext'
+import { postNewAuction } from '../utils'
+import { getAuctionByAuctionId } from '../utils'
 import { io } from 'socket.io-client'
 import { updateBid } from '../utils'
-import { Button } from '../helpers'
-import CustomerContext from '../Contexts/LoggedInCustomerContext'
 
 function CustomerAuctionPage({ navigation, route }) {
   const { currentCustomer } = useContext(CustomerContext)
@@ -38,39 +41,19 @@ function CustomerAuctionPage({ navigation, route }) {
   const [updateUserBid, setUpdateUserBid] = useState({})
   const socket = io('https://auctioning-be.onrender.com/')
   const [bid, setBid] = useState(1)
-  const [bidMessage, setBidMessage] = useState(null)
-  const [tempUser, setTempUser] = useState(null)
-  const createAlert = (msg) =>
-    Alert.alert('A new bid!', msg, [
-      { text: 'OK', onPress: () => console.log('OK Pressed') },
-    ])
-
+  console.log(auction_info.auctionSeatInfo[2])
+  console.log(auctionID)
   useEffect(() => {
     socket.on('connect', () => {
       console.log(`⚡: ${socket.id} user just connected!`)
     })
   }, [])
-  socket.on('new bid', (bidData) => {
-    if (
-      auctionID === bidData.auction_id &&
-      currentCustomer.username !== bidData.username
-    ) {
-      // change display
-      setDisplayAuction({ ...displayAuction, current_price: bidData.newBid })
-
-      // unsure if need?
-      setTempUser(bidData.username)
-      createAlert(
-        `${bidData.username} is now the highest bidder with £${bidData.newBid}`
-      )
-      // setBidMessage(
-      //   `${bidData.username} is now the highest bidder with £${bidData.newBid}`
-      // )
-    }
+  socket.on('new bid', (new_bid) => {
+    setBid(new_bid)
   })
-  // function handleBid() {
-  //   socket.emit('new bid', bid + 1)
-  // }
+  function handleBid() {
+    socket.emit('new bid', bid + 1)
+  }
 
   useEffect(() => {
     if (auctionID) {
@@ -136,11 +119,6 @@ function CustomerAuctionPage({ navigation, route }) {
     })
       .then((response) => {
         setDisplayAuction(response.data.auction)
-        socket.emit('new bid', {
-          newBid: userBid,
-          auction_id: auctionID,
-          username: currentCustomer.username,
-        })
         setUserBid('')
       })
       .catch((err) => {
@@ -192,18 +170,8 @@ function CustomerAuctionPage({ navigation, route }) {
               {film_title.film_title}, {start_time.start_time}
             </Text>
             <Text style={{ textAlign: 'center', color: 'white' }}>
-              Seat selection
+              Seat selections: {seat_selection.selectedSeats.join(', ')}
             </Text>
-            {bidMessage ? (
-              <Text
-                style={{
-                  textAlign: 'center',
-                  color: 'white',
-                }}
-              >
-                {bidMessage}
-              </Text>
-            ) : null}
           </View>
           <View style={auctionStyles.biddingInfoContainer}>
             <View style={auctionStyles.highestBidInfoContainer}>
@@ -235,7 +203,7 @@ function CustomerAuctionPage({ navigation, route }) {
               >
                 <Text>Highest bidder: (will do get request for the name)</Text>
                 <Text style={{ fontSize: 25 }}>
-                  {tempUser || displayAuction.current_highest_bidder}
+                  {displayAuction.current_highest_bidder}
                 </Text>
               </View>
               <View
@@ -244,16 +212,23 @@ function CustomerAuctionPage({ navigation, route }) {
                   { marginTop: 5 },
                 ]}
               >
-                <Text>Your bidding status: </Text>
-                <Text style={{ fontSize: 25 }}>Status</Text>
+                <Text>Auction status: </Text>
+                {!displayAuction.active ? (
+                  <Text style={{ fontSize: 25 }}>Inactive</Text>
+                ) : (
+                  <Text style={{ fontSize: 25 }}>Active</Text>
+                )}
               </View>
             </View>
           </View>
           <View style={auctionStyles.biddingForm}>
-            <Text style={{ marginRight: 5 }}>£</Text>
+            <Text style={{ marginRight: 5 }}></Text>
             <TextInput
               style={auctionStyles.bidInput}
               placeholder="Enter your bid here"
+              onChangeText={handleTextChange}
+              value={userBid}
+              keyboardType="numeric"
             />
             {/* <TouchableOpacity title="submit" onPress={() => submitBid()}>
               <Text style={{ marginLeft: 10 }}>→</Text>
@@ -279,7 +254,9 @@ function CustomerAuctionPage({ navigation, route }) {
             </View>
           )}
           <View style={auctionStyles.statusContainer}>
-            <Text style={{ textAlign: 'center' }}>{errorMessage}</Text>
+            <Text style={{ textAlign: 'center', color: 'red' }}>
+              {errorMessage}
+            </Text>
           </View>
           <View style={auctionStyles.timerContainer}>
             <Text style={{ color: 'white' }}>Timer:</Text>
@@ -304,5 +281,4 @@ function CustomerAuctionPage({ navigation, route }) {
     </ScrollView>
   )
 }
-
 export default CustomerAuctionPage
