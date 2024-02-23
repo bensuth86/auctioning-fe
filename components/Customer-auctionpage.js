@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, Alert, ScrollView } from 'react-native'
 import { styles } from '../style-sheet'
 import { auctionStyles } from '../auction-stylesheet'
 import { TextInput } from 'react-native'
-import { io } from 'socket.io-client'
+import { useEffect, useState } from 'react'
 import { Button } from '../helpers'
+import { useContext } from 'react'
+import CustomerContext from '../Contexts/LoggedInCustomerContext'
+import { postNewAuction } from '../utils'
+import { getAuctionByAuctionId } from '../utils'
 
 
 function CustomerAuctionPage({ navigation, route }) {
