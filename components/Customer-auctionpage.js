@@ -32,31 +32,47 @@ function CustomerAuctionPage({ navigation, route }) {
   const [auctionID, setAuctionID] = useState(
     auction_info.auctionSeatInfo[2] || null
   )
-  const [highestBid, setHighestBid] = useState(null)
   const [errorMessage, setErrorMessage] = useState('')
-  const [beginAuction, setBeginAuction] = useState(false)
-  const [processBid, setProcessBid] = useState(false)
   const [displayAuction, setDisplayAuction] = useState({})
-  const [newAuctionInfo, setNewAuctionInfo] = useState({})
-  const [updateUserBid, setUpdateUserBid] = useState({})
   const socket = io('https://auctioning-be.onrender.com/')
-  const [bid, setBid] = useState(1)
+  const [bidMessage, setBidMessage] = useState(null)
+  const [tempUser, setTempUser] = useState(null)
   console.log(auction_info.auctionSeatInfo[2])
   console.log(auctionID)
+  const createAlert = (msg) =>
+    Alert.alert('A new bid!', msg, [
+      { text: 'OK', onPress: () => console.log('OK Pressed') },
+    ])
   useEffect(() => {
     socket.on('connect', () => {
       console.log(`⚡: ${socket.id} user just connected!`)
     })
   }, [])
-  socket.on('new bid', (new_bid) => {
-    setBid(new_bid)
+  socket.on('new bid', (bidData) => {
+    console.log(bidData, "socket ")
+    if (
+      auctionID === bidData.auction_id &&
+      currentCustomer.username !== bidData.username
+    ) {
+      setDisplayAuction({
+        ...displayAuction,
+        current_price: bidData.newBid,
+        bid_counter: displayAuction.bid_counter + 1,
+      })
+      setTempUser(bidData.username)
+      console.log('here')
+      // createAlert(
+      //   `${bidData.username} is now the highest bidder with £${bidData.newBid}`
+      // )
+      // setBidMessage(
+      //   `${bidData.username} is now the highest bidder with £${bidData.newBid}`
+      // )
+    }
   })
-  function handleBid() {
-    socket.emit('new bid', bid + 1)
-  }
 
   useEffect(() => {
     if (auctionID) {
+      console.log('ahian')
       getAuctionByAuctionId(auctionID).then(({ data: { auction } }) => {
         setDisplayAuction(auction)
       })
@@ -75,7 +91,7 @@ function CustomerAuctionPage({ navigation, route }) {
       return false
     } else if (userBid < start_price.start_price) {
       setErrorMessage(
-        `You need to place a minimum bid of £${start_price.start_price + 0.1}.`
+        `You need to place a minimum bid of £${start_price.start_price + 1}.`
       )
       return false
     }
@@ -118,7 +134,14 @@ function CustomerAuctionPage({ navigation, route }) {
       user_id: currentCustomer.user_id,
     })
       .then((response) => {
+        console.log('how many')
         setDisplayAuction(response.data.auction)
+        setTempUser(currentCustomer.username)
+        socket.emit('new bid', {
+          newBid: userBid,
+          auction_id: auctionID,
+          username: currentCustomer.username,
+        })
         setUserBid('')
       })
       .catch((err) => {
@@ -156,7 +179,7 @@ function CustomerAuctionPage({ navigation, route }) {
           </View>
           {console.log(displayAuction)}
           <View style={auctionStyles.selectionContainer}>
-            <Button btnText="Test bid" onPress={() => handleBid()} />
+            {/* <Button btnText="Test bid" onPress={() => handleBid()} /> */}
             <Text style={{ textAlign: 'center', color: 'white' }}>
               {/* temp auction id */}
               You are bidding on:{auctionID}
@@ -203,7 +226,7 @@ function CustomerAuctionPage({ navigation, route }) {
               >
                 <Text>Highest bidder: (will do get request for the name)</Text>
                 <Text style={{ fontSize: 25 }}>
-                  {displayAuction.current_highest_bidder}
+                  {tempUser || displayAuction.current_highest_bidder}
                 </Text>
               </View>
               <View
@@ -226,7 +249,7 @@ function CustomerAuctionPage({ navigation, route }) {
             <TextInput
               style={auctionStyles.bidInput}
               placeholder="Enter your bid here"
-              onChangeText={handleTextChange}
+              onChangeText={(value) => setUserBid(value)}
               value={userBid}
               keyboardType="numeric"
             />
