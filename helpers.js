@@ -1,6 +1,8 @@
 import React from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { styles } from './style-sheet'
+import { seatStyles } from './style-sheet-seats'
+
 
 // TouchableOpacity.defaultProps = { activeOpacity: 0.8 }
 
@@ -18,7 +20,7 @@ export function SeatButton({ btnText, onPress, seatStyle }) {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={seatStyle}>
-        <Text style={styles.buttontext}>{btnText}</Text>
+        <Text style={seatStyles.buttontext}>{btnText}</Text>
       </View>
     </TouchableOpacity>
   )
