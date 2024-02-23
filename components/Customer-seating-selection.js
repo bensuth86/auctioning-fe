@@ -60,7 +60,7 @@ function CustomerSeating({ navigation, route }) {
   useEffect(() => {
     setAvailableSeats(available_seats)
     setStartingPrice(start_price)
-  }, [event_id])
+  }, [])
 
   useEffect(() => {
     getAuctionsByEventId(event_id)
