@@ -17,7 +17,7 @@ function getUsersById(id) {
 }
 
 function getEventsByUserId(id, radius) {
-  let url = null;
+  let url = null
 
   if (!radius) {
     url = `/events/near/${id}`
@@ -29,13 +29,10 @@ function getEventsByUserId(id, radius) {
   })
 }
 
-function postUser({ username, postcode, device_token }) {
-  // console.log(username, postcode, device_token)
-  return prjApi
-    .post('/users', { username, postcode, device_token })
-    .then((res) => {
-      return res.data
-    })
+function postUser({ username, postcode }) {
+  return prjApi.post('/users', { username, postcode }).then((res) => {
+    return res.data
+  })
 }
 
 function getEventByEventId(id) {
@@ -56,6 +53,13 @@ function getAuctionsByEventId(id) {
   })
 }
 
+function postBusiness({ business_name, postcode, seating_layout }) {
+  return prjApi
+    .post('/businesses', { business_name, postcode, seating_layout })
+    .then((res) => {
+      return res.data
+    })
+}
 function postNewAuction(info) {
   return prjApi.post('/auctions', info).then((response) => {
     return response
@@ -76,6 +80,7 @@ export {
   postUser,
   getEventByEventId,
   getAllUsers,
+  postBusiness,
   postNewAuction,
   getAuctionByAuctionId
 }

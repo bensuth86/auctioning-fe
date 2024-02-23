@@ -1,14 +1,10 @@
-// import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, Alert, ScrollView } from 'react-native'
 import { styles } from '../style-sheet'
 import { auctionStyles } from '../auction-stylesheet'
 import { TextInput } from 'react-native'
-import { useEffect, useState } from 'react'
+import { io } from 'socket.io-client'
 import { Button } from '../helpers'
-import { useContext } from 'react'
-import CustomerContext from '../Contexts/LoggedInCustomerContext'
-import { postNewAuction } from '../utils'
-import { getAuctionByAuctionId } from '../utils'
 
 
 function CustomerAuctionPage({ navigation, route }) {
@@ -106,7 +102,7 @@ function CustomerAuctionPage({ navigation, route }) {
     setUserBid(text)
   }
 
-  function initiateAuction() {
+function initiateAuction() {
     setNewAuctionInfo({    
       event_id: Number(event_id.event_id),
       seat_selection: seat_selection.selectedSeats,
@@ -115,13 +111,31 @@ function CustomerAuctionPage({ navigation, route }) {
     })
     setBeginAuction(true)
   }
+      
+function CustomerAuctionPage({ navigation }) {
+  const socket = io('https://auctioning-be.onrender.com/')
+  const [bid, setBid] = useState(1)
+
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log(socket.connected) // true
+      console.log(`⚡: ${socket.id} user just connected!`)
+
+    })
+  }, [])
+  socket.on('new bid', (new_bid) => {
+    setBid(new_bid)
+  })
+  function handleBid() {
+    socket.emit('new bid', bid + 1)
+  }
 
   function updateBid() {
     console.log('will place bids')
   }
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
         <View style={auctionStyles.container}>
           <View style={auctionStyles.auctionNavigation}>

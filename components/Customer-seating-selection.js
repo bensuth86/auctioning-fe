@@ -33,15 +33,18 @@ function CustomerSeating({ navigation, route }) {
   } = route.params
   const [availableSeats, setAvailableSeats] = useState([])
   const [selectedSeats, setSelectedSeats] = useState([]) // pass down to auction page, which patches it into a new auction
-  const [auctionSeats, setAuctionSeats] = useState(['A1', 'B2', 'B3']) // GET /api/auctions/:event_id (map over each auction and push seat_selection into array)
+  const [auctionSeats, setAuctionSeats] = useState([])
+  const auctionSeatArray = [] // GET /api/auctions/:event_id (map over each auction and push seat_selection into array)
   const [seatingPlan, setSeatingPlan] = useState([])
   const auctionSelection = []
   const availableSelection = []
   const [startingPrice, setStartingPrice] = useState([])
   const currentHighestBidder = 'user1' //GET /api/:auctions/:event_id current_highest_bidder from auction with that seat in it
   const [loading, setIsLoading] = useState('true')
-  const [auctionInfo, setAuctionInfo] = useState([])
   const [err, setErr] = useState('false')
+  const auctionInfoArray = []
+  let auctionSeatInfo = []
+  const [auctionInfo, setAuctionInfo] = useState([])
 
   useEffect(() => {
     getBusinessById(business_id)
@@ -57,34 +60,30 @@ function CustomerSeating({ navigation, route }) {
   useEffect(() => {
     setAvailableSeats(available_seats)
     setStartingPrice(start_price)
-  }, [event_id])
+  }, [])
 
-  //   useEffect(() => {
-  //     getAuctionsByEventId(event_id).then((response) => {
+  useEffect(() => {
+    getAuctionsByEventId(event_id)
+      .then((response) => {
+        setIsLoading(false)
+        response.map((auction) => {
+          auctionSeatArray.push(...auction.seat_selection)
+          auctionInfoArray.push([
+            auction.current_price,
+            auction.current_highest_bidder,
+            auction.auction_id,
+            auction.event_id,
+            auction.seat_selection,
+          ])
+        })
+        setAuctionSeats(auctionSeatArray)
+        setAuctionInfo(auctionInfoArray)
+      })
+      .catch(() => {
+        setErr('true')
+      })
+  }, [])
 
-  //     })
-  //   })
-
-  //   useEffect(() => {
-  //     getAuctionsByEventId(event_id).then((response) => {
-  //     //   response.map((auction) => {
-  //     //     // setAuctionInfo([
-  //     //     //   [
-  //     //     //     auction.auction_id,
-  //     //     //     [auction.seat_selection],
-  //     //     //     auction.current_price,
-  //     //     //     auction.current_highest_bidder,
-  //     //     //   ],
-  //     //     // ]) auction.seat_selection.map((seat) => {
-
-  //     //   })
-  //     setAuctionSeats([...auctionSeats, seat])
-  //   })
-  //   }, [])
-
-  //   console.log(auctionInfo, '<---auctionInfo')
-  //   console.log(auctionSeats, '<---- auctionSeats')
-  //websockets here to change price/current user
   if (loading)
     return (
       <View style={styles.container}>
@@ -100,14 +99,28 @@ function CustomerSeating({ navigation, route }) {
         <View style={{ marginTop: 20, marginBottom: 20 }}>
           <View>
             <Text style={{ textAlign: 'center', marginBottom: 10 }}>
-              Seating:{' '}
+              Seating:
             </Text>
           </View>
+
           {seatingPlan.map((row, i) => {
             return (
               <View key={i}>
                 <View key={i} style={seatStyles.rowContainer}>
                   {row.map((seat) => {
+                    {
+                      auctionInfo.map((detail) => {
+                        detail[4].includes(seat)
+                          ? (auctionSeatInfo = [
+                              detail[0],
+                              detail[1],
+                              detail[2],
+                              detail[3],
+                              detail[4],
+                            ])
+                          : null
+                      })
+                    }
                     const isAvailable = availableSeats.includes(seat)
                     const isAuctioning = auctionSeats.includes(seat)
                     const isSelected = selectedSeats.includes(seat)
@@ -142,7 +155,7 @@ function CustomerSeating({ navigation, route }) {
                                 : seatStyles.auctionSeatButton
                             }
                             key={seat}
-                            btnText={`£${start_price}${currentHighestBidder}`}
+                            btnText={`£${auctionSeatInfo[0]} user${auctionSeatInfo[1]}`}
                             onPress={() =>
                               isSelected
                                 ? setSelectedSeats(
@@ -211,6 +224,7 @@ function CustomerSeating({ navigation, route }) {
         </TouchableOpacity>
         {selectedSeats.map((selectedSeat) => {
           const isAuctioning = auctionSeats.includes(selectedSeat)
+
           isAuctioning
             ? auctionSelection.push(selectedSeat)
             : availableSelection.push(selectedSeat)
@@ -265,7 +279,7 @@ function CustomerSeating({ navigation, route }) {
             btnText="Go to auction"
             onPress={() =>
               navigation.navigate('AuctionPage', {
-                // auction_id: { auction_id },
+                auction_info: { auctionSeatInfo },
               })
             }
           />
