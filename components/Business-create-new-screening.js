@@ -6,10 +6,12 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  TextInput,
 } from 'react-native-web'
 import { SeatButton, Button } from '../helpers'
 import { styles } from '../style-sheet'
 import { seatStyles } from '../style-sheet-seats.js'
+import { homeStyles } from '../style-sheet-customer-home.js'
 //accepts user input from signup
 // const [availableSeats, setAvailableSeats] = useState([]) // PATCH /api/events/event_id (available_seats)
 function BusinessCreateScreening() {
@@ -21,6 +23,19 @@ function BusinessCreateScreening() {
   ]
   const [selectedSeats, setSelectedSeats] = useState([])
   const [loading, setIsLoading] = useState(false)
+  const [price, setPrice] = useState(1)
+
+  //patch with changePrice
+
+  function increasePrice() {
+    setPrice((prevPrice) => prevPrice + 1)
+  }
+
+  function decreasePrice() {
+    if (price > 1) {
+      setPrice((prevPrice) => prevPrice - 1)
+    }
+  }
 
   if (loading)
     return (
@@ -34,91 +49,108 @@ function BusinessCreateScreening() {
       <View style={styles.container}>
         <View style={{ maxWidth: 300 }}></View>
         <View style={{ marginTop: 20, marginBottom: 20 }}>
-          <View>
+          <View style={homeStyles.radiusSelection}>
             <Text style={{ textAlign: 'center', marginBottom: 10 }}>
+              Please select your starting price:
+            </Text>
+            <Button btnText={'-'} onPress={decreasePrice} />
+            <TextInput
+              value={price.toString()}
+              onChangeText={(text) =>
+                setPrice((`£` && parseInt(text)) || (`£` && 1))
+              }
+              keyboardType="numeric"
+              style={homeStyles.numberDial}
+            />
+            <Button btnText={'+'} onPress={increasePrice} />
+          </View>
+
+          <View style={seatStyles.rowContainer}>
+            <Text
+              style={{ textAlign: 'center', marginTop: 20, marginBottom: 20 }}
+            >
               Please select all available seats:
             </Text>
-          </View>
-
-          {seatingPlan.map((row, i) => {
-            return (
-              <View key={i}>
-                <View key={i} style={seatStyles.rowContainer}>
-                  {row.map((seat) => {
-                    const isSelected = selectedSeats.includes(seat)
-                    return (
-                      <View key={seat}>
-                        <SeatButton
-                          seatStyle={
-                            isSelected
-                              ? seatStyles.availableSeatButton
-                              : seatStyles.numberedSeatButton
-                          }
-                          key={seat}
-                          btnText={seat}
-                          onPress={() => {
-                            {
+            {seatingPlan.map((row, i) => {
+              return (
+                <View key={i}>
+                  <View key={i} style={seatStyles.rowContainer}>
+                    {row.map((seat) => {
+                      const isSelected = selectedSeats.includes(seat)
+                      return (
+                        <View key={seat}>
+                          <SeatButton
+                            seatStyle={
                               isSelected
-                                ? setSelectedSeats(
-                                    selectedSeats.filter(
-                                      (item) => seat !== item
-                                    )
-                                  )
-                                : setSelectedSeats([...selectedSeats, seat])
+                                ? seatStyles.availableSeatButton
+                                : seatStyles.numberedSeatButton
                             }
-                          }}
-                        ></SeatButton>
-                      </View>
-                    )
-                  })}
+                            key={seat}
+                            btnText={seat}
+                            onPress={() => {
+                              {
+                                isSelected
+                                  ? setSelectedSeats(
+                                      selectedSeats.filter(
+                                        (item) => seat !== item
+                                      )
+                                    )
+                                  : setSelectedSeats([...selectedSeats, seat])
+                              }
+                            }}
+                          ></SeatButton>
+                        </View>
+                      )
+                    })}
+                  </View>
                 </View>
-              </View>
-            )
-          })}
-        </View>
-        <View style={{ marginTop: 10 }}>
-          <View style={seatStyles.keyContainer}>
-            <View
-              style={[seatStyles.seatKey, { backgroundColor: '#7bc47f' }]}
-            ></View>
-            <Text>Available</Text>
+              )
+            })}
           </View>
+          <View style={{ marginTop: 10 }}>
+            <View style={seatStyles.keyContainer}>
+              <View
+                style={[seatStyles.seatKey, { backgroundColor: '#7bc47f' }]}
+              ></View>
+              <Text>Available</Text>
+            </View>
 
-          <View style={seatStyles.keyContainer}>
-            <View
-              style={[seatStyles.seatKey, { backgroundColor: '#626262' }]}
-            ></View>
-            <Text>Unavailable</Text>
+            <View style={seatStyles.keyContainer}>
+              <View
+                style={[seatStyles.seatKey, { backgroundColor: '#626262' }]}
+              ></View>
+              <Text>Unavailable</Text>
+            </View>
           </View>
+          <TouchableOpacity
+            onPress={() => {
+              Alert.alert(
+                'Selection instructions',
+                'This is where all of the info for seat selections will be.'
+              )
+            }}
+            title="?"
+          >
+            <Text>?</Text>
+          </TouchableOpacity>
+          {selectedSeats.length > 0 ? (
+            <Button
+              key={'listeventbtn'}
+              btnText="List event"
+              onPress={() =>
+                navigation.navigate('BusinessHomepage', {
+                  business_id: { business_id },
+                })
+              }
+            />
+          ) : (
+            <View style={seatStyles.errorContainer}>
+              <Text style={seatStyles.textbox}>
+                You must select at least one seat.
+              </Text>
+            </View>
+          )}
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            Alert.alert(
-              'Selection instructions',
-              'This is where all of the info for seat selections will be.'
-            )
-          }}
-          title="?"
-        >
-          <Text>?</Text>
-        </TouchableOpacity>
-        {selectedSeats.length > 0 ? (
-          <Button
-            key={'listeventbtn'}
-            btnText="List event"
-            onPress={() =>
-              navigation.navigate('BusinessHomepage', {
-                business_id: { business_id },
-              })
-            }
-          />
-        ) : (
-          <View style={seatStyles.errorContainer}>
-            <Text style={seatStyles.textbox}>
-              You must select at least one seat.
-            </Text>
-          </View>
-        )}
       </View>
     </ScrollView>
   )
