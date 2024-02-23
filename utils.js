@@ -56,6 +56,18 @@ function getAuctionsByEventId(id) {
   })
 }
 
+function postNewAuction(info) {
+  return prjApi.post('/auctions', info).then((response) => {
+    return response
+  })
+}
+
+function getAuctionByAuctionId(id) {
+  return prjApi.get(`auctions/${id}`).then((response) => {
+    return response
+  })
+}
+
 export {
   getBusinessById,
   getUsersById,
@@ -64,4 +76,6 @@ export {
   postUser,
   getEventByEventId,
   getAllUsers,
+  postNewAuction,
+  getAuctionByAuctionId
 }
