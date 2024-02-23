@@ -8,6 +8,8 @@ import { useContext } from 'react'
 import CustomerContext from '../Contexts/LoggedInCustomerContext'
 import { postNewAuction } from '../utils'
 import { getAuctionByAuctionId } from '../utils'
+import { io } from 'socket.io-client'
+
 
 
 function CustomerAuctionPage({ navigation, route }) {
