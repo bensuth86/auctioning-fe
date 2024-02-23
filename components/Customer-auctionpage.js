@@ -1,62 +1,26 @@
-// import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, Alert, ScrollView } from 'react-native'
 import { styles } from '../style-sheet'
 import { auctionStyles } from '../auction-stylesheet'
 import { TextInput } from 'react-native'
-import { useState } from 'react'
+import { io } from 'socket.io-client'
+import { Button } from '../helpers'
 
 function CustomerAuctionPage({ navigation }) {
-///api/auctions/event/:event_id
-// {
-//   "auction_id": 5,
-//   "event_id": 10,
-//   "seat_selection": [
-//   "B1",
-//   "B2"
-//   ],
-//   "current_price": "5",
-//   "time_started": "2024-02-22T12:02:02.472Z",
-//   "time_ending": "2024-03-08T11:03:02.472Z",
-//   "current_highest_bidder": 7,
-//   "users_involved": [
-//   1,
-//   2
-//   ],
-//   "active": true,
-//   "bid_counter": 4
-//   }
+  const socket = io('https://auctioning-be.onrender.com/')
+  const [bid, setBid] = useState(1)
 
-  const [userBid, setUserBid] = useState('')
-  const [highestBid, setHighestBid] = useState(null)
-  const [errorMessage, setErrorMessage] = useState('')
-
-  const startingPrice = 3 // passed down as params from the event id (I think)
-  const priceCap = startingPrice * 4 // multiply starting price by 4 (anything over will be blocked)
-  const seatingSelection = ['A1', 'A2', 'A3'] // passed down as params from the event id (I think) - used as length to calculate overall ticket price
-  const biddingCounter = 0
-
-  function submitBid() {
-    if (isNaN(userBid)) {
-      setErrorMessage(`Please enter a number.`)
-    }
-    if (userBid >= startingPrice && userBid <= priceCap && userBid > highestBid) {
-      setHighestBid(`${userBid}`)
-      setErrorMessage('')
-    }
-    if (userBid <= highestBid) {
-      setErrorMessage(`You need to place a bid greater than £${highestBid}.`)
-    }
-    if (userBid < startingPrice) {
-      setErrorMessage(`You need to place a minimum bid of £${startingPrice}.`)
-    }
-    if (userBid > priceCap) {
-      setErrorMessage(`You have exceeded the price cap of this auction. Please enter an amount less than £${priceCap}.`)
-    }
-    setUserBid('')
-  }
-
-  function handleTextChange(text) {
-    setUserBid(text)
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log(socket.connected) // true
+      console.log(`⚡: ${socket.id} user just connected!`)
+    })
+  }, [])
+  socket.on('new bid', (new_bid) => {
+    setBid(new_bid)
+  })
+  function handleBid() {
+    socket.emit('new bid', bid + 1)
   }
 
   return (
@@ -83,6 +47,7 @@ function CustomerAuctionPage({ navigation }) {
             </TouchableOpacity>
           </View>
           <View style={auctionStyles.selectionContainer}>
+            <Button btnText="Test bid" onPress={() => handleBid()} />
             <Text style={{ textAlign: 'center', color: 'white' }}>
               You are bidding on:{' '}
             </Text>
@@ -90,23 +55,13 @@ function CustomerAuctionPage({ navigation }) {
               Film name, date (all film info)
             </Text>
             <Text style={{ textAlign: 'center', color: 'white' }}>
-              Seat selections: {seatingSelection.join(', ')}
+              Seat selection
             </Text>
           </View>
           <View style={auctionStyles.biddingInfoContainer}>
             <View style={auctionStyles.highestBidInfoContainer}>
-              {!highestBid ? (
-                <View>
-                  <Text style={{ textAlign: 'center' }}>Starting bid: </Text>
-                  <Text style={{ textAlign: 'center', fontSize: 25 }}>£{startingPrice}</Text>
-                </View>
-              ):(
-                <View>
-                  <Text style={{ textAlign: 'center' }}>Current highest bid: </Text>
-                  <Text style={{ textAlign: 'center', fontSize: 25 }}>£{highestBid}</Text>
-                </View>
-              )}
-              <Text style={{ textAlign: 'center' }}>Bidding counter: {biddingCounter}</Text>
+              <Text style={{ textAlign: 'center' }}>Current highest bid: </Text>
+              <Text style={{ textAlign: 'center', fontSize: 25 }}>{bid}</Text>
             </View>
             <View style={auctionStyles.otherBidInfoContainer}>
               <View
@@ -130,21 +85,18 @@ function CustomerAuctionPage({ navigation }) {
             </View>
           </View>
           <View style={auctionStyles.biddingForm}>
-            <Text style={{ marginRight: 5 }}></Text>
+            <Text style={{ marginRight: 5 }}>£</Text>
             <TextInput
               style={auctionStyles.bidInput}
               placeholder="Enter your bid here"
-              onChangeText={handleTextChange}
-              value={userBid}
-              keyboardType="numeric"
             />
-            <TouchableOpacity title="submit" onPress={() => submitBid()}>
+            <TouchableOpacity title="submit">
               <Text style={{ marginLeft: 10 }}>→</Text>
             </TouchableOpacity>
           </View>
           <View style={auctionStyles.statusContainer}>
-            <Text style={{ textAlign: 'center', color: 'red' }}>
-              {errorMessage}
+            <Text style={{ textAlign: 'center' }}>
+              status messages (errors etc...)
             </Text>
           </View>
           <View style={auctionStyles.timerContainer}>
