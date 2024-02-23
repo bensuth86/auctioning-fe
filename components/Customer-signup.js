@@ -3,7 +3,6 @@ import { View, TextInput, Text, TouchableOpacity } from 'react-native'
 import { styles } from '../style-sheet'
 import { postUser } from '../utils'
 import { Snackbar } from 'react-native-paper'
-import * as Notifications from 'expo-notifications';
 
 function CustomerSignUp({ navigation }) {
   const [username, setUserName] = useState('')
@@ -12,21 +11,12 @@ function CustomerSignUp({ navigation }) {
   const [isFormValid, setIsFormValid] = useState(false)
   const [visible, setVisible] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
-  const [token, setToken] = useState('')
 
   useEffect(() => {
     validateForm()
-    registerForPushNotificationsAsync(); // Calling the function to get the Expo push token
   }, [username, postcode])
 
-  async function registerForPushNotificationsAsync() {
-    try {
-      const expoPushToken = await Notifications.getExpoPushTokenAsync();
-      setToken(expoPushToken.data);
-    } catch (error) {
-      console.error('Error getting Expo push token:', error);
-    }
-  }
+
 
   const validateForm = () => {
     let errors = {}
@@ -45,7 +35,7 @@ function CustomerSignUp({ navigation }) {
 
   const handleSubmit = () => {
     if (isFormValid) {
-      postUser({ username: username, postcode: postcode, device_token: token })
+      postUser({ username: username, postcode: postcode })
         .then(() => {
           navigation.navigate('CustomerHomepage')
           console.log('Form submitted successfully!')
