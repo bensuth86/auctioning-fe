@@ -8,20 +8,7 @@ import { Button } from '../helpers'
 
 function CustomerAuctionPage({ navigation }) {
   const socket = io('https://auctioning-be.onrender.com/')
-  const [bid, setBid] = useState(1)
 
-  useEffect(() => {
-    socket.on('connect', () => {
-      console.log(socket.connected) // true
-      console.log(`⚡: ${socket.id} user just connected!`)
-    })
-  }, [])
-  socket.on('chat message', (msg) => {
-    setBid(msg)
-  })
-  function handleBid() {
-    socket.emit('chat message', bid + 1)
-  }
   ///api/auctions/event/:event_id
   // {
   //   "auction_id": 5,
@@ -45,7 +32,15 @@ function CustomerAuctionPage({ navigation }) {
   const [userBid, setUserBid] = useState('')
   const [highestBid, setHighestBid] = useState(null)
   const [errorMessage, setErrorMessage] = useState('')
-
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log(socket.connected) // true
+      console.log(`⚡: ${socket.id} user just connected!`)
+    })
+  }, [])
+  socket.on('new bid', (bid) => {
+    setHighestBid(bid)
+  })
   const startingPrice = 3 // passed down as params from the event id (I think)
   const priceCap = startingPrice * 4 // multiply starting price by 4 (anything over will be blocked)
   const seatingSelection = ['A1', 'A2', 'A3'] // passed down as params from the event id (I think) - used as length to calculate overall ticket price
@@ -62,6 +57,7 @@ function CustomerAuctionPage({ navigation }) {
     ) {
       setHighestBid(`${userBid}`)
       setErrorMessage('')
+      socket.emit('new bid', userBid)
     }
     if (userBid <= highestBid) {
       setErrorMessage(`You need to place a bid greater than £${highestBid}.`)
