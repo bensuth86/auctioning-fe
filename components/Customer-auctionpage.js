@@ -6,7 +6,9 @@ import { TextInput } from 'react-native'
 import { io } from 'socket.io-client'
 import { Button } from '../helpers'
 
-function CustomerAuctionPage({ navigation }) {
+function CustomerAuctionPage({ navigation, route }) {
+  console.log(route.params.auction_info)
+  const auction_id = route.params.auction_info.auctionSeatInfo[2]
   const socket = io('https://auctioning-be.onrender.com/')
   const [bid, setBid] = useState(1)
 
@@ -16,11 +18,11 @@ function CustomerAuctionPage({ navigation }) {
       console.log(`⚡: ${socket.id} user just connected!`)
     })
   }, [])
-  socket.on('new bid', (new_bid) => {
-    setBid(new_bid)
+  socket.on('new bid', (bidData) => {
+    if (auction_id === bidData.auction_id) setBid(bidData.newBid)
   })
   function handleBid() {
-    socket.emit('new bid', bid + 1)
+    socket.emit('new bid', { newBid: bid + 1, auction_id })
   }
 
   return (
@@ -49,7 +51,7 @@ function CustomerAuctionPage({ navigation }) {
           <View style={auctionStyles.selectionContainer}>
             <Button btnText="Test bid" onPress={() => handleBid()} />
             <Text style={{ textAlign: 'center', color: 'white' }}>
-              You are bidding on:{' '}
+              You are bidding on:{auction_id}
             </Text>
             <Text style={{ textAlign: 'center', color: 'white' }}>
               Film name, date (all film info)
