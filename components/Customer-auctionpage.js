@@ -30,6 +30,7 @@ function CustomerAuctionPage({ navigation, route }) {
   const [highestBid, setHighestBid] = useState(null)
   const [errorMessage, setErrorMessage] = useState('')
   const [beginAuction, setBeginAuction] = useState(false)
+  const [auction_idPlaceholder, setauction_idPlaceholder] = useState(null)
   const [displayAuction, setDisplayAuction] = useState({
     active: false,
     auction_id: null,
@@ -55,7 +56,8 @@ function CustomerAuctionPage({ navigation, route }) {
         // console.log(response.data.auction.auction_id)
         getAuctionByAuctionId(response.data.auction.auction_id)
         .then((response) => {
-          console.log('auction-id', response.data.auction.auction_id)
+          // console.log('active', response.data.auction.active)
+          setBeginAuction(false)
           setDisplayAuction({
             active: response.data.auction.active,
             auction_id: response.data.auction.auction_id,
@@ -68,6 +70,9 @@ function CustomerAuctionPage({ navigation, route }) {
             time_started: response.data.auction.time_started,
             users_involved: response.data.auction.users_involved
           })
+          updateBidOnAuction(displayAuction.auction_id, input).then((response) => {
+            //currently changing auction id to a state instead of variable, and then switching the buttons (post/bid)
+          })
         })
       })
     }
@@ -75,7 +80,7 @@ function CustomerAuctionPage({ navigation, route }) {
 
   const startingPrice = 3 // passed down as params from the event id (I think)
   const priceCap = startingPrice * 4 // multiply starting price by 4 (anything over will be blocked)
-  const auction_id = null
+  let auction_id = null
 
   function submitBid() {
     if (isNaN(userBid)) {
@@ -109,6 +114,10 @@ function CustomerAuctionPage({ navigation, route }) {
       user_id: Number(currentCustomer.user_id)
     })
     setBeginAuction(true)
+  }
+
+  function updateBid() {
+    console.log('will place bids')
   }
 
   return (
@@ -178,8 +187,12 @@ function CustomerAuctionPage({ navigation, route }) {
                   { marginTop: 5 },
                 ]}
               >
-                <Text>Your bidding status: </Text>
-                <Text style={{ fontSize: 25 }}>Status</Text>
+                <Text>Auction status: </Text>
+                {!displayAuction.active ? (
+                  <Text style={{ fontSize: 25 }}>Inactive</Text>
+                ) : (
+                  <Text style={{ fontSize: 25 }}>Active</Text>
+                )}
               </View>
             </View>
           </View>
@@ -196,9 +209,13 @@ function CustomerAuctionPage({ navigation, route }) {
               <Text style={{ marginLeft: 10 }}>→</Text>
             </TouchableOpacity>
           </View>
-          {!displayAuction.active && (
+          {!displayAuction.active ? (
           <View>
-            <Button btnText='place bid/start auction' onPress={() => {initiateAuction()}}/>
+            <Button btnText='start auction' onPress={() => {initiateAuction()}}/>
+          </View>
+          ):(
+            <View>
+            <Button btnText='place bid' onPress={() => {updateBid()}}/>
           </View>
           )}
           <View style={auctionStyles.statusContainer}>
