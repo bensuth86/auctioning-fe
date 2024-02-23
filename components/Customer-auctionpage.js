@@ -112,7 +112,6 @@ function initiateAuction() {
     setBeginAuction(true)
   }
       
-function CustomerAuctionPage({ navigation }) {
   const socket = io('https://auctioning-be.onrender.com/')
   const [bid, setBid] = useState(1)
 
@@ -260,5 +259,4 @@ function CustomerAuctionPage({ navigation }) {
     </ScrollView>
   )
 }
-
 export default CustomerAuctionPage
