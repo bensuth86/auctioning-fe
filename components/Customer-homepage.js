@@ -100,8 +100,6 @@ function CustomerHomepage({ navigation }) {
               key={i}
                 onPress={() =>
                   navigation.navigate('SeatingPage', {
-                    id: event.event_id,
-                    business_id: event.business_id,
                     event_id: event.event_id,
                     business_id: event.business_id,
                     start_price: event.start_price,
