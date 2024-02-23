@@ -71,9 +71,9 @@ function CustomerAuctionPage({ navigation, route }) {
             time_started: response.data.auction.time_started,
             users_involved: response.data.auction.users_involved
           })
-          updateBidOnAuction(displayAuction.auction_id, input).then((response) => {
-            //currently changing auction id to a state instead of variable, and then switching the buttons (post/bid)
-          })
+          // updateBidOnAuction(displayAuction.auction_id, input).then((response) => {
+          //   //currently changing auction id to a state instead of variable, and then switching the buttons (post/bid)
+          // })
         })
       })
     }
@@ -164,6 +164,7 @@ function initiateAuction() {
             </TouchableOpacity>
           </View>
           <View style={auctionStyles.selectionContainer}>
+          <Button btnText="Test bid" onPress={() => handleBid()} />
             <Text style={{ textAlign: 'center', color: 'white' }}>
               You are bidding on:{' '}
             </Text>
