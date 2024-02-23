@@ -1,18 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, Alert, ScrollView } from 'react-native'
 import { styles } from '../style-sheet'
 import { auctionStyles } from '../auction-stylesheet'
 import { TextInput } from 'react-native'
+import { io } from 'socket.io-client'
+import { Button } from '../helpers'
 
 function CustomerAuctionPage({ navigation }) {
-  const socket = io("https://auctioning-be.onrender.com/");
-  const [bid, setBed] = useState(1)
+  const socket = io('https://auctioning-be.onrender.com/')
+  const [bid, setBid] = useState(1)
 
   useEffect(() => {
-    socket.on("connect", () => {
-      console.log(socket.connected); // true
-    });
-  }, [bid])
+    socket.on('connect', () => {
+      console.log(socket.connected) // true
+      console.log(`⚡: ${socket.id} user just connected!`)
+    })
+  }, [])
+  socket.on('chat message', (msg) => {
+    setBid(msg)
+  })
+  function handleBid() {
+    socket.emit('chat message', bid + 1)
+  }
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -38,6 +47,7 @@ function CustomerAuctionPage({ navigation }) {
             </TouchableOpacity>
           </View>
           <View style={auctionStyles.selectionContainer}>
+            <Button btnText="Test bid" onPress={() => handleBid()} />
             <Text style={{ textAlign: 'center', color: 'white' }}>
               You are bidding on:{' '}
             </Text>
