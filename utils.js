@@ -17,7 +17,7 @@ function getUsersById(id) {
 }
 
 function getEventsByUserId(id, radius) {
-  let url = null;
+  let url = null
 
   if (!radius) {
     url = `/events/near/${id}`
