@@ -260,6 +260,7 @@ function CustomerSeating({ navigation, route }) {
             btnText="Start new auction"
             onPress={() =>
               navigation.navigate('AuctionPage', {
+                auction_info: { auctionSeatInfo },
                 seat_selection: { selectedSeats },
                 event_id: { event_id },
                 business_id: { business_id },
@@ -281,6 +282,17 @@ function CustomerSeating({ navigation, route }) {
             onPress={() =>
               navigation.navigate('AuctionPage', {
                 auction_info: { auctionSeatInfo },
+                seat_selection: { selectedSeats },
+                event_id: { event_id },
+                business_id: { business_id },
+                film_title: { film_title },
+                poster: { poster },
+                certificate: { certificate },
+                run_time: { run_time },
+                start_time: { start_time },
+                available_seats: { available_seats },
+                active: { active },
+                start_price: { start_price },
               })
             }
           />

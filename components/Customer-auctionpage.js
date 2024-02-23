@@ -9,6 +9,7 @@ import CustomerContext from '../Contexts/LoggedInCustomerContext'
 import { postNewAuction } from '../utils'
 import { getAuctionByAuctionId } from '../utils'
 import { io } from 'socket.io-client'
+import { updateBid } from '../utils'
 
 
 
@@ -26,12 +27,14 @@ function CustomerAuctionPage({ navigation, route }) {
     active,
     start_price,
     seat_selection,
+    auction_info
   } = route.params
   const [userBid, setUserBid] = useState('')
+  const [auctionID, setAuctionID] = useState(null)
   const [highestBid, setHighestBid] = useState(null)
   const [errorMessage, setErrorMessage] = useState('')
   const [beginAuction, setBeginAuction] = useState(false)
-  const [auction_idPlaceholder, setauction_idPlaceholder] = useState(null)
+  const [processBid, setProcessBid] = useState(false)
   const [displayAuction, setDisplayAuction] = useState({
     active: false,
     auction_id: null,
@@ -50,6 +53,10 @@ function CustomerAuctionPage({ navigation, route }) {
     current_price: null,
     user_id: null
   })
+const [updateUserBid, setUpdateUserBid] = useState({
+    current_bid: null,
+    user_id: null
+})
 
   useEffect(() => {
     if (beginAuction) {
@@ -71,17 +78,18 @@ function CustomerAuctionPage({ navigation, route }) {
             time_started: response.data.auction.time_started,
             users_involved: response.data.auction.users_involved
           })
-          // updateBidOnAuction(displayAuction.auction_id, input).then((response) => {
-          //   //currently changing auction id to a state instead of variable, and then switching the buttons (post/bid)
-          // })
+          setAuctionID(auction_info.auctionSeatInfo[2])
+          if (processBid) {
+            updateBid(auctionID, updateUserBid).then((response) => {
+            })
+          }
         })
       })
     }
-  }, [newAuctionInfo, beginAuction, displayAuction])
+  }, [newAuctionInfo, beginAuction, displayAuction, auctionID])
 
   const startingPrice = 3 // passed down as params from the event id (I think)
   const priceCap = startingPrice * 4 // multiply starting price by 4 (anything over will be blocked)
-  let auction_id = null
 
   function submitBid() {
     if (isNaN(userBid)) {
@@ -101,10 +109,6 @@ function CustomerAuctionPage({ navigation, route }) {
       setErrorMessage(`You have exceeded the price cap of this auction. Please enter an amount less than £${priceCap}.`)
     }
     setUserBid('')
-  }
-
-  function handleTextChange(text) {
-    setUserBid(text)
   }
 
 function initiateAuction() {
@@ -134,8 +138,17 @@ function initiateAuction() {
     socket.emit('new bid', bid + 1)
   }
 
+  function handleTextChange(text) {
+    setUserBid(text)
+  }
+
   function updateBid() {
     console.log('will place bids')
+    setProcessBid(true)
+    setUpdateUserBid({
+        current_bid: Number(userBid),
+        user_id: currentCustomer.user_id
+    })
   }
 
   return (
