@@ -39,10 +39,18 @@ function BusinessSignUp({ navigation }) {
   const handleSubmit = () => {
     if (isFormValid) {
     const seatGrid = generateSeatGrid(parseInt(selectedRow), parseInt(selectedColumn));
-    navigation.navigate('BusinessCreateScreening', { businessName, postcode, seatGrid: seatGrid });
-      console.log('Form submitted successfully!')
-      setSnackbarMessage('Business account created successfully!')
-      setVisible(true)
+    postBusiness({ businessName, postcode, seating_layout: seatGrid })
+    .then(() => {
+        navigation.navigate('BusinessHomepage')
+        console.log('Form submitted successfully!')
+        setSnackbarMessage('Business account created successfully!')
+        setVisible(true)
+    })
+    .catch((error) => {
+        console.error('Error submitting form:', error)
+        setSnackbarMessage('Failed to submit form. Please try again.')
+        setVisible(true)
+    })
     } else {
       console.log('Form has errors. Please correct them.')
     }

@@ -100,4 +100,14 @@ export const seatStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  screen: {
+    width: '80%',
+    height: 'auto',
+    backgroundColor: 'black',
+    padding: 5
+  },
+  screenText: {
+    color: 'white',
+    textAlign: 'center'
+  }
 })
