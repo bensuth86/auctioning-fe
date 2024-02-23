@@ -11,6 +11,7 @@ import CustomerAuctionPage from "./components/Customer-auctionpage";
 import CustomerSignUp from "./components/Customer-signup";
 import CustomerContext from "./Contexts/LoggedInCustomerContext";
 import BusinessSignup from "./components/Business-signup"
+import BusinessCreateScreening from "./components/Business-create-new-screening"
 import { useState } from "react";
 
 const Stack = createNativeStackNavigator();
@@ -31,6 +32,7 @@ function App() {
       <Stack.Screen name="AuctionPage" component={CustomerAuctionPage} options={{title: "Auction"}}/>
       <Stack.Screen name="CustomerSignUpPage" component={CustomerSignUp} options={{title: "Customer Sign Up"}}/>
       <Stack.Screen name="BusinessSignupPage" component={BusinessSignup} options={{title: "Business Sign Up"}}/>
+      <Stack.Screen name="BusinessCreateScreening" component={BusinessCreateScreening} options={{title: "Business Create Screening"}}/>
     </Stack.Navigator>
   </NavigationContainer>
   </CustomerContext.Provider>

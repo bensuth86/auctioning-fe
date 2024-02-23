@@ -4,6 +4,7 @@ import { styles } from '../style-sheet'
 import { Snackbar } from 'react-native-paper'
 import { postBusiness } from '../utils'
 import { SelectList } from 'react-native-dropdown-select-list'
+import { generateSeatGrid } from '../helpers'
 
 function BusinessSignUp({ navigation }) {
   const [businessName, setBusinessName] = useState('')
@@ -12,11 +13,13 @@ function BusinessSignUp({ navigation }) {
   const [isFormValid, setIsFormValid] = useState(false)
   const [visible, setVisible] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
-  const [selected, setSelected] = useState("");
+  const [selectedRow, setSelectedRow] = useState('')
+  const [selectedColumn, setSelectedColumn] = useState('')
+  
 
   useEffect(() => {
     validateForm()
-  }, [businessName,, postcode])
+  }, [businessName, , postcode])
 
   const validateForm = () => {
     let errors = {}
@@ -33,44 +36,36 @@ function BusinessSignUp({ navigation }) {
     setIsFormValid(Object.keys(errors).length === 0)
   }
 
-
   const handleSubmit = () => {
     if (isFormValid) {
-        postBusiness({ businessName: businessName, postcode: postcode })
-        .then(() => {
-          navigation.navigate('CustomerHomepage')
-          console.log('Form submitted successfully!')
-          setSnackbarMessage('Business account created successfully!')
-          setVisible(true)
-        })
-        .catch((error) => {
-          console.error('Error submitting form:', error)
-          setSnackbarMessage('Failed to created an account. Please try again.')
-          setVisible(true)
-        })
+    const seatGrid = generateSeatGrid(parseInt(selectedRow), parseInt(selectedColumn));
+    navigation.navigate('BusinessCreateScreening', { businessName, postcode, seatGrid: seatGrid });
+      console.log('Form submitted successfully!')
+      setSnackbarMessage('Business account created successfully!')
+      setVisible(true)
     } else {
       console.log('Form has errors. Please correct them.')
     }
   }
 
   const data = [
-    {key:'1', value:'A'},
-    {key:'2', value:'B'},
-    {key:'3', value:'C'},
-    {key:'4', value:'D'},
-    {key:'5', value:'E'},
-    {key:'6', value:'F'},
-    {key:'7', value:'G'},
-]
-const data2 = [
-    {key:'1', value:'1'},
-    {key:'2', value:'2'},
-    {key:'3', value:'3'},
-    {key:'4', value:'4'},
-    {key:'5', value:'5'},
-    {key:'6', value:'6'},
-    {key:'7', value:'7'},
-]
+    { key: '1', value: '1' },
+    { key: '2', value: '2' },
+    { key: '3', value: '3' },
+    { key: '4', value: '4' },
+    { key: '5', value: '5' },
+    { key: '6', value: '6' },
+    { key: '7', value: '7' },
+  ]
+  const data2 = [
+    { key: '1', value: '1' },
+    { key: '2', value: '2' },
+    { key: '3', value: '3' },
+    { key: '4', value: '4' },
+    { key: '5', value: '5' },
+    { key: '6', value: '6' },
+    { key: '7', value: '7' },
+  ]
 
   return (
     <View style={styles.container}>
@@ -89,22 +84,22 @@ const data2 = [
       />
       <Text>Select Seating Layout</Text>
       <View style={styles.dropdownContainer}>
-      <SelectList 
-        setSelected={(val) => setSelected(val)} 
-        data={data} 
-        save="value"
-        style={styles.dropdown}
-        search={false}
-        placeholder="Rows"
-    />
-    <SelectList 
-        setSelected={(val) => setSelected(val)} 
-        data={data2} 
-        save="value"
-        style={styles.dropdown}
-        search={false}
-        placeholder="Columns"
-    />
+        <SelectList
+          setSelected={(val) => setSelectedRow(val)}
+          data={data}
+          save="value"
+          style={styles.dropdown}
+          search={false}
+          placeholder="Rows"
+        />
+        <SelectList
+          setSelected={(val) => setSelectedColumn(val)}
+          data={data2}
+          save="value"
+          style={styles.dropdown}
+          search={false}
+          placeholder="Columns"
+        />
       </View>
       <TouchableOpacity
         style={[styles.button, { opacity: isFormValid ? 1 : 0.5 }]}
