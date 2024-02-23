@@ -106,7 +106,7 @@ function CustomerSeating({ navigation, route }) {
 
           {seatingPlan.map((row, i) => {
             return (
-              <View key={i}>
+              <View key={i} style={seatStyles.seatsContainer}>
                 <View key={i} style={seatStyles.rowContainer}>
                   {row.map((seat) => {
                     {
@@ -135,7 +135,7 @@ function CustomerSeating({ navigation, route }) {
                                 : seatStyles.availableSeatButton
                             }
                             key={seat}
-                            btnText={start_price}
+                            btnText={`£${Number(start_price).toFixed(2)}`}
                             onPress={() => {
                               {
                                 isSelected
@@ -156,7 +156,8 @@ function CustomerSeating({ navigation, route }) {
                                 : seatStyles.auctionSeatButton
                             }
                             key={seat}
-                            btnText={`£${auctionSeatInfo[0]} user${auctionSeatInfo[1]}`}
+                            // btnText={`£${(Number(auctionSeatInfo[0]).toFixed(2))}\n user${auctionSeatInfo[1]}`}
+                            btnText={`£${(Number(auctionSeatInfo[0]).toFixed(2))}`}
                             onPress={() =>
                               isSelected
                                 ? setSelectedSeats(
@@ -172,7 +173,7 @@ function CustomerSeating({ navigation, route }) {
                             disabled={true}
                             seatStyle={seatStyles.unavailableSeatButton}
                             key={seat}
-                            btnText={'     '}
+                            btnText={'      '}
                           ></DisabledSeatButton>
                         )}
                       </View>
