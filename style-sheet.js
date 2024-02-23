@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     },
     button: { // custom buttons
       margin: 10,
-      padding: 30,
+      padding: 10,
       borderRadius: 8,
       backgroundColor: "pink",
     },
@@ -19,8 +19,7 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold',
         letterSpacing: 0.25,
         color: 'white',
-        
-        
+        textAlign: 'center'
       },
     textbox: { // for text entry
       borderWidth: 1,
@@ -28,7 +27,6 @@ export const styles = StyleSheet.create({
       padding: 8,
       margin: 10, 
       width: 200,
-      
     },
 
     })

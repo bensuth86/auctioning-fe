@@ -6,7 +6,6 @@ const prjApi = axios.create({
 
 function getBusinessById(id) {
   return prjApi.get(`/businesses/${id}`).then((response) => {
-    console.log(response.data.business)
     return response.data.business
   })
 }
@@ -17,21 +16,27 @@ function getUsersById(id) {
   })
 }
 
-function getEventsByUserId(id) {
-  return prjApi.get(`/events/near/${id}`).then((response) => {
+function getEventsByUserId(id, radius) {
+  let url = null
+
+  if (!radius) {
+    url = `/events/near/${id}`
+  } else {
+    url = `/events/near/${id}?distance=${radius}`
+  }
+  return prjApi.get(url).then((response) => {
     return response.data.events
   })
 }
 
-
-function postUser({username, postcode, device_token}){
-    console.log(username, postcode, device_token);
-    return prjApi.post('/users', { username, postcode, device_token }).then((res) => {return res.data})
+function postUser({ username, postcode }) {
+  return prjApi.post('/users', { username, postcode }).then((res) => {
+    return res.data
+  })
 }
 
 function getEventByEventId(id) {
   return prjApi.get(`/events/${id}`).then((response) => {
-    // console.log(response.data.event)
     return response.data.event
   })
 }
@@ -48,6 +53,14 @@ function getAuctionsByEventId(id) {
   })
 }
 
+function postBusiness({ business_name, postcode, seating_layout }) {
+  return prjApi
+    .post('/businesses', { business_name, postcode, seating_layout })
+    .then((res) => {
+      return res.data
+    })
+}
+
 export {
   getBusinessById,
   getUsersById,
@@ -56,4 +69,5 @@ export {
   postUser,
   getEventByEventId,
   getAllUsers,
+  postBusiness,
 }

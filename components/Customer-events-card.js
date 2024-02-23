@@ -8,7 +8,6 @@ import { styles } from "../style-sheet";
 import { eventStyles } from "../style-sheet-events";
 
 function EventsCard({ event }) {
-    console.log(event.poster)
     return (
         <View style= {eventStyles.eventcard}>
             <Text>{event.film_title}</Text>

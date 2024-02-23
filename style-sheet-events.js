@@ -12,10 +12,10 @@ eventcard: { // customer events card
     padding: 20,      
   },
 eventslist: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     flexWrap: 'wrap',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     width: 'auto',
     gap: 10,
     }
