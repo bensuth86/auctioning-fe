@@ -82,6 +82,12 @@ function Login({ navigation, route }) {
           onPress={() => navigation.navigate('CustomerSignUpPage')}
         />
       )}
+      {usertype === 'Business' && (
+        <Button
+        btnText="Sign up"
+        onPress={() => navigation.navigate('BusinessSignupPage')}
+        />
+      )}
     </View>
     </ScrollView>
   )

@@ -55,6 +55,14 @@ function getAuctionsByEventId(id) {
   })
 }
 
+function postBusiness({ business_name, postcode, seating_layout }) {
+  return prjApi
+    .post('/businesses', { business_name, postcode, seating_layout })
+    .then((res) => {
+      return res.data
+    })
+}
+
 export {
   getBusinessById,
   getUsersById,
@@ -63,4 +71,5 @@ export {
   postUser,
   getEventByEventId,
   getAllUsers,
+  postBusiness
 }
