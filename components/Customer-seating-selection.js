@@ -183,6 +183,9 @@ function CustomerSeating({ navigation, route }) {
             )
           })}
         </View>
+        <View style={seatStyles.screen}>
+          <Text style={seatStyles.screenText}>SCREEN</Text>
+        </View>
         <View style={{ marginTop: 10 }}>
           <View style={seatStyles.keyContainer}>
             <View
