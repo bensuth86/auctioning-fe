@@ -72,6 +72,12 @@ function getAuctionByAuctionId(id) {
   })
 }
 
+function getAllBusinesses() {
+  return prjApi.get('/businesses').then((response) => {
+    return response
+  })
+}
+
 export {
   getBusinessById,
   getUsersById,
@@ -82,5 +88,6 @@ export {
   getAllUsers,
   postBusiness,
   postNewAuction,
-  getAuctionByAuctionId
+  getAuctionByAuctionId,
+  getAllBusinesses
 }

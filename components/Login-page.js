@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Text, TextInput, View, ScrollView } from 'react-native'
 import { styles } from '../style-sheet'
 import { Button } from '../helpers'
-import { getAllUsers } from '../utils'
+import { getAllUsers, getAllBusinesses } from '../utils'
 import { useEffect } from 'react'
 import { useContext } from "react";
 import CustomerContext from '../Contexts/LoggedInCustomerContext'
@@ -12,6 +12,7 @@ function Login({ navigation, route }) {
   const usertype = route.params.usertype
   const [loginName, setLoginName] = useState('')
   const [submitCustomerClicked, setCustomerSubmitClicked] = useState(false)
+  const [submitBusinessClicked, setBusinessClicked] = useState(false)
   // const [match, setMatch] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -41,7 +42,31 @@ function Login({ navigation, route }) {
           // to add errors later
         });
     }
-  }, [submitCustomerClicked]);
+
+    if (submitBusinessClicked) {
+      getAllBusinesses()
+        .then((response) => {
+          let foundMatch = false;
+          response.data.businesses.forEach((business) => {
+            if (loginName === business.business_name) {
+              setCurrentCustomer({ business: business.business_name });
+              navigation.navigate('BusinessHomepage');
+              // setMatch(true);
+              foundMatch = true;
+              setLoginName('');
+              setErrorMessage('');
+            }
+          });
+          if (!foundMatch) {
+            setErrorMessage('That is not a valid username. Please try again');
+          }
+          setBusinessClicked(false);
+        })
+        .catch((error) => {
+          // to add errors later
+        });
+    }
+  }, [submitCustomerClicked, submitBusinessClicked]);
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -49,6 +74,7 @@ function Login({ navigation, route }) {
     <Text style={{ color: 'green' }}>LOGINS: (some may be out of radius if no results show up):</Text>
       <Text style={{ color: 'green' }}>BLOST (Birmingham logins): 'mrgrumpy19', 'smink123', 'tiahontoast', 'johnsmith'</Text>
       <Text style={{ color: 'green' }}>BLOST (Manchester logins): 'pelicanlogsong', 'oldeuboi', 'nixrolls'</Text>
+      <Text style={{ color: 'green' }}>BLOST (Business logins): 'Cultplex', 'Odeon Great Northern', 'VUE Star City'</Text>
       <Text>Enter {usertype} username:</Text>
       <TextInput
         style={styles.textbox}
@@ -70,8 +96,12 @@ function Login({ navigation, route }) {
               setCustomerSubmitClicked(true)
             }
           } else if (usertype === 'Business') {
-            //GET /api/businesses
-            navigation.navigate('BusinessHomepage')
+            if (loginName === '') {
+              setLoginName('')
+              setErrorMessage('Required: Please enter a business name')
+            } else {
+              setBusinessClicked(true)
+            }
           }
         }}
       />
