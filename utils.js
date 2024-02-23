@@ -78,6 +78,12 @@ function getAllBusinesses() {
   })
 }
 
+function getAllEventsByBusinessId(business_id){
+  return prjApi.get(`/events/business/${business_id}`).then((response) => {
+    return response
+})
+}
+
 export {
   getBusinessById,
   getUsersById,
@@ -89,5 +95,6 @@ export {
   postBusiness,
   postNewAuction,
   getAuctionByAuctionId,
-  getAllBusinesses
+  getAllBusinesses,
+  getAllEventsByBusinessId
 }
