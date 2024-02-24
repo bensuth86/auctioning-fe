@@ -1,17 +1,18 @@
 import { View, Text, TouchableOpacity, Alert, ScrollView } from 'react-native'
 import { styles } from '../style-sheet'
 import { auctionStyles } from '../auction-stylesheet'
-import { TextInput } from 'react-native'
+import { TextInput, Image } from 'react-native'
 import { useEffect, useState } from 'react'
 import { Button } from '../helpers'
 import { useContext } from 'react'
 import CustomerContext from '../Contexts/LoggedInCustomerContext'
-import { getUsersById, postNewAuction } from '../utils'
+import { getBusinessById, getUsersById, postNewAuction } from '../utils'
 import { getAuctionByAuctionId } from '../utils'
 // import { io } from 'socket.io-client'
 import { updateBid } from '../utils'
 import { convertTime } from '../helpers'
 import { socket } from '../socket'
+import { selectedMovieStyle } from '../style-sheet-selected-movie'
 
 function CustomerAuctionPage({ navigation, route }) {
   const { currentCustomer } = useContext(CustomerContext)
@@ -38,12 +39,16 @@ function CustomerAuctionPage({ navigation, route }) {
   const [displayAuction, setDisplayAuction] = useState({})
   const [tempUser, setTempUser] = useState(null)
   const [submitted, setSubmitted] = useState(false)
+  const [selectedBusiness, setSelectedBusiness] = useState({})
   const createAlert = (msg) =>
     Alert.alert('A new bid!', msg, [
       { text: 'OK', onPress: () => console.log('OK Pressed') },
     ])
 
   useEffect(() => {
+    getBusinessById(business_id.business_id).then((response) => {
+      setSelectedBusiness(response)
+    })
     if (auctionID) {
       getAuctionByAuctionId(auctionID)
         .then(({ data: { auction } }) => {
@@ -114,11 +119,10 @@ function CustomerAuctionPage({ navigation, route }) {
 
   function initiateAuction() {
     setSubmitted(true)
-    if (!submitBid(userBid)) return
     const newAuctionData = {
       event_id: Number(event_id.event_id),
       seat_selection: seat_selection.selectedSeats,
-      current_price: Number(userBid),
+      current_price: Number(start_price.start_price),
       user_id: Number(currentCustomer.user_id),
     }
     postNewAuction(newAuctionData)
@@ -195,114 +199,103 @@ function CustomerAuctionPage({ navigation, route }) {
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
         <View style={auctionStyles.container}>
-          {/* <View style={auctionStyles.auctionNavigation}>
-            <TouchableOpacity
-              title="backToSeating"
-              onPress={() =>
-                navigation.navigate('SeatingPage', {
-                  event_id: event_id.event_id,
-                  business_id: business_id.business_id,
-                })
-              }
+          <View style={{ width: '100%' }}>
+            <Text
+              style={{ textAlign: 'center', fontSize: 25, marginBottom: 10 }}
             >
-              <Text>← BACK TO SEATING</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                Alert.alert(
-                  'Auction instructions',
-                  'This is where all of the info for auctions to helps bidders will be.'
-                )
-              }}
-              title="?"
-            >
-              <Text>?</Text>
-            </TouchableOpacity>
-          </View> */}
-
-          <View style={auctionStyles.selectionContainer}>
-            <Button
-              btnText="Test bid"
-              onPress={() =>
-                socket.emit('new bid', {
-                  newBid: userBid,
-                  auction_id: auctionID,
-                  username: currentCustomer.username,
-                })
-              }
-            />
-            <Text style={{ textAlign: 'center', color: 'white' }}>
-              {/* temp auction id */}
-              You are bidding on:{auctionID}
+              {film_title.film_title}
             </Text>
-            <Text style={{ textAlign: 'center', color: 'white' }}>
-              {/* may remove */}
-              Starting Price: £{Number(start_price.start_price).toFixed(2)}
-            </Text>
-
-            <Text style={{ textAlign: 'center', color: 'white' }}>
-              {film_title.film_title}, {convertTime(start_time.start_time)}
-            </Text>
-            <Text style={{ textAlign: 'center', color: 'white' }}>
-              Seat selections: {seat_selection.selectedSeats.join(', ')}
+            <View style={selectedMovieStyle.eventContainer}>
+              <View style={selectedMovieStyle.imageContainer}>
+                <Image
+                  source={{ uri: poster.poster }}
+                  style={{ width: 112.5, height: 166.5 }}
+                />
+              </View>
+              <View style={selectedMovieStyle.eventInfo}>
+                <Text style={selectedMovieStyle.text}>
+                  {selectedBusiness.business_name}
+                </Text>
+                <Text style={selectedMovieStyle.text}>
+                  {selectedBusiness.postcode}
+                </Text>
+                <Text></Text>
+                <Text style={selectedMovieStyle.text}>
+                  Rating: {certificate.certificate}
+                </Text>
+                <Text style={selectedMovieStyle.text}>
+                  Run time: {run_time.run_time} minutes
+                </Text>
+                <Text>Start time: {convertTime(start_time.start_time)}</Text>
+              </View>
+            </View>
+          </View>
+          <View style={auctionStyles.singleInfoContainer}>
+            <Text style={{ textAlign: 'center' }}>
+              Seat selection:{' '}
+              <Text style={{ fontWeight: 'bold' }}>
+                {seat_selection.selectedSeats.join(', ')}
+              </Text>
             </Text>
           </View>
-          <View style={auctionStyles.biddingInfoContainer}>
-            <View style={auctionStyles.highestBidInfoContainer}>
-              {/* {!highestBid ? (
-                <View>
-                  <Text style={{ textAlign: 'center' }}>Starting bid: </Text>
-                  <Text style={{ textAlign: 'center', fontSize: 25 }}>£{startingPrice}</Text>
-                </View>
-              ):( */}
-              <View>
+          {auctionID ? (
+            <View style={auctionStyles.biddingInfoContainer}>
+              <View style={auctionStyles.highestBidInfoContainer}>
                 <Text style={{ textAlign: 'center' }}>
-                  Current highest bid:{' '}
+                  Current highest bid:
                 </Text>
                 <Text style={{ textAlign: 'center', fontSize: 25 }}>
-                  £{displayAuction.current_price || start_price.start_price}
+                  £{displayAuction.current_price}
+                </Text>
+                <Text style={{ textAlign: 'center' }}>
+                  (Total: £
+                  {Number(
+                    displayAuction.current_price *
+                      seat_selection.selectedSeats.length
+                  ).toFixed(2)}
+                  )
+                </Text>
+                <Text style={{ textAlign: 'center' }}>
+                  Number of bids so far: {displayAuction.bid_counter}
                 </Text>
               </View>
-              {/* )} */}
+              <View style={auctionStyles.otherBidInfoContainer}>
+                <View
+                  style={[
+                    auctionStyles.smallerBidInfoContainer,
+                    { marginBottom: 5 },
+                  ]}
+                >
+                  <Text>Highest bidder:</Text>
+                  <Text style={{ fontSize: 25 }}>{tempUser}</Text>
+                </View>
+                <View
+                  style={[
+                    auctionStyles.smallerBidInfoContainer,
+                    { marginTop: 5 },
+                  ]}
+                >
+                  <Text>Auction status: </Text>
+                  {!displayAuction.active ? (
+                    <Text style={{ fontSize: 25 }}>Inactive</Text>
+                  ) : (
+                    <Text style={{ fontSize: 25 }}>Active</Text>
+                  )}
+                </View>
+              </View>
+            </View>
+          ) : (
+            <View style={auctionStyles.priceInfoContainer}>
               <Text style={{ textAlign: 'center' }}>
-                Bidding counter: {displayAuction.bid_counter}
+                Starting Price:{' '}
+                <Text style={{ fontWeight: 'bold' }}>
+                  £{Number(start_price.start_price).toFixed(2)}
+                </Text>
+                {` (Total £${Number(start_price.start_price * seat_selection.selectedSeats.length).toFixed(2)})`}
               </Text>
             </View>
-            <View style={auctionStyles.otherBidInfoContainer}>
-              <View
-                style={[
-                  auctionStyles.smallerBidInfoContainer,
-                  { marginBottom: 5 },
-                ]}
-              >
-                <Text>Highest bidder:</Text>
-                <Text style={{ fontSize: 25 }}>{tempUser}</Text>
-              </View>
-              <View
-                style={[
-                  auctionStyles.smallerBidInfoContainer,
-                  { marginTop: 5 },
-                ]}
-              >
-                <Text>Auction status: </Text>
-                {!displayAuction.active ? (
-                  <Text style={{ fontSize: 25 }}>Inactive</Text>
-                ) : (
-                  <Text style={{ fontSize: 25 }}>Active</Text>
-                )}
-              </View>
-            </View>
-          </View>
-          <View style={auctionStyles.biddingForm}>
-            <Text style={{ marginRight: 5 }}></Text>
-            <TextInput
-              style={auctionStyles.bidInput}
-              placeholder="Enter your bid here"
-              onChangeText={(value) => setUserBid(value)}
-              value={userBid}
-              keyboardType="numeric"
-            />
-          </View>
+          )}
+
           {!displayAuction.active ? (
             <View>
               <Button
@@ -314,21 +307,43 @@ function CustomerAuctionPage({ navigation, route }) {
               />
             </View>
           ) : (
-            <View>
-              <Button
-                disabled={submitted}
-                btnText="place bid"
-                onPress={() => {
-                  handleNewBid(auctionID)
-                }}
-              />
-            </View>
+            <>
+              <View style={auctionStyles.biddingForm}>
+                <Text>Bid per seat: </Text>
+                <TextInput
+                  style={auctionStyles.bidInput}
+                  placeholder="Enter your bid here"
+                  onChangeText={(value) => setUserBid(value)}
+                  value={userBid}
+                  keyboardType="numeric"
+                />
+              </View>
+              <Text>
+                Total: £
+                {userBid && !isNaN(userBid)
+                  ? Number(
+                      userBid * seat_selection.selectedSeats.length
+                    ).toFixed(2)
+                  : '0.00'}
+              </Text>
+              <View>
+                <Button
+                  disabled={submitted}
+                  btnText="place bid"
+                  onPress={() => {
+                    handleNewBid(auctionID)
+                  }}
+                />
+              </View>
+            </>
           )}
-          <View style={auctionStyles.statusContainer}>
-            <Text style={{ textAlign: 'center', color: 'red' }}>
-              {errorMessage}
-            </Text>
-          </View>
+          {errorMessage ? (
+            <View style={auctionStyles.statusContainer}>
+              <Text style={{ textAlign: 'center', color: 'red' }}>
+                {errorMessage}
+              </Text>
+            </View>
+          ) : null}
           {countdown && (
             <View style={auctionStyles.timerContainer}>
               <Text style={{ color: 'white' }}>Timer:</Text>
