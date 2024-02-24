@@ -157,9 +157,7 @@ function CustomerSeating({ navigation, route }) {
                                 : seatStyles.auctionSeatButton
                             }
                             key={seat}
-                            // btnText={`£${(Number(auctionSeatInfo[0]).toFixed(2))}\n user${auctionSeatInfo[1]}`}
-                            //btnText={`£${Number(auctionSeatInfo[seat][0]).toFixed(2)}`}
-                            btnText="test"
+                            btnText={`£${Number(auctionSeatInfo[seat][0]).toFixed(2)}`}
                             onPress={() => {
                               if (isSelected) {
                                 setSelectedSeats(

@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { Button } from '../helpers'
 import { useContext } from 'react'
 import CustomerContext from '../Contexts/LoggedInCustomerContext'
-import { postNewAuction } from '../utils'
+import { getUsersById, postNewAuction } from '../utils'
 import { getAuctionByAuctionId } from '../utils'
 // import { io } from 'socket.io-client'
 import { updateBid } from '../utils'
@@ -45,9 +45,18 @@ function CustomerAuctionPage({ navigation, route }) {
 
   useEffect(() => {
     if (auctionID) {
-      getAuctionByAuctionId(auctionID).then(({ data: { auction } }) => {
-        setDisplayAuction(auction)
-      })
+      getAuctionByAuctionId(auctionID)
+        .then(({ data: { auction } }) => {
+          setDisplayAuction(auction)
+          getCountdown(auction.time_ending)
+          setCountdown(true)
+          return auction.current_highest_bidder
+        })
+        .then((user_id) => {
+          getUsersById(user_id).then((user) => {
+            setTempUser(user.username)
+          })
+        })
     }
   }, [])
 
@@ -117,7 +126,9 @@ function CustomerAuctionPage({ navigation, route }) {
         setDisplayAuction(auction)
         setAuctionID(auction.auction_id)
         setSubmitted(false)
-        setCountdown(true) ////////
+        getCountdown(auction.time_ending)
+        setCountdown(true)
+        setTempUser(currentCustomer.username)
       })
       .catch((err) => {
         setApiErr(err)
@@ -148,15 +159,13 @@ function CustomerAuctionPage({ navigation, route }) {
       })
   }
 
-  if (countdown) {
-    const startTime = new Date(displayAuction.time_started).getTime()
-    const endTime = new Date(displayAuction.time_ending).getTime()
+  function getCountdown(endDate) {
+    const endTime = new Date(endDate).getTime()
 
     const interval = setInterval(function () {
       const now = new Date().getTime()
 
-      const timeDiff = endTime - startTime - (now - startTime)
-
+      const timeDiff = endTime - now
       if (timeDiff <= 0) {
         clearInterval(interval)
         setCountdown(false)
@@ -266,9 +275,10 @@ function CustomerAuctionPage({ navigation, route }) {
                   { marginBottom: 5 },
                 ]}
               >
-                <Text>Highest bidder: (will do get request for the name)</Text>
+                <Text>Highest bidder:
+                </Text>
                 <Text style={{ fontSize: 25 }}>
-                  {tempUser || displayAuction.current_highest_bidder}
+                  {tempUser}
                 </Text>
               </View>
               <View
