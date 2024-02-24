@@ -17,6 +17,7 @@ import {
   getBusinessById,
   getAuctionsByEventId,
 } from '../utils.js'
+import { useIsFocused } from '@react-navigation/native'
 
 function CustomerSeating({ navigation, route }) {
   const {
@@ -31,6 +32,7 @@ function CustomerSeating({ navigation, route }) {
     active,
     start_price,
   } = route.params
+
   const [availableSeats, setAvailableSeats] = useState([])
   const [selectedSeats, setSelectedSeats] = useState([])
   const [auctionSeats, setAuctionSeats] = useState([])
@@ -48,6 +50,7 @@ function CustomerSeating({ navigation, route }) {
   // temp auction id
   const [eventAuctions, setEventAuctions] = useState([])
   const [selectedAuction, setSelectedAuction] = useState({})
+  const isFocused = useIsFocused()
 
   useEffect(() => {
     getBusinessById(business_id)
@@ -58,12 +61,13 @@ function CustomerSeating({ navigation, route }) {
       .catch(() => {
         setErr('true')
       })
-  }, [business_id])
+  }, [business_id, isFocused])
 
   useEffect(() => {
     setAvailableSeats(available_seats)
     setStartingPrice(start_price)
-  }, [])
+    setSelectedSeats([])
+  }, [isFocused])
 
   useEffect(() => {
     getAuctionsByEventId(event_id)
@@ -86,7 +90,7 @@ function CustomerSeating({ navigation, route }) {
       .catch(() => {
         setErr('true')
       })
-  }, [])
+  }, [isFocused])
   if (loading)
     return (
       <View style={styles.container}>
