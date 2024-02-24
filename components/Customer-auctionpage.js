@@ -29,50 +29,18 @@ function CustomerAuctionPage({ navigation, route }) {
     seat_selection,
     auction_info,
     selectedAuction,
-    newBid,
   } = route.params
-  console.log(newBid)
   const [userBid, setUserBid] = useState('')
   const [auctionID, setAuctionID] = useState(selectedAuction || null)
   const [errorMessage, setErrorMessage] = useState('')
   const [displayAuction, setDisplayAuction] = useState({})
-  // const socket = io('https://auctioning-be.onrender.com/')
-  const [bidMessage, setBidMessage] = useState(null)
   const [tempUser, setTempUser] = useState(null)
-  const [currentAuctionInfo, setCurrentAuctionInfo] = useState({})
-  const [apiErr, setApiErr] = useState(null)
   const [submitted, setSubmitted] = useState(false)
   const createAlert = (msg) =>
     Alert.alert('A new bid!', msg, [
       { text: 'OK', onPress: () => console.log('OK Pressed') },
     ])
-  // useEffect(() => {
-  //   socket.on('connect', () => {
-  //     console.log(`⚡: ${socket.id} user just connected!`)
-  //   })
-  // }, [])
-  // socket.on('new bid', (bidData) => {
-  //   console.log(bidData, 'socket ')
-  //   if (
-  //     auctionID === bidData.auction_id &&
-  //     currentCustomer.username !== bidData.username
-  //   ) {
-  //     setDisplayAuction({
-  //       ...displayAuction,
-  //       current_price: bidData.newBid,
-  //       bid_counter: displayAuction.bid_counter + 1,
-  //     })
-  //     setTempUser(bidData.username)
-  //     console.log('here')
-  // createAlert(
-  //   `${bidData.username} is now the highest bidder with £${bidData.newBid}`
-  // )
-  // setBidMessage(
-  //   `${bidData.username} is now the highest bidder with £${bidData.newBid}`
-  // )
-  //   }
-  // })
-
+  
   useEffect(() => {
     if (auctionID) {
       getAuctionByAuctionId(auctionID).then(({ data: { auction } }) => {
@@ -80,9 +48,6 @@ function CustomerAuctionPage({ navigation, route }) {
       })
     }
   }, [])
-  // useEffect(() => {
-  //     console.log('bid made')
-  // }, [newBid])
 
   useEffect(() => {
     function onBidEvent(bidData) {
@@ -90,16 +55,12 @@ function CustomerAuctionPage({ navigation, route }) {
         auctionID === bidData.auction_id &&
         currentCustomer.username !== bidData.username
       ) {
-        console.log('listening', bidData)
-        // setNewBid(value)
         setDisplayAuction({
           ...displayAuction,
           current_price: bidData.newBid,
           bid_counter: displayAuction.bid_counter + 1,
         })
         setTempUser(bidData.username)
-        //       console.log('here')
-        //  setDisplayAuction({...displayAuction, current_price: value})
         createAlert(
           `${bidData.username} is now the highest bidder with £${bidData.newBid}`
         )
@@ -160,10 +121,6 @@ function CustomerAuctionPage({ navigation, route }) {
         setDisplayAuction(null)
       })
   }
-  console.log(auctionID, 'testing id')
-  // function handleTextChange(text) {
-  //   setUserBid(text)
-  // }
 
   function handleNewBid() {
     setSubmitted(true)
@@ -301,9 +258,6 @@ function CustomerAuctionPage({ navigation, route }) {
               value={userBid}
               keyboardType="numeric"
             />
-            {/* <TouchableOpacity title="submit" onPress={() => submitBid()}>
-              <Text style={{ marginLeft: 10 }}>→</Text>
-            </TouchableOpacity> */}
           </View>
           {!displayAuction.active ? (
             <View>
@@ -336,18 +290,6 @@ function CustomerAuctionPage({ navigation, route }) {
             <Text style={{ fontSize: 25, color: 'white' }}>20:00</Text>
           </View>
           <View style={auctionStyles.auctionResultButton}>
-            {/* When a user looses an auction: */}
-            {/* <TouchableOpacity 
-              title="BackToHomepage"
-              onPress={() => navigation.navigate('CustomerHomepage')}>
-              <Text>Back to auctions</Text>
-            </TouchableOpacity> */}
-            {/* When a user wins an auction: */}
-            {/* <TouchableOpacity
-              title="ViewOrder"
-              onPress={() => navigation.navigate('CustomerHomepage')}>
-              <Text>View your order</Text>
-            </TouchableOpacity> */}
           </View>
         </View>
       </View>

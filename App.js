@@ -23,7 +23,6 @@ function App() {
     user_id: null,
     postcode: null,
   })
-  const [newBid, setNewBid] = useState('test')
   const [isConnected, setIsConnected] = useState(socket.connected)
 
   useEffect(() => {
@@ -35,18 +34,13 @@ function App() {
       setIsConnected(false)
     }
 
-    // function onBidEvent(value) {
-    //   setNewBid(value)
-    // }
 
     socket.on('connect', onConnect)
     socket.on('disconnect', onDisconnect)
-    // socket.on('new bid', onBidEvent)
 
     return () => {
       socket.off('connect', onConnect)
       socket.off('disconnect', onDisconnect)
-      // socket.off('new bid', onBidEvent)
     }
   }, [])
 
