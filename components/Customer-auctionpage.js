@@ -8,13 +8,13 @@ import { useContext } from 'react'
 import CustomerContext from '../Contexts/LoggedInCustomerContext'
 import { postNewAuction } from '../utils'
 import { getAuctionByAuctionId } from '../utils'
-import { io } from 'socket.io-client'
+// import { io } from 'socket.io-client'
 import { updateBid } from '../utils'
 import { convertTime } from '../helpers'
+import { socket } from '../socket'
 
 function CustomerAuctionPage({ navigation, route }) {
   const { currentCustomer } = useContext(CustomerContext)
-
   const {
     event_id,
     business_id,
@@ -28,57 +28,90 @@ function CustomerAuctionPage({ navigation, route }) {
     start_price,
     seat_selection,
     auction_info,
+    selectedAuction,
+    newBid,
   } = route.params
+  console.log(newBid)
   const [userBid, setUserBid] = useState('')
-  const [auctionID, setAuctionID] = useState(
-    auction_info.auctionSeatInfo[2] || null
-  )
+  const [auctionID, setAuctionID] = useState(selectedAuction || null)
   const [errorMessage, setErrorMessage] = useState('')
   const [displayAuction, setDisplayAuction] = useState({})
-  const socket = io('https://auctioning-be.onrender.com/')
+  // const socket = io('https://auctioning-be.onrender.com/')
   const [bidMessage, setBidMessage] = useState(null)
   const [tempUser, setTempUser] = useState(null)
-  console.log(auction_info.auctionSeatInfo[2])
-  console.log(auctionID)
+  const [currentAuctionInfo, setCurrentAuctionInfo] = useState({})
+  const [apiErr, setApiErr] = useState(null)
+  const [submitted, setSubmitted] = useState(false)
   const createAlert = (msg) =>
     Alert.alert('A new bid!', msg, [
       { text: 'OK', onPress: () => console.log('OK Pressed') },
     ])
-  useEffect(() => {
-    socket.on('connect', () => {
-      console.log(`⚡: ${socket.id} user just connected!`)
-    })
-  }, [])
-  socket.on('new bid', (bidData) => {
-    console.log(bidData, "socket ")
-    if (
-      auctionID === bidData.auction_id &&
-      currentCustomer.username !== bidData.username
-    ) {
-      setDisplayAuction({
-        ...displayAuction,
-        current_price: bidData.newBid,
-        bid_counter: displayAuction.bid_counter + 1,
-      })
-      setTempUser(bidData.username)
-      console.log('here')
-      // createAlert(
-      //   `${bidData.username} is now the highest bidder with £${bidData.newBid}`
-      // )
-      // setBidMessage(
-      //   `${bidData.username} is now the highest bidder with £${bidData.newBid}`
-      // )
-    }
-  })
+  // useEffect(() => {
+  //   socket.on('connect', () => {
+  //     console.log(`⚡: ${socket.id} user just connected!`)
+  //   })
+  // }, [])
+  // socket.on('new bid', (bidData) => {
+  //   console.log(bidData, 'socket ')
+  //   if (
+  //     auctionID === bidData.auction_id &&
+  //     currentCustomer.username !== bidData.username
+  //   ) {
+  //     setDisplayAuction({
+  //       ...displayAuction,
+  //       current_price: bidData.newBid,
+  //       bid_counter: displayAuction.bid_counter + 1,
+  //     })
+  //     setTempUser(bidData.username)
+  //     console.log('here')
+  // createAlert(
+  //   `${bidData.username} is now the highest bidder with £${bidData.newBid}`
+  // )
+  // setBidMessage(
+  //   `${bidData.username} is now the highest bidder with £${bidData.newBid}`
+  // )
+  //   }
+  // })
 
   useEffect(() => {
     if (auctionID) {
-      console.log('ahian')
       getAuctionByAuctionId(auctionID).then(({ data: { auction } }) => {
         setDisplayAuction(auction)
       })
     }
   }, [])
+  // useEffect(() => {
+  //     console.log('bid made')
+  // }, [newBid])
+
+  useEffect(() => {
+    function onBidEvent(bidData) {
+      if (
+        auctionID === bidData.auction_id &&
+        currentCustomer.username !== bidData.username
+      ) {
+        console.log('listening', bidData)
+        // setNewBid(value)
+        setDisplayAuction({
+          ...displayAuction,
+          current_price: bidData.newBid,
+          bid_counter: displayAuction.bid_counter + 1,
+        })
+        setTempUser(bidData.username)
+        //       console.log('here')
+        //  setDisplayAuction({...displayAuction, current_price: value})
+        createAlert(
+          `${bidData.username} is now the highest bidder with £${bidData.newBid}`
+        )
+      }
+    }
+
+    socket.on('new bid', onBidEvent)
+
+    return () => {
+      socket.off('new bid', onBidEvent)
+    }
+  }, [auctionID])
 
   function submitBid() {
     // const priceCap = displayAuction.current_price * 4 // multiply starting price by 4 (anything over will be blocked)
@@ -92,7 +125,7 @@ function CustomerAuctionPage({ navigation, route }) {
       return false
     } else if (userBid < start_price.start_price) {
       setErrorMessage(
-        `You need to place a minimum bid of £${start_price.start_price + 1}.`
+        `You need to place a minimum bid of £${Number(start_price.start_price) + 1}.`
       )
       return false
     }
@@ -108,6 +141,7 @@ function CustomerAuctionPage({ navigation, route }) {
   }
 
   function initiateAuction() {
+    setSubmitted(true)
     if (!submitBid(userBid)) return
     const newAuctionData = {
       event_id: Number(event_id.event_id),
@@ -119,23 +153,26 @@ function CustomerAuctionPage({ navigation, route }) {
       .then(({ data: { auction } }) => {
         setDisplayAuction(auction)
         setAuctionID(auction.auction_id)
-        setUserBid('')
+        setSubmitted(false)
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        setApiErr(err)
+        setDisplayAuction(null)
+      })
   }
-
-  function handleTextChange(text) {
-    setUserBid(text)
-  }
+  console.log(auctionID, 'testing id')
+  // function handleTextChange(text) {
+  //   setUserBid(text)
+  // }
 
   function handleNewBid() {
+    setSubmitted(true)
     if (!submitBid(userBid)) return
     updateBid(auctionID, {
       current_bid: Number(userBid),
       user_id: currentCustomer.user_id,
     })
       .then((response) => {
-        console.log('how many')
         setDisplayAuction(response.data.auction)
         setTempUser(currentCustomer.username)
         socket.emit('new bid', {
@@ -144,6 +181,7 @@ function CustomerAuctionPage({ navigation, route }) {
           username: currentCustomer.username,
         })
         setUserBid('')
+        setSubmitted(false)
       })
       .catch((err) => {
         console.log(err)
@@ -154,7 +192,7 @@ function CustomerAuctionPage({ navigation, route }) {
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
         <View style={auctionStyles.container}>
-          <View style={auctionStyles.auctionNavigation}>
+          {/* <View style={auctionStyles.auctionNavigation}>
             <TouchableOpacity
               title="backToSeating"
               onPress={() =>
@@ -177,10 +215,19 @@ function CustomerAuctionPage({ navigation, route }) {
             >
               <Text>?</Text>
             </TouchableOpacity>
-          </View>
-          {console.log(displayAuction)}
+          </View> */}
+
           <View style={auctionStyles.selectionContainer}>
-            {/* <Button btnText="Test bid" onPress={() => handleBid()} /> */}
+            <Button
+              btnText="Test bid"
+              onPress={() =>
+                socket.emit('new bid', {
+                  newBid: userBid,
+                  auction_id: auctionID,
+                  username: currentCustomer.username,
+                })
+              }
+            />
             <Text style={{ textAlign: 'center', color: 'white' }}>
               {/* temp auction id */}
               You are bidding on:{auctionID}
@@ -261,6 +308,7 @@ function CustomerAuctionPage({ navigation, route }) {
           {!displayAuction.active ? (
             <View>
               <Button
+                disabled={submitted}
                 btnText="start auction"
                 onPress={() => {
                   initiateAuction()
@@ -270,6 +318,7 @@ function CustomerAuctionPage({ navigation, route }) {
           ) : (
             <View>
               <Button
+                disabled={submitted}
                 btnText="place bid"
                 onPress={() => {
                   handleNewBid(auctionID)
