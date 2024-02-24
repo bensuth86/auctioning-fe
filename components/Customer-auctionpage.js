@@ -30,6 +30,8 @@ function CustomerAuctionPage({ navigation, route }) {
     auction_info,
   } = route.params
   const [userBid, setUserBid] = useState('')
+  const [countdown, setCountdown] = useState(false)
+  const [countdownStructure, setCountdownStructure] = useState({})
   const [auctionID, setAuctionID] = useState(
     auction_info.auctionSeatInfo[2] || null
   )
@@ -50,7 +52,7 @@ function CustomerAuctionPage({ navigation, route }) {
     })
   }, [])
   socket.on('new bid', (bidData) => {
-    console.log(bidData, "socket ")
+    console.log(bidData, 'socket ')
     if (
       auctionID === bidData.auction_id &&
       currentCustomer.username !== bidData.username
@@ -120,6 +122,7 @@ function CustomerAuctionPage({ navigation, route }) {
         setDisplayAuction(auction)
         setAuctionID(auction.auction_id)
         setUserBid('')
+        setCountdown(true) ////////
       })
       .catch((err) => console.log(err))
   }
@@ -150,6 +153,40 @@ function CustomerAuctionPage({ navigation, route }) {
       })
   }
 
+  if (countdown) {
+    const startTime = new Date(displayAuction.time_started).getTime()
+    const endTime = new Date(displayAuction.time_ending).getTime()
+
+    const interval = setInterval(function () {
+      const now = new Date().getTime();
+
+      const timeDiff = endTime - startTime - (now - startTime);
+
+      if (timeDiff <= 0) {
+        clearInterval(interval)
+        setCountdown(false)
+        setCountdownStructure({
+          hours: null,
+          minutes: null,
+          seconds: null,
+          ended: true,
+        })
+        return
+      }
+      const hours = Math.floor(
+        (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      )
+      const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60))
+      const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000)
+
+      setCountdownStructure({
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds,
+        ended: null,
+      })
+    }, 1000)
+  }
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
@@ -282,23 +319,32 @@ function CustomerAuctionPage({ navigation, route }) {
               {errorMessage}
             </Text>
           </View>
-          <View style={auctionStyles.timerContainer}>
-            <Text style={{ color: 'white' }}>Timer:</Text>
-            <Text style={{ fontSize: 25, color: 'white' }}>20:00</Text>
-          </View>
+          {countdown && (
+            <View style={auctionStyles.timerContainer}>
+              <Text style={{ color: 'white' }}>Timer:</Text>
+              <Text style={{ fontSize: 25, color: 'white' }}>
+                {countdownStructure.hours}h {countdownStructure.minutes}m{' '}
+                {countdownStructure.seconds}s
+              </Text>
+            </View>
+          )}
           <View style={auctionStyles.auctionResultButton}>
-            {/* When a user looses an auction: */}
-            {/* <TouchableOpacity 
-              title="BackToHomepage"
-              onPress={() => navigation.navigate('CustomerHomepage')}>
-              <Text>Back to auctions</Text>
-            </TouchableOpacity> */}
-            {/* When a user wins an auction: */}
-            {/* <TouchableOpacity
-              title="ViewOrder"
-              onPress={() => navigation.navigate('CustomerHomepage')}>
-              <Text>View your order</Text>
-            </TouchableOpacity> */}
+            {countdownStructure.ended && displayAuction.current_highest_bidder === currentCustomer.user_id && (
+                <TouchableOpacity
+                  title="ViewOrder"
+                  onPress={() => navigation.navigate('CustomerHomepage')}
+                >
+                  <Text>View your order</Text>
+                </TouchableOpacity>
+              )}
+            {countdownStructure.ended && displayAuction.current_highest_bidder !== currentCustomer.user_id && (
+                <TouchableOpacity
+                  title="BackToHomepage"
+                  onPress={() => navigation.navigate('CustomerHomepage')}
+                >
+                  <Text>Back to auctions</Text>
+                </TouchableOpacity>
+              )}
           </View>
         </View>
       </View>
