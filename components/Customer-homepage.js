@@ -22,6 +22,7 @@ import { useContext } from 'react'
 import { homeStyles } from '../style-sheet-customer-home'
 import { TextInput } from 'react-native-paper'
 import { userLocation } from '../utils'
+import { CurrentAuction } from './Customer-current-auctions-section'
 
 function CustomerHomepage({ navigation }) {
   
@@ -68,7 +69,6 @@ function CustomerHomepage({ navigation }) {
   return (<>
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
-
         <View style={homeStyles.navigation}>
           <View style={homeStyles.topNavigation}>
             <Text>Hello {currentCustomer.username}</Text>
@@ -89,7 +89,7 @@ function CustomerHomepage({ navigation }) {
             <Button btnText={'+'} onPress={increaseRadius} />
             <Button btnText={'submit radius'} onPress={() => submitRadius()}/>
           </View>
-          <View></View>
+          <CurrentAuction/>
         </View>
           {!expandRadius ? (
             <Text style={homeStyles.resultsIntro}>Showing all cinema events for auctions within an 8 mile radius of {currentCustomer.postcode}: </Text>
