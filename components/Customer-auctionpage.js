@@ -275,11 +275,8 @@ function CustomerAuctionPage({ navigation, route }) {
                   { marginBottom: 5 },
                 ]}
               >
-                <Text>Highest bidder:
-                </Text>
-                <Text style={{ fontSize: 25 }}>
-                  {tempUser}
-                </Text>
+                <Text>Highest bidder:</Text>
+                <Text style={{ fontSize: 25 }}>{tempUser}</Text>
               </View>
               <View
                 style={[
