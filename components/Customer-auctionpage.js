@@ -44,6 +44,10 @@ function CustomerAuctionPage({ navigation, route }) {
     Alert.alert('A new bid!', msg, [
       { text: 'OK', onPress: () => console.log('OK Pressed') },
     ])
+  const exitAlert = (msg) =>
+    Alert.alert('Somebody beat you to it...', msg, [
+      { text: 'Back', onPress: () => navigation.goBack() },
+    ])
 
   useEffect(() => {
     getBusinessById(business_id.business_id).then((response) => {
@@ -68,6 +72,13 @@ function CustomerAuctionPage({ navigation, route }) {
   useEffect(() => {
     function onBidEvent(bidData) {
       if (
+        seat_selection.selectedSeats.some((seat) =>
+          bidData.seats.includes(seat)
+        ) &&
+        currentCustomer.username !== bidData.username
+      ) {
+        exitAlert(`One of the seats you selected has been bid on!`)
+      } else if (
         auctionID === bidData.auction_id &&
         currentCustomer.username !== bidData.username
       ) {
@@ -127,6 +138,12 @@ function CustomerAuctionPage({ navigation, route }) {
     }
     postNewAuction(newAuctionData)
       .then(({ data: { auction } }) => {
+        socket.emit('new bid', {
+          newBid: auction.start_price,
+          auction_id: auction.auction_id,
+          seats: auction.seat_selection,
+          username: currentCustomer.username,
+        })
         setDisplayAuction(auction)
         setAuctionID(auction.auction_id)
         setSubmitted(false)
@@ -309,7 +326,6 @@ function CustomerAuctionPage({ navigation, route }) {
           ) : (
             <>
               <View style={auctionStyles.biddingForm}>
-                <Text>Bid per seat: </Text>
                 <TextInput
                   style={auctionStyles.bidInput}
                   placeholder="Enter your bid here"
