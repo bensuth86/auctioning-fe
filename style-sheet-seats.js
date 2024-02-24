@@ -20,8 +20,6 @@ export const seatStyles = StyleSheet.create({
     margin: 5,
     padding: 5,
     backgroundColor: '#626262',
-    // width: '50px',
-    // height: '40px',
     width: '60px',
     height: '50px',
     borderTopLeftRadius: 10,
@@ -31,8 +29,6 @@ export const seatStyles = StyleSheet.create({
     margin: 5,
     padding: 5,
     backgroundColor: '#7bc47f',
-    // width: '50px',
-    // height: '40px',
     width: '60px',
     height: '50px',
     borderTopLeftRadius: 10,
@@ -42,8 +38,6 @@ export const seatStyles = StyleSheet.create({
     margin: 5,
     padding: 5,
     backgroundColor: '#FFBF00',
-    // width: '50px',
-    // height: '40px',
     width: '60px',
     height: '50px',
     borderTopLeftRadius: 10,
@@ -52,11 +46,7 @@ export const seatStyles = StyleSheet.create({
   unavailableSeatButton: {
     margin: 5,
     padding: 5,
-    // backgroundColor: '#D0D0D0',
     backgroundColor: 'grey',
-
-    // width: '50px',
-    // height: '40px',
     width: '60px',
     height: '50px',
     borderTopLeftRadius: 10,
@@ -66,8 +56,6 @@ export const seatStyles = StyleSheet.create({
     margin: 5,
     padding: 5,
     backgroundColor: '#7bc47f',
-    // width: '47px',
-    // height: '37px',
     width: '60px',
     height: '50px',
     borderTopLeftRadius: 10,
@@ -79,8 +67,6 @@ export const seatStyles = StyleSheet.create({
     margin: 5,
     padding: 5,
     backgroundColor: '#FFBF00',
-    // width: '57px',
-    // height: '47px',
     width: '60px',
     height: '50px',
     borderTopLeftRadius: 10,
@@ -91,18 +77,16 @@ export const seatStyles = StyleSheet.create({
   buttontext: {
     fontSize: 10,
     lineHeight: 21,
-    // fontWeight: 'bold',
     letterSpacing: 0.25,
     color: 'white',
   },
   textbox: {
-    // for text entry
     padding: 8,
     margin: 10,
     width: 200,
   },
   errorContainer: {
-    marginTop: 50,
+    marginTop: 30,
     width: 'auto',
     borderColor: 'red',
     borderWidth: 2,
@@ -120,10 +104,10 @@ export const seatStyles = StyleSheet.create({
     width: '80%',
     height: 'auto',
     backgroundColor: 'black',
-    padding: 5
+    padding: 5,
   },
   screenText: {
     color: 'white',
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 })
