@@ -53,13 +53,15 @@ function getAuctionsByEventId(id) {
   })
 }
 
-function postBusiness({ business_name, postcode, seating_layout }) {
+function postBusiness(businessName, postcode, seatGrid) {
+  const toEnter = { business_name: businessName.business_name, postcode: postcode, seating_layout: seatGrid }
   return prjApi
-    .post('/businesses', { business_name, postcode, seating_layout })
+    .post('/businesses', toEnter)
     .then((res) => {
       return res.data
     })
 }
+
 function postNewAuction(info) {
   return prjApi.post('/auctions', info).then((response) => {
     return response
