@@ -32,6 +32,8 @@ function CustomerAuctionPage({ navigation, route }) {
   } = route.params
   const [userBid, setUserBid] = useState('')
   const [auctionID, setAuctionID] = useState(selectedAuction || null)
+  const [countdown, setCountdown] = useState(false)
+  const [countdownStructure, setCountdownStructure] = useState({})
   const [errorMessage, setErrorMessage] = useState('')
   const [displayAuction, setDisplayAuction] = useState({})
   const [tempUser, setTempUser] = useState(null)
@@ -40,7 +42,7 @@ function CustomerAuctionPage({ navigation, route }) {
     Alert.alert('A new bid!', msg, [
       { text: 'OK', onPress: () => console.log('OK Pressed') },
     ])
-  
+
   useEffect(() => {
     if (auctionID) {
       getAuctionByAuctionId(auctionID).then(({ data: { auction } }) => {
@@ -115,6 +117,7 @@ function CustomerAuctionPage({ navigation, route }) {
         setDisplayAuction(auction)
         setAuctionID(auction.auction_id)
         setSubmitted(false)
+        setCountdown(true) ////////
       })
       .catch((err) => {
         setApiErr(err)
@@ -145,6 +148,40 @@ function CustomerAuctionPage({ navigation, route }) {
       })
   }
 
+  if (countdown) {
+    const startTime = new Date(displayAuction.time_started).getTime()
+    const endTime = new Date(displayAuction.time_ending).getTime()
+
+    const interval = setInterval(function () {
+      const now = new Date().getTime()
+
+      const timeDiff = endTime - startTime - (now - startTime)
+
+      if (timeDiff <= 0) {
+        clearInterval(interval)
+        setCountdown(false)
+        setCountdownStructure({
+          hours: null,
+          minutes: null,
+          seconds: null,
+          ended: true,
+        })
+        return
+      }
+      const hours = Math.floor(
+        (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      )
+      const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60))
+      const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000)
+
+      setCountdownStructure({
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds,
+        ended: null,
+      })
+    }, 1000)
+  }
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
@@ -285,11 +322,36 @@ function CustomerAuctionPage({ navigation, route }) {
               {errorMessage}
             </Text>
           </View>
-          <View style={auctionStyles.timerContainer}>
-            <Text style={{ color: 'white' }}>Timer:</Text>
-            <Text style={{ fontSize: 25, color: 'white' }}>20:00</Text>
-          </View>
+          {countdown && (
+            <View style={auctionStyles.timerContainer}>
+              <Text style={{ color: 'white' }}>Timer:</Text>
+              <Text style={{ fontSize: 25, color: 'white' }}>
+                {countdownStructure.hours}h {countdownStructure.minutes}m{' '}
+                {countdownStructure.seconds}s
+              </Text>
+            </View>
+          )}
           <View style={auctionStyles.auctionResultButton}>
+            {countdownStructure.ended &&
+              displayAuction.current_highest_bidder ===
+                currentCustomer.user_id && (
+                <TouchableOpacity
+                  title="ViewOrder"
+                  onPress={() => navigation.navigate('CustomerHomepage')}
+                >
+                  <Text>View your order</Text>
+                </TouchableOpacity>
+              )}
+            {countdownStructure.ended &&
+              displayAuction.current_highest_bidder !==
+                currentCustomer.user_id && (
+                <TouchableOpacity
+                  title="BackToHomepage"
+                  onPress={() => navigation.navigate('CustomerHomepage')}
+                >
+                  <Text>Back to auctions</Text>
+                </TouchableOpacity>
+              )}
           </View>
         </View>
       </View>
