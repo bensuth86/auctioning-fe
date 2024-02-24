@@ -57,3 +57,22 @@ export function generateSeatGrid(rows, columns) {
 
   return seatGrid
 }
+
+
+export function convertTime(timeString) {
+  const dateConversion = new Date(timeString);
+
+  const options = {
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric', 
+    hour: 'numeric', 
+    minute: 'numeric', 
+    timeZoneName: 'short',
+    hour12: true
+  };
+
+  const formattedDate = dateConversion.toLocaleString("en-GB", dateConversion).slice(0, -3);
+  return formattedDate;
+}
+

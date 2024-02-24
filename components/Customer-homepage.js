@@ -95,6 +95,7 @@ function CustomerHomepage({ navigation }) {
           )}
         <View style={eventStyles.eventslist}>
           {eventsList.map((event, i) => {
+            // console.log('event: ', event)
             return (
               <TouchableOpacity
               key={i}

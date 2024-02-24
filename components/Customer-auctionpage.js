@@ -10,6 +10,7 @@ import { postNewAuction } from '../utils'
 import { getAuctionByAuctionId } from '../utils'
 import { io } from 'socket.io-client'
 import { updateBid } from '../utils'
+import { convertTime } from '../helpers'
 
 function CustomerAuctionPage({ navigation, route }) {
   const { currentCustomer } = useContext(CustomerContext)
@@ -186,11 +187,11 @@ function CustomerAuctionPage({ navigation, route }) {
             </Text>
             <Text style={{ textAlign: 'center', color: 'white' }}>
               {/* may remove */}
-              Starting Price:{start_price.start_price}
+              Starting Price: £{Number(start_price.start_price).toFixed(2)}
             </Text>
 
             <Text style={{ textAlign: 'center', color: 'white' }}>
-              {film_title.film_title}, {start_time.start_time}
+              {film_title.film_title}, {convertTime(start_time.start_time)}
             </Text>
             <Text style={{ textAlign: 'center', color: 'white' }}>
               Seat selections: {seat_selection.selectedSeats.join(', ')}
