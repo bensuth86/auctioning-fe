@@ -49,7 +49,7 @@ function Login({ navigation, route }) {
           let foundMatch = false;
           response.data.businesses.forEach((business) => {
             if (loginName === business.business_name) {
-              setCurrentCustomer({ business: business.business_name });
+              // setCurrentCustomer({ business: business.business_name });
               navigation.navigate('BusinessHomepage', {business_id: business.business_id});
               // setMatch(true);
               foundMatch = true;
