@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { View, TextInput, Text, TouchableOpacity } from 'react-native'
 import { styles } from '../style-sheet'
 import { postUser } from '../utils'
 import { Snackbar } from 'react-native-paper'
+import CustomerContext from '../Contexts/LoggedInCustomerContext'
 
 function CustomerSignUp({ navigation }) {
   const [username, setUserName] = useState('')
@@ -11,12 +12,11 @@ function CustomerSignUp({ navigation }) {
   const [isFormValid, setIsFormValid] = useState(false)
   const [visible, setVisible] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
+  const { setCurrentCustomer } = useContext(CustomerContext)
 
   useEffect(() => {
     validateForm()
   }, [username, postcode])
-
-
 
   const validateForm = () => {
     let errors = {}
@@ -36,7 +36,8 @@ function CustomerSignUp({ navigation }) {
   const handleSubmit = () => {
     if (isFormValid) {
       postUser({ username: username, postcode: postcode })
-        .then(() => {
+        .then(({ user }) => {
+          setCurrentCustomer(user)
           navigation.navigate('CustomerHomepage')
           console.log('Form submitted successfully!')
           setSnackbarMessage('Form submitted successfully!')
