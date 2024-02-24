@@ -44,6 +44,9 @@ function CustomerSeating({ navigation, route }) {
   const auctionInfoArray = []
   let auctionSeatInfo = {}
   const [auctionInfo, setAuctionInfo] = useState([])
+  // temp auction id
+  const [eventAuctions, setEventAuctions] = useState({})
+  const [selectedAuction, setSelectedAuction] = useState(null)
 
   useEffect(() => {
     getBusinessById(business_id)
@@ -77,12 +80,12 @@ function CustomerSeating({ navigation, route }) {
         })
         setAuctionSeats(auctionSeatArray)
         setAuctionInfo(auctionInfoArray)
+        setEventAuctions(response)
       })
       .catch(() => {
         setErr('true')
       })
   }, [])
-
   if (loading)
     return (
       <View style={styles.container}>
@@ -154,17 +157,21 @@ function CustomerSeating({ navigation, route }) {
                                 : seatStyles.auctionSeatButton
                             }
                             key={seat}
-                            // btnText={`£${(Number(auctionSeatInfo[0]).toFixed(2))}\n user${auctionSeatInfo[1]}`}
                             btnText={`£${Number(auctionSeatInfo[seat][0]).toFixed(2)}`}
-                            onPress={() =>
-                              isSelected
-                                ? setSelectedSeats(
-                                    selectedSeats.filter(
-                                      (item) => seat !== item
-                                    )
-                                  )
-                                : setSelectedSeats([...selectedSeats, seat])
-                            }
+                            onPress={() => {
+                              if (isSelected) {
+                                setSelectedSeats(
+                                  selectedSeats.filter((item) => seat !== item)
+                                )
+                                setSelectedAuction(null)
+                              } else {
+                                setSelectedSeats([...selectedSeats, seat])
+                                eventAuctions.forEach((auction) => {
+                                  if (auction.seat_selection.includes(seat))
+                                    setSelectedAuction(auction.auction_id)
+                                })
+                              }
+                            }}
                           ></SeatButton>
                         ) : (
                           <DisabledSeatButton
@@ -295,6 +302,7 @@ function CustomerSeating({ navigation, route }) {
                 available_seats: { available_seats },
                 active: { active },
                 start_price: { start_price },
+                selectedAuction,
               })
             }
           />
