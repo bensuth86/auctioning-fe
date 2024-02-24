@@ -13,6 +13,7 @@ import CustomerContext from "./Contexts/LoggedInCustomerContext";
 import BusinessSignup from "./components/Business-signup"
 import BusinessCreateScreening from "./components/Business-create-new-screening"
 import { useState } from "react";
+import { PreviousOrders } from "./components/Customer-view-prev-orders";
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,7 @@ function App() {
       <Stack.Screen name="CustomerSignUpPage" component={CustomerSignUp} options={{title: "Customer Sign Up"}}/>
       <Stack.Screen name="BusinessSignupPage" component={BusinessSignup} options={{title: "Business Sign Up"}}/>
       <Stack.Screen name="BusinessCreateScreening" component={BusinessCreateScreening} options={{title: "Business Create Screening"}}/>
+      <Stack.Screen name="PreviousOrders" component={PreviousOrders} options={{title: "Previous orders"}}/>
     </Stack.Navigator>
   </NavigationContainer>
   </CustomerContext.Provider>

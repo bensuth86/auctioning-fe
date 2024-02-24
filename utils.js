@@ -74,7 +74,7 @@ function getAuctionByAuctionId(id) {
 
 
 function updateBid(auctionID, info) {
-  console.log('>>>>>>', auctionID, info)
+  // console.log('>>>>>>', auctionID, info)
   return prjApi.patch(`/auctions/${auctionID}`, info).then((response) => {
       return response
   })
@@ -92,6 +92,11 @@ function getAllEventsByBusinessId(business_id){
     return response
 })
 }
+function getWonAuctionsByUser(id) {
+  return prjApi.get(`/auctions/won/${id}`).then((response) => {
+    return response
+})
+}
 
 export {
   getBusinessById,
@@ -106,5 +111,6 @@ export {
   getAuctionByAuctionId,
   updateBid,
   getAllBusinesses,
-  getAllEventsByBusinessId
+  getAllEventsByBusinessId,
+  getWonAuctionsByUser
 }
