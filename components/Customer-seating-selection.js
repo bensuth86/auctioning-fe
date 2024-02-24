@@ -45,8 +45,8 @@ function CustomerSeating({ navigation, route }) {
   let auctionSeatInfo = {}
   const [auctionInfo, setAuctionInfo] = useState([])
   // temp auction id
-  const [eventAuctions, setEventAuctions] = useState({})
-  const [selectedAuction, setSelectedAuction] = useState(null)
+  const [eventAuctions, setEventAuctions] = useState([])
+  const [selectedAuction, setSelectedAuction] = useState({})
 
   useEffect(() => {
     getBusinessById(business_id)
@@ -110,21 +110,15 @@ function CustomerSeating({ navigation, route }) {
               <View key={i} style={seatStyles.seatsContainer}>
                 <View key={i} style={seatStyles.rowContainer}>
                   {row.map((seat) => {
-                    {
-                      auctionInfo.map((detail) => {
-                        detail[4].includes(seat)
-                          ? (auctionSeatInfo[seat] = [
-                              detail[0],
-                              detail[1],
-                              detail[2],
-                              detail[3],
-                              detail[4],
-                            ])
-                          : null
-                      })
-                    }
                     const isAvailable = availableSeats.includes(seat)
-                    const isAuctioning = auctionSeats.includes(seat)
+                    let isAuctioning = false
+                    let auctionPrice
+                    eventAuctions.forEach((auction) => {
+                      if (auction.seat_selection.includes(seat)) {
+                        isAuctioning = true
+                        auctionPrice = Number(auction.current_price).toFixed(2)
+                      }
+                    })
                     const isSelected = selectedSeats.includes(seat)
                     return (
                       <View key={seat}>
@@ -145,7 +139,12 @@ function CustomerSeating({ navigation, route }) {
                                         (item) => seat !== item
                                       )
                                     )
-                                  : setSelectedSeats([...selectedSeats, seat])
+                                  : setSelectedSeats(() => {
+                                      if (Object.keys(selectedAuction).length) {
+                                        setSelectedAuction({})
+                                        return [seat]
+                                      } else return [...selectedSeats, seat]
+                                    })
                               }
                             }}
                           ></SeatButton>
@@ -157,18 +156,21 @@ function CustomerSeating({ navigation, route }) {
                                 : seatStyles.auctionSeatButton
                             }
                             key={seat}
-                            btnText={`£${Number(auctionSeatInfo[seat][0]).toFixed(2)}`}
+                            btnText={`£${auctionPrice}`}
+                            //btnText="test"
                             onPress={() => {
                               if (isSelected) {
-                                setSelectedSeats(
-                                  selectedSeats.filter((item) => seat !== item)
-                                )
-                                setSelectedAuction(null)
+                                setSelectedSeats([])
+                                setSelectedAuction({})
                               } else {
-                                setSelectedSeats([...selectedSeats, seat])
                                 eventAuctions.forEach((auction) => {
                                   if (auction.seat_selection.includes(seat))
-                                    setSelectedAuction(auction.auction_id)
+                                    setSelectedSeats(auction.seat_selection)
+                                })
+                                // setSelectedSeats([...selectedSeats, seat])
+                                eventAuctions.forEach((auction) => {
+                                  if (auction.seat_selection.includes(seat))
+                                    setSelectedAuction(auction)
                                 })
                               }
                             }}
@@ -230,24 +232,30 @@ function CustomerSeating({ navigation, route }) {
           }}
           title="?"
         >
-          <Text>?</Text>
+          <Text></Text>
         </TouchableOpacity>
-        {selectedSeats.map((selectedSeat) => {
+        {/* {selectedSeats.map((selectedSeat) => {
           const isAuctioning = auctionSeats.includes(selectedSeat)
 
           isAuctioning
             ? auctionSelection.push(selectedSeat)
             : availableSelection.push(selectedSeat)
-        })}
-        <Text>Selected seats: {selectedSeats}</Text>
-        <Text>Price per seat: </Text>
-        {availableSelection.length && !auctionSelection.length ? (
-          <Text>£{start_price}</Text>
-        ) : !availableSelection.length && auctionSelection.length ? (
-          <Text>£1</Text>
-        ) : (
-          <Text>Please select a seat</Text>
-        )}
+        })} */}
+        {selectedSeats.length ? (
+          <Text>Selected seats: {selectedSeats.join(', ')}</Text>
+        ) : null}
+        {selectedSeats.length ? (
+          <Text>
+            Price: £
+            {selectedSeats.length && Object.keys(selectedAuction).length
+              ? Number(selectedAuction.current_price).toFixed(2)
+              : Number(start_price).toFixed(2)}
+            {selectedSeats.length && Object.keys(selectedAuction).length
+              ? ` (Total £${Number((selectedAuction.current_price) * selectedSeats.length).toFixed(2)})`
+              : ` (Total £${Number((start_price) * selectedSeats.length).toFixed(2)})`}
+          </Text>
+        ) : null}
+        {!selectedSeats.length ? <Text>Please select a seat</Text> : null}
         {auctionSelection.length && availableSelection.length ? (
           <>
             <View style={seatStyles.errorContainer}>
@@ -256,20 +264,13 @@ function CustomerSeating({ navigation, route }) {
               </Text>
             </View>
           </>
-        ) : auctionSelection.length > 1 && !availableSelection.length ? (
-          <View style={seatStyles.errorContainer}>
-            <Text style={seatStyles.textbox}>
-              Please only select one seat in auction to go to the auction for
-              that group of tickets.
-            </Text>
-          </View>
-        ) : !auctionSelection.length && availableSelection.length ? (
+        ) : selectedSeats.length && !Object.keys(selectedAuction).length ? (
           <Button
             key={'auctionButton'}
             btnText="Start new auction"
             onPress={() =>
               navigation.navigate('AuctionPage', {
-                auction_info: { auctionSeatInfo },
+                //  auction_info: { auctionSeatInfo },
                 seat_selection: { selectedSeats },
                 event_id: { event_id },
                 business_id: { business_id },
@@ -284,13 +285,13 @@ function CustomerSeating({ navigation, route }) {
               })
             }
           />
-        ) : auctionSelection.length === 1 ? (
+        ) : selectedSeats.length && Object.keys(selectedAuction).length ? (
           <Button
             key={'auctionButton'}
             btnText="Go to auction"
             onPress={() =>
               navigation.navigate('AuctionPage', {
-                auction_info: { auctionSeatInfo },
+                // auction_info: { auctionSeatInfo },
                 seat_selection: { selectedSeats },
                 event_id: { event_id },
                 business_id: { business_id },
@@ -302,7 +303,7 @@ function CustomerSeating({ navigation, route }) {
                 available_seats: { available_seats },
                 active: { active },
                 start_price: { start_price },
-                selectedAuction,
+                selectedAuction: selectedAuction.auction_id,
               })
             }
           />
