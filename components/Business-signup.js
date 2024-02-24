@@ -20,7 +20,6 @@ function BusinessSignUp({ navigation }) {
   useEffect(() => {
     validateForm()
   }, [businessName, , postcode])
-
   const validateForm = () => {
     let errors = {}
 
@@ -39,7 +38,7 @@ function BusinessSignUp({ navigation }) {
   const handleSubmit = () => {
     if (isFormValid) {
     const seatGrid = generateSeatGrid(parseInt(selectedRow), parseInt(selectedColumn));
-    postBusiness({ businessName, postcode, seating_layout: seatGrid })
+    postBusiness({ business_name: businessName}, postcode, seatGrid)
     .then(() => {
         navigation.navigate('BusinessHomepage')
         console.log('Form submitted successfully!')
