@@ -13,6 +13,7 @@ import { useEffect } from 'react'
 import { Image } from 'react-native'
 import { selectedMovieStyle } from '../style-sheet-selected-movie'
 import { getBusinessById } from '../utils'
+import { convertTime } from '../helpers'
 
 function SelectedEvent({ event_id }) {
   const [selectedEvent, setSelectedEvent] = useState({})
@@ -61,7 +62,7 @@ function SelectedEvent({ event_id }) {
           <Text style={selectedMovieStyle.text}>
             Run time: {selectedEvent.run_time} minutes
           </Text>
-          <Text>Start time: {selectedEvent.start_time}</Text>
+          <Text>Start time: {convertTime(selectedEvent.start_time)}</Text>
         </View>
       </View>
     </View>
