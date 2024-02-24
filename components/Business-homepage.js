@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import Button from '../helpers'
 import { styles } from '../style-sheet'
 import { getAllEventsByBusinessId } from '../utils'
 
-function BusinessHomepage({ route }) {
-  const { business_id } = route.params
-  const [events, setEvents] = useState([])
+function BusinessHomepage({ navigation, route }) {
 
+  
+  const { business_id } = route.params
+  console.log(business_id);
+  const [events, setEvents] = useState([])
+  console.log(events);
   useEffect(() => {
     getAllEventsByBusinessId(business_id)
       .then((response) => {
@@ -27,10 +30,14 @@ function BusinessHomepage({ route }) {
           <Text key={event.event_id}>{event.film_title}</Text>
         ))}
       </View>
-      <Button
-          btnText="Create new screening"
-          onPress={() => navigation.navigate('BusinessCreateScreening')}
-        />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          navigation.navigate('BusinessCreateScreening')
+        }}
+      >
+        <Text style={styles.buttonText}>Create Screening</Text>
+      </TouchableOpacity>
     </View>
   )
 }
