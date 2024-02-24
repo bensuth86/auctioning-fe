@@ -41,6 +41,7 @@ function CustomerSeating({ navigation, route }) {
   const [startingPrice, setStartingPrice] = useState([])
   const [loading, setIsLoading] = useState('true')
   const [err, setErr] = useState('false')
+  const [rowErr, setRowErr] = useState(false)
   const auctionInfoArray = []
   let auctionSeatInfo = {}
   const [auctionInfo, setAuctionInfo] = useState([])
@@ -134,16 +135,28 @@ function CustomerSeating({ navigation, route }) {
                             onPress={() => {
                               {
                                 isSelected
-                                  ? setSelectedSeats(
-                                      selectedSeats.filter(
+                                  ? setSelectedSeats(() => {
+                                      setRowErr(false)
+                                      return selectedSeats.filter(
                                         (item) => seat !== item
                                       )
-                                    )
+                                    })
                                   : setSelectedSeats(() => {
                                       if (Object.keys(selectedAuction).length) {
                                         setSelectedAuction({})
                                         return [seat]
-                                      } else return [...selectedSeats, seat]
+                                      } else {
+                                        if (
+                                          selectedSeats.length &&
+                                          selectedSeats[0][0] !== seat[0]
+                                        ) {
+                                          setRowErr(true)
+                                          return [...selectedSeats]
+                                        } else {
+                                          setRowErr(false)
+                                          return [...selectedSeats, seat]
+                                        }
+                                      }
                                     })
                               }
                             }}
@@ -251,11 +264,16 @@ function CustomerSeating({ navigation, route }) {
               ? Number(selectedAuction.current_price).toFixed(2)
               : Number(start_price).toFixed(2)}
             {selectedSeats.length && Object.keys(selectedAuction).length
-              ? ` (Total £${Number((selectedAuction.current_price) * selectedSeats.length).toFixed(2)})`
-              : ` (Total £${Number((start_price) * selectedSeats.length).toFixed(2)})`}
+              ? ` (Total £${Number(selectedAuction.current_price * selectedSeats.length).toFixed(2)})`
+              : ` (Total £${Number(start_price * selectedSeats.length).toFixed(2)})`}
           </Text>
         ) : null}
         {!selectedSeats.length ? <Text>Please select a seat</Text> : null}
+        {rowErr ? (
+          <Text style={{ fontWeight: 'bold' }}>
+            Seats must be in the same row.
+          </Text>
+        ) : null}
         {auctionSelection.length && availableSelection.length ? (
           <>
             <View style={seatStyles.errorContainer}>
