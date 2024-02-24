@@ -1,4 +1,3 @@
-
 import React from 'react'
 import {
   View,
@@ -33,18 +32,17 @@ function CustomerSeating({ navigation, route }) {
     start_price,
   } = route.params
   const [availableSeats, setAvailableSeats] = useState([])
-  const [selectedSeats, setSelectedSeats] = useState([]) // pass down to auction page, which patches it into a new auction
+  const [selectedSeats, setSelectedSeats] = useState([])
   const [auctionSeats, setAuctionSeats] = useState([])
-  const auctionSeatArray = [] // GET /api/auctions/:event_id (map over each auction and push seat_selection into array)
+  const auctionSeatArray = []
   const [seatingPlan, setSeatingPlan] = useState([])
   const auctionSelection = []
   const availableSelection = []
   const [startingPrice, setStartingPrice] = useState([])
-  const currentHighestBidder = 'user1' //GET /api/:auctions/:event_id current_highest_bidder from auction with that seat in it
   const [loading, setIsLoading] = useState('true')
   const [err, setErr] = useState('false')
   const auctionInfoArray = []
-  let auctionSeatInfo = []
+  let auctionSeatInfo = {}
   const [auctionInfo, setAuctionInfo] = useState([])
 
   useEffect(() => {
@@ -112,7 +110,7 @@ function CustomerSeating({ navigation, route }) {
                     {
                       auctionInfo.map((detail) => {
                         detail[4].includes(seat)
-                          ? (auctionSeatInfo = [
+                          ? (auctionSeatInfo[seat] = [
                               detail[0],
                               detail[1],
                               detail[2],
@@ -157,7 +155,7 @@ function CustomerSeating({ navigation, route }) {
                             }
                             key={seat}
                             // btnText={`£${(Number(auctionSeatInfo[0]).toFixed(2))}\n user${auctionSeatInfo[1]}`}
-                            btnText={`£${(Number(auctionSeatInfo[0]).toFixed(2))}`}
+                            btnText={`£${Number(auctionSeatInfo[seat][0]).toFixed(2)}`}
                             onPress={() =>
                               isSelected
                                 ? setSelectedSeats(
