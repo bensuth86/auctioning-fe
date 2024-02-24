@@ -14,6 +14,8 @@ import BusinessSignup from './components/Business-signup'
 import BusinessCreateScreening from './components/Business-create-new-screening'
 import { useState } from 'react'
 import { socket } from './socket'
+import { PreviousOrders } from "./components/Customer-view-prev-orders";
+
 
 const Stack = createNativeStackNavigator()
 
@@ -93,6 +95,8 @@ function App() {
             component={BusinessCreateScreening}
             options={{ title: 'Business Create Screening' }}
           />
+      <Stack.Screen name="PreviousOrders" component={PreviousOrders} options={{title: "Previous orders"}}/>
+
         </Stack.Navigator>
       </NavigationContainer>
     </CustomerContext.Provider>

@@ -74,6 +74,9 @@ function CustomerHomepage({ navigation }) {
             <Text>Hello {currentCustomer.username}</Text>
             <Button btnText={'Log out'} onPress={() => logUserOut()} />
           </View>
+          <View>
+          <Button btnText={'View previous orders'} onPress={() => navigation.navigate('PreviousOrders')} />
+          </View>
           <Text style={{textAlign: 'center'}}>Adjust radius: </Text>
           <View style={homeStyles.radiusSelection}>
             <Button btnText={'-'} onPress={decreaseRadius} />

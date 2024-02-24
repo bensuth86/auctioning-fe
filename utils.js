@@ -91,6 +91,11 @@ function getAllEventsByBusinessId(business_id){
     return response
 })
 }
+function getWonAuctionsByUser(id) {
+  return prjApi.get(`/auctions/won/${id}`).then((response) => {
+    return response
+})
+}
 
 export {
   getBusinessById,
@@ -105,5 +110,6 @@ export {
   getAuctionByAuctionId,
   updateBid,
   getAllBusinesses,
-  getAllEventsByBusinessId
+  getAllEventsByBusinessId,
+  getWonAuctionsByUser
 }

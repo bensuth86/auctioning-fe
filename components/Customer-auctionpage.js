@@ -347,7 +347,7 @@ function CustomerAuctionPage({ navigation, route }) {
                 currentCustomer.user_id && (
                 <TouchableOpacity
                   title="ViewOrder"
-                  onPress={() => navigation.navigate('CustomerHomepage')}
+                  onPress={() => navigation.navigate('PreviousOrders')}
                 >
                   <Text>View your order</Text>
                 </TouchableOpacity>
