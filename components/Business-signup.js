@@ -40,7 +40,7 @@ function BusinessSignUp({ navigation }) {
     const seatGrid = generateSeatGrid(parseInt(selectedRow), parseInt(selectedColumn));
     postBusiness({ business_name: businessName }, postcode, seatGrid)
     .then(() => {
-        navigation.navigate('Login')
+        // navigation.navigate('Login')
         console.log('Form submitted successfully!')
         setSnackbarMessage('Business account created successfully!')
         setVisible(true)
