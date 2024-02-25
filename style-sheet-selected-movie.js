@@ -4,19 +4,35 @@ export const selectedMovieStyle = StyleSheet.create({
     eventInfo: {
         // backgroundColor: 'yellow',
         padding: 10,
-        marginLeft: 10,
+        marginLeft: 5,
         justifyContent: 'center',
-        flex: 1
+        flex: 1,
+        // backgroundColor: 'pink'
     },
     eventContainer: {
         flexDirection: 'row',
         width: '100%',
-        marginBottom: 10
+        // backgroundColor: 'yellow'
+        // marginBottom: 10,
+        // backgroundColor: 'yellow'
     },
     text: {
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        fontFamily: 'Comfortaa-Light',
+        fontSize: 12,
+        color: '#f5f5f5'
     },
     imageContainer: {
         justifyContent: 'center',
+    },
+    eventHeader: {
+        textAlign: 'left',
+        fontSize: 15,
+        marginBottom: 10,
+        fontFamily: 'Comfortaa-Bold',
+        color: '#f5f5f5'
+    },
+    icons: {
+        marginRight: 15
     }
 })
