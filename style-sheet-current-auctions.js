@@ -4,11 +4,22 @@ export const currentAuctions = StyleSheet.create({
      container: {
         marginBottom: 10,
         padding: 10,
-        backgroundColor: 'pink',
+        // backgroundColor: 'pink',
         borderRadius: 20,
         width: '100%',
-        marginRight: 20,
-        marginLeft: 20
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
         // color: 'white'
+     },
+     text: {
+      fontFamily: 'Comfortaa-Regular',
+      fontSize: 12,
+      textAlign: 'right',
+      color: 'rgba(255, 255, 255, 0.4)'
+     },
+     textBold: {
+      fontFamily: 'Comfortaa-Bold',
+      fontSize: 12,
+      textAlign: 'right',
+      color: '#f5f5f5'
      }
 })

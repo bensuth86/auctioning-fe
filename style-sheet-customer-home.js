@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 
 export const homeStyles = StyleSheet.create({
   navigation: {
-    // backgroundColor: 'yellow',
+    backgroundColor: '#2b1d41',
     width: '100%',
     padding: 10,
   },
