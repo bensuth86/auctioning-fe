@@ -105,6 +105,12 @@ function getCurrentAuctionsByUser(id) {
   })
 }
 
+function postNewEvent(info) {
+  return prjApi.post('/auctions', info).then((response) => {
+    return response
+  })
+}
+
 export {
   getBusinessById,
   getUsersById,

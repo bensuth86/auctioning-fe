@@ -5,12 +5,10 @@ import { styles } from '../style-sheet'
 import { getAllEventsByBusinessId } from '../utils'
 
 function BusinessHomepage({ navigation, route }) {
-
-  
   const { business_id } = route.params
-  console.log(business_id);
+  console.log(business_id)
   const [events, setEvents] = useState([])
-  console.log(events);
+  console.log(events)
   useEffect(() => {
     getAllEventsByBusinessId(business_id)
       .then((response) => {
@@ -32,9 +30,11 @@ function BusinessHomepage({ navigation, route }) {
       </View>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => {
-          navigation.navigate('BusinessCreateScreening')
-        }}
+        onPress={() =>
+          navigation.navigate('BusinessCreateScreening', {
+            business_id,
+          })
+        }
       >
         <Text style={styles.buttonText}>Create Screening</Text>
       </TouchableOpacity>

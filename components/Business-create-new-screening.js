@@ -12,32 +12,32 @@ import { SeatButton, Button } from '../helpers'
 import { styles } from '../style-sheet'
 import { seatStyles } from '../style-sheet-seats.js'
 import { homeStyles } from '../style-sheet-customer-home.js'
+import { useRoute } from '@react-navigation/native'
+import { getBusinessById } from '../utils.js'
+import { useEffect } from 'react'
 
-//accepts user input from signup
-// const [availableSeats, setAvailableSeats] = useState([]) // PATCH /api/events/event_id (available_seats)
-function BusinessCreateScreening() {
-  const seatingPlan = [
-    ['A1', 'A2', 'A3'],
-    ['B1', 'B2', 'B3'],
-    ['C1', 'C2', 'C3'],
-    ['D1', 'D2', 'D3'],
-  ]
+function BusinessCreateScreening(navigation) {
+  const route = useRoute()
+  const business_id = route.params.business_id
+  const [seatingPlan, setSeatingPlan] = useState([])
   const [selectedSeats, setSelectedSeats] = useState([])
   const [loading, setIsLoading] = useState(false)
   const [price, setPrice] = useState(1)
   const [date, setDate] = useState(new Date())
-  const [show, setShow] = useState(false)
-  const [mode, setMode] = useState('date')
 
-  //patch with changePrice
+  useEffect(() => {
+    getBusinessById(business_id)
+      .then((response) => {
+        setSeatingPlan(response.seating_layout)
+      })
+      .catch((err) => {
+        console.error(err)
+        setSnackbarMessage('Failed to get seating plan. Please try again.')
+      })
+  }, [business_id])
 
   function onChange(e, selectedDate) {
     setDate(selectedDate)
-    setShow(false)
-  }
-  function showMode(modeToShow) {
-    setShow(true)
-    setMode(modeToShow)
   }
 
   function increasePrice() {
@@ -49,6 +49,10 @@ function BusinessCreateScreening() {
       setPrice((prevPrice) => prevPrice - 1)
     }
   }
+
+  // console.log(price)
+  // console.log(selectedSeats)
+  // console.log(date)
 
   if (loading)
     return (
@@ -62,19 +66,22 @@ function BusinessCreateScreening() {
       <View style={styles.container}>
         <View style={{ maxWidth: 300 }}></View>
         <View style={{ marginTop: 20, marginBottom: 20 }}>
-          <Button onPress={() => showMode('date')} btnText={"Choose Date"} />
-          <Button onPress={() => showMode('time')} btnText={"Choose Time"} />
-          {show && (
-            <DateTimePicker
-              value={date}
-              mode={mode}
-              is24HOUR={true}
-              onChange={onChange}
-            />
-          )}
+          <DateTimePicker
+            value={date}
+            mode={'date'}
+            is24HOUR={true}
+            onChange={onChange}
+          />
+          <DateTimePicker
+            value={date}
+            mode={'time'}
+            is24HOUR={true}
+            onChange={onChange}
+          />
+          <Text>{date.toLocaleString()}</Text>
           <View style={homeStyles.radiusSelection}>
             <Text>Please select your starting price:</Text>
-            <Button btnText={"-"} onPress={decreasePrice} />
+            <Button btnText={'-'} onPress={decreasePrice} />
             <TextInput
               value={price.toString()}
               onChangeText={(text) =>
@@ -83,7 +90,7 @@ function BusinessCreateScreening() {
               keyboardType="numeric"
               style={homeStyles.numberDial}
             />
-            <Button btnText={"+"} onPress={increasePrice} />
+            <Button btnText={'+'} onPress={increasePrice} />
           </View>
 
           <Text
@@ -160,11 +167,9 @@ function BusinessCreateScreening() {
           <Button
             key={'listeventbtn'}
             btnText="List event"
-            onPress={() =>
-              navigation.navigate('BusinessHomepage', {
-                business_id: { business_id },
-              })
-            }
+            onPress={() => {
+              navigation.navigate('BusinessHomepage')
+            }}
           />
         ) : (
           <View style={seatStyles.errorContainer}>

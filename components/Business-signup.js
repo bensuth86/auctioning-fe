@@ -43,7 +43,7 @@ function BusinessSignUp({ navigation }) {
       )
       postBusiness({ business_name: businessName }, postcode, seatGrid)
         .then(() => {
-          // navigation.navigate('Login')
+          navigation.navigate('Login', { usertype: 'Business' })
           console.log('Form submitted successfully!')
           setSnackbarMessage(
             'Business account created successfully! Please go to login...'
