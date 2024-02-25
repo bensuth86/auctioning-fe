@@ -11,7 +11,8 @@ export const selectedMovieStyle = StyleSheet.create({
     },
     eventContainer: {
         flexDirection: 'row',
-        width: '100%',
+        justifyContent: 'center',
+        width: 'auto',
         // backgroundColor: 'yellow'
         // marginBottom: 10,
         // backgroundColor: 'yellow'

@@ -5,8 +5,9 @@ export const auctionStyles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 20,
+    // margin: 20,
     width: '90%',
+    marginTop: -40
   },
   selectionContainer: {
     justifyContent: 'center',
@@ -95,7 +96,7 @@ export const auctionStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 10,
+    // marginTop: 10,
   },
   statusContainer: {
     width: '100%',
