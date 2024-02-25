@@ -163,7 +163,7 @@ function CustomerHomepage({ navigation }) {
                       <EventsCard key={event.event_id} event={event} />
                     </TouchableOpacity>
                   ) : (
-                    <UnavailableEventsCard key={event.event_id} event={event} />
+                    <UnavailableEventsCard key={i} event={event} />
                   )}
                 </>
               )
