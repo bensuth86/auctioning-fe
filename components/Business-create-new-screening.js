@@ -12,10 +12,14 @@ import { SeatButton, Button } from '../helpers'
 import { styles } from '../style-sheet'
 import { seatStyles } from '../style-sheet-seats.js'
 import { homeStyles } from '../style-sheet-customer-home.js'
+import { useRoute } from '@react-navigation/native'
 
 //accepts user input from signup
 // const [availableSeats, setAvailableSeats] = useState([]) // PATCH /api/events/event_id (available_seats)
 function BusinessCreateScreening(navigation) {
+  const route = useRoute()
+  const business_id = route.params.business_id
+  console.log(business_id)
   const seatingPlan = [
     ['A1', 'A2', 'A3'],
     ['B1', 'B2', 'B3'],
@@ -26,7 +30,6 @@ function BusinessCreateScreening(navigation) {
   const [loading, setIsLoading] = useState(false)
   const [price, setPrice] = useState(1)
   const [date, setDate] = useState(new Date())
-  console.log(date)
 
   //patch with changePrice
 

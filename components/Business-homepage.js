@@ -30,7 +30,11 @@ function BusinessHomepage({ navigation, route }) {
       </View>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('BusinessCreateScreening')}
+        onPress={() =>
+          navigation.navigate('BusinessCreateScreening', {
+            business_id,
+          })
+        }
       >
         <Text style={styles.buttonText}>Create Screening</Text>
       </TouchableOpacity>
