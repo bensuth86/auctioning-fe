@@ -5,6 +5,7 @@ export const seatStyles = StyleSheet.create({
     backgroundColor: '#2b1d41',
     width: '100%',
     alignItems: 'center',
+    
     borderBottomEndRadius: 50,
     borderBottomLeftRadius: 50,
     paddingBottom: 25,

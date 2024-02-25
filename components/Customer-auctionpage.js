@@ -233,70 +233,108 @@ function CustomerAuctionPage({ navigation, route }) {
             <Text style={styles.backButtonText}>← SEATING</Text>
           </Pressable>
         </View>
-        <View style={auctionStyles.container}>
-          {/* <View style={{ width: '100%' }}>
-            <Text
-              style={{ textAlign: 'center', fontSize: 25, marginBottom: 10 }}
-            >
-              {film_title.film_title}
+        {countdown && (
+          <View style={auctionStyles.timerContainer}>
+            <Text style={auctionStyles.text}>TIME LEFT: </Text>
+            <Text style={auctionStyles.countdownFont}>
+              {countdownStructure.hours}h {countdownStructure.minutes}m{' '}
+              {countdownStructure.seconds}s
             </Text>
-            <View style={selectedMovieStyle.eventContainer}>
-              <View style={selectedMovieStyle.imageContainer}>
-                <Image
-                  source={{ uri: poster.poster }}
-                  style={{ width: 112.5, height: 166.5 }}
-                />
-              </View>
-              <View style={selectedMovieStyle.eventInfo}>
-                <Text style={selectedMovieStyle.text}>
-                  {selectedBusiness.business_name}
-                </Text>
-                <Text style={selectedMovieStyle.text}>
-                  {selectedBusiness.postcode}
-                </Text>
-                <Text></Text>
-                <Text style={selectedMovieStyle.text}>
-                  Rating: {certificate.certificate}
-                </Text>
-                <Text style={selectedMovieStyle.text}>
-                  Run time: {run_time.run_time} minutes
-                </Text>
-                <Text>Start time: {convertTime(start_time.start_time)}</Text>
-              </View>
-            </View>
-  </View>*/}
-
-          <View style={[selectedMovieStyle.eventContainer, { padding: 20 }]}>
-            <View style={selectedMovieStyle.imageContainer}>
-              <Image
-                source={{ uri: poster.poster }}
-                style={{ width: 112.5, height: 166.5 }}
-              />
-            </View>
-            <View style={selectedMovieStyle.eventInfo}>
-              <Text style={selectedMovieStyle.eventHeader}>
-                {film_title.film_title}, {certificate.certificate}
-              </Text>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <FontAwesome5 name="map-marker-alt" size={12} color="#f5f5f5" />
-                <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
-                  {selectedBusiness.business_name}, {selectedBusiness.postcode}{' '}
-                </Text>
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <AntDesign name="clockcircleo" size={12} color="#f5f5f5" />
-                <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
-                  {run_time.run_time} minutes
-                </Text>
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Fontisto name="date" size={12} color="#f5f5f5" />
-                <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
-                  {convertTime(start_time.start_time)}
-                </Text>
-              </View>
-            </View>
           </View>
+        )}
+        {!displayAuction.active ? (
+          <View style={{ marginTop: 20 }}>
+            <Button
+              disabled={submitted}
+              btnText="START AUCTION"
+              onPress={() => {
+                initiateAuction()
+              }}
+            />
+          </View>
+        ) : (
+          <>
+            <View style={auctionStyles.biddingForm}>
+              {!countdownStructure.ended && (
+                <>
+                  <Text style={[auctionStyles.text, { marginRight: 5 }]}>
+                    £
+                  </Text>
+                  <TextInput
+                    style={auctionStyles.bidInput}
+                    placeholder="Enter bid"
+                    onChangeText={(value) => setUserBid(value)}
+                    value={userBid}
+                    keyboardType="numeric"
+                  />
+                  <View>
+                    <Button
+                      disabled={submitted}
+                      btnText="SUBMIT"
+                      onPress={() => {
+                        handleNewBid(auctionID)
+                      }}
+                    />
+                  </View>
+                </>
+              )}
+            </View>
+            {/* <Text>
+                Total: £
+                {userBid && !isNaN(userBid)
+                  ? Number(
+                      userBid * seat_selection.selectedSeats.length
+                    ).toFixed(2)
+                  : '0.00'}
+              </Text> */}
+            {/* <View>
+                <Button
+                  disabled={submitted}
+                  btnText="PLACE BID"
+                  onPress={() => {
+                    handleNewBid(auctionID)
+                  }}
+                />
+              </View> */}
+          </>
+        )}
+        {errorMessage && !countdownStructure.ended ? (
+          <View style={auctionStyles.statusContainer}>
+            <Text style={auctionStyles.errors}>{errorMessage}</Text>
+          </View>
+        ) : null}
+        {/* {countdown && (
+            <View style={auctionStyles.timerContainer}>
+              <Text style={auctionStyles.text}>Time left: </Text>
+              <Text style={auctionStyles.countdownFont}>
+                {countdownStructure.hours}h {countdownStructure.minutes}m{' '}
+                {countdownStructure.seconds}s
+              </Text>
+            </View>
+          )} */}
+        <View style={auctionStyles.auctionResultButton}>
+          {countdownStructure.ended &&
+            displayAuction.current_highest_bidder ===
+              currentCustomer.user_id && (
+              <Button
+                btnText="VIEW YOUR ORDER"
+                onPress={() => {
+                  navigation.navigate('PreviousOrders')
+                }}
+              />
+            )}
+          {countdownStructure.ended &&
+            displayAuction.current_highest_bidder !==
+              currentCustomer.user_id && (
+              <Button
+                btnText="BACK TO SCREENINGS"
+                onPress={() => {
+                  navigation.navigate('CustomerHomepage')
+                }}
+              />
+            )}
+        </View>
+        <View style={auctionStyles.container}>
           <View style={auctionStyles.singleInfoContainer}>
             <Text style={auctionStyles.auctionHeaders}>
               SEAT SELECTION:{' '}
@@ -374,106 +412,36 @@ function CustomerAuctionPage({ navigation, route }) {
               </Text>
             </View>
           )}
-          {countdown && (
-            <View style={auctionStyles.timerContainer}>
-              <Text style={auctionStyles.text}>TIME LEFT: </Text>
-              <Text style={auctionStyles.countdownFont}>
-                {countdownStructure.hours}h {countdownStructure.minutes}m{' '}
-                {countdownStructure.seconds}s
-              </Text>
-            </View>
-          )}
-          {!displayAuction.active ? (
-            <View style={{marginTop: 20}}>
-              <Button
-                disabled={submitted}
-                btnText="START AUCTION"
-                onPress={() => {
-                  initiateAuction()
-                }}
+          <View style={[selectedMovieStyle.eventContainer, { padding: 20 }]}>
+            <View style={selectedMovieStyle.imageContainer}>
+              <Image
+                source={{ uri: poster.poster }}
+                style={{ width: 112.5, height: 166.5 }}
               />
             </View>
-          ) : (
-            <>
-              <View style={auctionStyles.biddingForm}>
-                {!countdownStructure.ended && (
-                  <>
-                    <Text style={[auctionStyles.text, { marginRight: 5 }]}>
-                      £
-                    </Text>
-                    <TextInput
-                      style={auctionStyles.bidInput}
-                      placeholder="Enter bid"
-                      onChangeText={(value) => setUserBid(value)}
-                      value={userBid}
-                      keyboardType="numeric"
-                    />
-                    <View>
-                      <Button
-                        disabled={submitted}
-                        btnText="SUBMIT"
-                        onPress={() => {
-                          handleNewBid(auctionID)
-                        }}
-                      />
-                    </View>
-                  </>
-                )}
-              </View>
-              {/* <Text>
-                Total: £
-                {userBid && !isNaN(userBid)
-                  ? Number(
-                      userBid * seat_selection.selectedSeats.length
-                    ).toFixed(2)
-                  : '0.00'}
-              </Text> */}
-              {/* <View>
-                <Button
-                  disabled={submitted}
-                  btnText="PLACE BID"
-                  onPress={() => {
-                    handleNewBid(auctionID)
-                  }}
-                />
-              </View> */}
-            </>
-          )}
-          {errorMessage && !countdownStructure.ended ? (
-            <View style={auctionStyles.statusContainer}>
-              <Text style={auctionStyles.errors}>{errorMessage}</Text>
-            </View>
-          ) : null}
-          {/* {countdown && (
-            <View style={auctionStyles.timerContainer}>
-              <Text style={auctionStyles.text}>Time left: </Text>
-              <Text style={auctionStyles.countdownFont}>
-                {countdownStructure.hours}h {countdownStructure.minutes}m{' '}
-                {countdownStructure.seconds}s
+            <View style={selectedMovieStyle.eventInfo}>
+              <Text style={selectedMovieStyle.eventHeader}>
+                {film_title.film_title}, {certificate.certificate}
               </Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <FontAwesome5 name="map-marker-alt" size={12} color="#f5f5f5" />
+                <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
+                  {selectedBusiness.business_name}, {selectedBusiness.postcode}{' '}
+                </Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <AntDesign name="clockcircleo" size={12} color="#f5f5f5" />
+                <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
+                  {run_time.run_time} minutes
+                </Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Fontisto name="date" size={12} color="#f5f5f5" />
+                <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
+                  {convertTime(start_time.start_time)}
+                </Text>
+              </View>
             </View>
-          )} */}
-          <View style={auctionStyles.auctionResultButton}>
-            {countdownStructure.ended &&
-              displayAuction.current_highest_bidder ===
-                currentCustomer.user_id && (
-                <Button
-                  btnText="VIEW YOUR ORDER"
-                  onPress={() => {
-                    navigation.navigate('PreviousOrders')
-                  }}
-                />
-              )}
-            {countdownStructure.ended &&
-              displayAuction.current_highest_bidder !==
-                currentCustomer.user_id && (
-                <Button
-                  btnText="BACK TO SCREENINGS"
-                  onPress={() => {
-                    navigation.navigate('CustomerHomepage')
-                  }}
-                />
-              )}
           </View>
         </View>
       </View>
