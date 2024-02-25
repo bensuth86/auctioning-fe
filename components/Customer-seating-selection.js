@@ -18,6 +18,8 @@ import {
   getAuctionsByEventId,
 } from '../utils.js'
 import { useIsFocused } from '@react-navigation/native'
+import { useFonts } from 'expo-font'
+import { Pressable } from 'react-native'
 
 function CustomerSeating({ navigation, route }) {
   const {
@@ -50,6 +52,14 @@ function CustomerSeating({ navigation, route }) {
   // temp auction id
   const [eventAuctions, setEventAuctions] = useState([])
   const [selectedAuction, setSelectedAuction] = useState({})
+  const [fontsLoaded] = useFonts({
+    'Comfortaa-Bold': require('../assets/Fonts/Comfortaa-Bold.ttf'),
+    'Comfortaa-Light': require('../assets/Fonts/Comfortaa-Light.ttf'),
+    'Comfortaa-Medium': require('../assets/Fonts/Comfortaa-Medium.ttf'),
+    'Comfortaa-Regular': require('../assets/Fonts/Comfortaa-Regular.ttf'),
+    'Comfortaa-SemiBold': require('../assets/Fonts/Comfortaa-SemiBold.ttf'),
+  })
+
   const isFocused = useIsFocused()
 
   useEffect(() => {
@@ -91,25 +101,38 @@ function CustomerSeating({ navigation, route }) {
         setErr('true')
       })
   }, [isFocused])
+
   if (loading)
     return (
       <View style={styles.container}>
-        <ActivityIndicator />
+        <ActivityIndicator size="large" color="red" />
       </View>
     )
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
-        <View style={{ maxWidth: 300 }}>
+        <View style={seatStyles.topContainer}>
+          <View style={styles.topNavStrip}>
+            <Pressable style={styles.backButton}>
+              <Text style={styles.backButtonText}>← SCREENINGS</Text>
+            </Pressable>
+          </View>
           <SelectedEvent event_id={event_id} />
         </View>
-        <View style={{ marginTop: 20, marginBottom: 20 }}>
+        <View
+          style={{
+            marginTop: 20,
+            marginBottom: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
           <View>
-            <Text style={{ textAlign: 'center', marginBottom: 10 }}>
-              Seating:
-            </Text>
+            <Text style={seatStyles.seatHeader}>SELECT YOUR SEATING</Text>
           </View>
-
+          <View style={seatStyles.screen}>
+            <Text style={seatStyles.screenText}>SCREEN</Text>
+          </View>
           {seatingPlan.map((row, i) => {
             return (
               <View key={i} style={seatStyles.seatsContainer}>
@@ -208,36 +231,40 @@ function CustomerSeating({ navigation, route }) {
             )
           })}
         </View>
-        <View style={seatStyles.screen}>
+        {/* <View style={seatStyles.screen}>
           <Text style={seatStyles.screenText}>SCREEN</Text>
-        </View>
-        <View style={{ marginTop: 10 }}>
-          <View style={seatStyles.keyContainer}>
-            <View
-              style={[seatStyles.seatKey, { backgroundColor: '#7bc47f' }]}
-            ></View>
-            <Text>Available</Text>
+        </View> */}
+        <View style={seatStyles.bigKeyContainer}>
+          <View style={[seatStyles.halfContainer, { marginRight: 20 }]}>
+            <View style={seatStyles.keyContainer}>
+              <View
+                style={[seatStyles.seatKey, { backgroundColor: '#7bc47f' }]}
+              ></View>
+              <Text style={seatStyles.text}>Available</Text>
+            </View>
+            <View style={seatStyles.keyContainer}>
+              <View
+                style={[seatStyles.seatKey, { backgroundColor: '#FFBF00' }]}
+              ></View>
+              <Text style={seatStyles.text}>Auction in process</Text>
+            </View>
           </View>
-          <View style={seatStyles.keyContainer}>
-            <View
-              style={[seatStyles.seatKey, { backgroundColor: '#FFBF00' }]}
-            ></View>
-            <Text>Auction in process</Text>
-          </View>
-          <View style={seatStyles.keyContainer}>
-            <View
-              style={[
-                seatStyles.seatKey,
-                { borderWidth: 2, borderColor: 'red' },
-              ]}
-            ></View>
-            <Text>Selected</Text>
-          </View>
-          <View style={seatStyles.keyContainer}>
-            <View
-              style={[seatStyles.seatKey, { backgroundColor: '#D0D0D0' }]}
-            ></View>
-            <Text>Unavailable</Text>
+          <View style={seatStyles.halfContainer}>
+            <View style={seatStyles.keyContainer}>
+              <View
+                style={[
+                  seatStyles.seatKey,
+                  { borderWidth: 2, borderColor: 'red' },
+                ]}
+              ></View>
+              <Text style={seatStyles.text}>Selected</Text>
+            </View>
+            <View style={seatStyles.keyContainer}>
+              <View
+                style={[seatStyles.seatKey, { backgroundColor: '#D0D0D0' }]}
+              ></View>
+              <Text style={seatStyles.text}>Unavailable</Text>
+            </View>
           </View>
         </View>
         <TouchableOpacity
@@ -259,22 +286,23 @@ function CustomerSeating({ navigation, route }) {
             : availableSelection.push(selectedSeat)
         })} */}
         {selectedSeats.length ? (
-          <Text>Selected seats: {selectedSeats.join(', ')}</Text>
+          <Text style={seatStyles.textBigger}>Selected seats: <Text style={seatStyles.textBiggerBold}>{selectedSeats.join(', ')}</Text></Text>
         ) : null}
         {selectedSeats.length ? (
-          <Text>
-            Price: £
-            {selectedSeats.length && Object.keys(selectedAuction).length
+          <Text style={seatStyles.textBigger}>
+            Price: 
+            <Text style={seatStyles.textBiggerBold}>{' '}
+            £{selectedSeats.length && Object.keys(selectedAuction).length
               ? Number(selectedAuction.current_price).toFixed(2)
-              : Number(start_price).toFixed(2)}
+              : Number(start_price).toFixed(2)}</Text>
             {selectedSeats.length && Object.keys(selectedAuction).length
-              ? ` (Total £${Number(selectedAuction.current_price * selectedSeats.length).toFixed(2)})`
-              : ` (Total £${Number(start_price * selectedSeats.length).toFixed(2)})`}
+              ? <Text style={seatStyles.textBiggerBold}> / {selectedSeats.length} x £{Number(selectedAuction.current_price * selectedSeats.length).toFixed(2)}</Text>
+              : <Text style={seatStyles.textBiggerBold}> / {selectedSeats.length} x £{Number(start_price * selectedSeats.length).toFixed(2)}</Text>}
           </Text>
         ) : null}
-        {!selectedSeats.length ? <Text>Please select a seat</Text> : null}
+        {!selectedSeats.length ? <Text style={seatStyles.textBigger}>Please select a seat</Text> : null}
         {rowErr ? (
-          <Text style={{ fontWeight: 'bold' }}>
+          <Text style={seatStyles.textBiggerError}>
             Seats must be in the same row.
           </Text>
         ) : null}
@@ -289,7 +317,7 @@ function CustomerSeating({ navigation, route }) {
         ) : selectedSeats.length && !Object.keys(selectedAuction).length ? (
           <Button
             key={'auctionButton'}
-            btnText="Start new auction"
+            btnText="START AUCTION"
             onPress={() =>
               navigation.navigate('AuctionPage', {
                 //  auction_info: { auctionSeatInfo },
@@ -310,7 +338,7 @@ function CustomerSeating({ navigation, route }) {
         ) : selectedSeats.length && Object.keys(selectedAuction).length ? (
           <Button
             key={'auctionButton'}
-            btnText="Go to auction"
+            btnText="GO TO AUCTION"
             onPress={() =>
               navigation.navigate('AuctionPage', {
                 // auction_info: { auctionSeatInfo },

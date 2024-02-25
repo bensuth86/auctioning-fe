@@ -14,11 +14,22 @@ import { Image } from 'react-native'
 import { selectedMovieStyle } from '../style-sheet-selected-movie'
 import { getBusinessById } from '../utils'
 import { convertTime } from '../helpers'
+import { useFonts } from 'expo-font'
+import { Fontisto } from '@expo/vector-icons'
+import { FontAwesome5 } from '@expo/vector-icons'
+import { AntDesign } from '@expo/vector-icons'
 
 function SelectedEvent({ event_id }) {
   const [selectedEvent, setSelectedEvent] = useState({})
   const [selectedBusiness, setSelectedBusiness] = useState({})
   const [isLoading, setIsLoading] = useState(true)
+  const [fontsLoaded] = useFonts({
+    'Comfortaa-Bold': require('../assets/Fonts/Comfortaa-Bold.ttf'),
+    'Comfortaa-Light': require('../assets/Fonts/Comfortaa-Light.ttf'),
+    'Comfortaa-Medium': require('../assets/Fonts/Comfortaa-Medium.ttf'),
+    'Comfortaa-Regular': require('../assets/Fonts/Comfortaa-Regular.ttf'),
+    'Comfortaa-SemiBold': require('../assets/Fonts/Comfortaa-SemiBold.ttf'),
+  })
 
   useEffect(() => {
     getEventByEventId(event_id).then((response) => {
@@ -33,15 +44,13 @@ function SelectedEvent({ event_id }) {
   if (isLoading)
     return (
       <>
-        <Text>Event loading...</Text>
-        <ActivityIndicator />
+      <View>
+      <ActivityIndicator size="large" color="red" />
+      </View>
       </>
     )
   return (
-    <View style={{ width: '100%' }}>
-      <Text style={{ textAlign: 'center', fontSize: 25, marginBottom: 10 }}>
-        {selectedEvent.film_title}
-      </Text>
+    <View style={{ width: '80%' }}>
       <View style={selectedMovieStyle.eventContainer}>
         <View style={selectedMovieStyle.imageContainer}>
           <Image
@@ -50,19 +59,27 @@ function SelectedEvent({ event_id }) {
           />
         </View>
         <View style={selectedMovieStyle.eventInfo}>
-          <Text style={selectedMovieStyle.text}>
-            {selectedBusiness.business_name},
+          <Text style={selectedMovieStyle.eventHeader}>
+            {selectedEvent.film_title}, {selectedEvent.certificate}
           </Text>
-          <Text style={selectedMovieStyle.text}>
-            {selectedBusiness.postcode}
-          </Text>
-          <Text style={selectedMovieStyle.text}>
-            Rating: {selectedEvent.certificate}
-          </Text>
-          <Text style={selectedMovieStyle.text}>
-            Run time: {selectedEvent.run_time} minutes
-          </Text>
-          <Text>Start time: {convertTime(selectedEvent.start_time)}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <FontAwesome5 name="map-marker-alt" size={12} color="#f5f5f5" />
+            <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
+              {selectedBusiness.business_name}, {selectedBusiness.postcode}{' '}
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <AntDesign name="clockcircleo" size={12} color="#f5f5f5" />
+            <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
+              {selectedEvent.run_time} minutes
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Fontisto name="date" size={12} color="#f5f5f5" />
+            <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
+              {convertTime(selectedEvent.start_time)}
+            </Text>
+          </View>
         </View>
       </View>
     </View>
