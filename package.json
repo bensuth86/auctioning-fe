@@ -19,6 +19,7 @@
     "expo-device": "~5.9.3",
     "expo-font": "~11.10.3",
     "expo-status-bar": "~1.11.1",
+    "lodash.filter": "^4.6.0",
     "moment": "^2.30.1",
     "node-postcodes.io": "^1.0.3",
     "react": "18.2.0",
