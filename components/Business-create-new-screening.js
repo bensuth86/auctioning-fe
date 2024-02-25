@@ -6,14 +6,13 @@ import {
   View,
   FlatList,
   Image,
+  TouchableOpacity,
 } from 'react-native'
 import filter from 'lodash.filter'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { SeatButton, Button } from '../helpers'
 import { styles } from '../style-sheet'
 import { useRoute } from '@react-navigation/native'
 import { useEffect } from 'react'
-import axios from 'axios'
 
 function BusinessCreateScreening(navigation) {
   const route = useRoute()
@@ -25,6 +24,8 @@ function BusinessCreateScreening(navigation) {
   const [fullData, setFullData] = useState([])
   const [err, setErr] = useState(null)
   const apiEndpoint = `https://www.omdbapi.com/?apikey=f593767e&t=${searchQuerySlug}`
+
+  const movieEndpoint = `https://api.themoviedb.org/3/search/movie?api_key=2ff74c9759be7b397da331e5c4e692ee&query=${searchQuerySlug}&include_adult=false&language=en-US&page=1`
 
   function slugify(str) {
     return String(str)
@@ -39,14 +40,14 @@ function BusinessCreateScreening(navigation) {
 
   useEffect(() => {
     setIsLoading(true)
-    fetchData(apiEndpoint)
+    fetchData(movieEndpoint)
   }, [searchQuery])
 
   const fetchData = async (url) => {
     try {
       const response = await fetch(url)
       const json = await response.json()
-      setData(json)
+      setData(json.results)
       setIsLoading(false)
     } catch (error) {
       setErr(error)
@@ -68,7 +69,7 @@ function BusinessCreateScreening(navigation) {
   // }
 
   return (
-    <SafeAreaView style={{ flex: 1, marginHorizontal: 20 }}>
+    <SafeAreaView style={{ flex: 1, marginHorizontal: 2 }}>
       <TextInput
         placeholder="search"
         clearButtonMode="always"
@@ -84,24 +85,42 @@ function BusinessCreateScreening(navigation) {
           borderRadius: 8,
         }}
       />
-      {loading ? (
+      {loading === true ? (
         <View style={styles.container}>
           <ActivityIndicator />
         </View>
       ) : (
-        <FlatList
-          data={[data]}
-          keyExtractor={(item) => item['imdbID']}
-          renderItem={({ item }) => (
-            <View>
-              <Image source={{ uri: item['Poster'] }} />
-              <View>
-                <Text>{item['Title']}</Text>
-              </View>
-            </View>
-          )}
-        ></FlatList>
+        <View style={{ height: 400 }}>
+          <FlatList
+            data={data}
+            renderItem={({ item }) => {
+              return (
+                <View>
+                  <Image
+                    source={{
+                      uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`,
+                    }}
+                    style={{ width: 80, height: 100 }}
+                  />
+                  <View>
+                    <Text>{item.title}</Text>
+                  </View>
+                </View>
+              )
+            }}
+          ></FlatList>
+        </View>
       )}
+      <TouchableOpacity
+        style={styles.button}
+        // onPress={() =>
+        //   navigation.navigate('BusinessCreateScreening', {
+        //     business_id,
+        //   })
+        // }
+      >
+        <Text style={styles.buttonText}>Continue</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   )
 }
