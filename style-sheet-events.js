@@ -23,6 +23,10 @@ export const eventStyles = StyleSheet.create({
   cardText: {
     flexWrap: 'wrap',
   },
+  unavailcardText: {
+    flexWrap: 'wrap',
+    color: 'grey',
+  },
   cardHeader: {
     textAlign: 'center',
     marginBottom: 5,
