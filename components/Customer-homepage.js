@@ -84,21 +84,6 @@ function CustomerHomepage({ navigation }) {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={styles.container}>
           <View style={homeStyles.navigation}>
-            {/* <Text style={{ fontFamily: 'Comfortaa-Bold' }}>
-              This is to test out the font
-            </Text>
-            <Text style={{ fontFamily: 'Comfortaa-Light' }}>
-              This is to test out the font
-            </Text>
-            <Text style={{ fontFamily: 'Comfortaa-Medium' }}>
-              This is to test out the font
-            </Text>
-            <Text style={{ fontFamily: 'Comfortaa-Regular' }}>
-              This is to test out the font
-            </Text>
-            <Text style={{ fontFamily: 'Comfortaa-SemiBold' }}>
-              This is to test out the font
-            </Text> */}
             <View style={homeStyles.topNavigation}>
               <Text>Hello {currentCustomer.username}</Text>
               <Button btnText={'Log out'} onPress={() => logUserOut()} />
@@ -109,7 +94,24 @@ function CustomerHomepage({ navigation }) {
                 onPress={() => navigation.navigate('PreviousOrders')}
               />
             </View>
-            <Text style={{ textAlign: 'center' }}>Adjust radius: </Text>
+            {/* <Text style={{ textAlign: 'center' }}>Adjust radius: </Text>
+            <View style={homeStyles.radiusSelection}>
+              <Button btnText={'-'} onPress={decreaseRadius} />
+              <TextInput
+                value={radius.toString()}
+                onChangeText={(text) => setRadius(parseInt(text) || 8)}
+                keyboardType="numeric"
+                style={homeStyles.numberDial}
+              />
+              <Button btnText={'+'} onPress={increaseRadius} />
+              <Button
+                btnText={'submit radius'}
+                onPress={() => submitRadius()}
+              />
+            </View> */}
+            <CurrentAuction />
+          </View>
+          <Text style={{ textAlign: 'center' }}>Adjust radius: </Text>
             <View style={homeStyles.radiusSelection}>
               <Button btnText={'-'} onPress={decreaseRadius} />
               <TextInput
@@ -124,8 +126,6 @@ function CustomerHomepage({ navigation }) {
                 onPress={() => submitRadius()}
               />
             </View>
-            <CurrentAuction />
-          </View>
           {!expandRadius ? (
             <Text style={homeStyles.resultsIntro}>
               Showing all cinema events for auctions within an 8 mile radius of{' '}
