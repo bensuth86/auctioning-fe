@@ -13,25 +13,28 @@ import { styles } from '../style-sheet'
 import { seatStyles } from '../style-sheet-seats.js'
 import { homeStyles } from '../style-sheet-customer-home.js'
 import { useRoute } from '@react-navigation/native'
+import { getBusinessById } from '../utils.js'
+import { useEffect } from 'react'
 
-//accepts user input from signup
-// const [availableSeats, setAvailableSeats] = useState([]) // PATCH /api/events/event_id (available_seats)
 function BusinessCreateScreening(navigation) {
   const route = useRoute()
   const business_id = route.params.business_id
-  console.log(business_id)
-  const seatingPlan = [
-    ['A1', 'A2', 'A3'],
-    ['B1', 'B2', 'B3'],
-    ['C1', 'C2', 'C3'],
-    ['D1', 'D2', 'D3'],
-  ]
+  const [seatingPlan, setSeatingPlan] = useState([])
   const [selectedSeats, setSelectedSeats] = useState([])
   const [loading, setIsLoading] = useState(false)
   const [price, setPrice] = useState(1)
   const [date, setDate] = useState(new Date())
 
-  //patch with changePrice
+  useEffect(() => {
+    getBusinessById(business_id)
+      .then((response) => {
+        setSeatingPlan(response.seating_layout)
+      })
+      .catch((err) => {
+        console.error(err)
+        setSnackbarMessage('Failed to get seating plan. Please try again.')
+      })
+  }, [business_id])
 
   function onChange(e, selectedDate) {
     setDate(selectedDate)
@@ -46,6 +49,10 @@ function BusinessCreateScreening(navigation) {
       setPrice((prevPrice) => prevPrice - 1)
     }
   }
+
+  // console.log(price)
+  // console.log(selectedSeats)
+  // console.log(date)
 
   if (loading)
     return (
@@ -160,11 +167,9 @@ function BusinessCreateScreening(navigation) {
           <Button
             key={'listeventbtn'}
             btnText="List event"
-            onPress={() =>
-              navigation.navigate('BusinessHomepage', {
-                business_id: { business_id },
-              })
-            }
+            onPress={() => {
+              navigation.navigate('BusinessHomepage')
+            }}
           />
         ) : (
           <View style={seatStyles.errorContainer}>
