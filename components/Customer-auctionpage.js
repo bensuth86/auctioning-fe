@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Alert, ScrollView } from 'react-native'
+import { View, Text, Alert, ScrollView } from 'react-native'
 import { styles } from '../style-sheet'
 import { auctionStyles } from '../auction-stylesheet'
 import { TextInput, Image } from 'react-native'
@@ -13,6 +13,11 @@ import { updateBid } from '../utils'
 import { convertTime } from '../helpers'
 import { socket } from '../socket'
 import { selectedMovieStyle } from '../style-sheet-selected-movie'
+import { Pressable } from 'react-native'
+import { useFonts } from 'expo-font'
+import { Fontisto } from '@expo/vector-icons'
+import { FontAwesome5 } from '@expo/vector-icons'
+import { AntDesign } from '@expo/vector-icons'
 
 function CustomerAuctionPage({ navigation, route }) {
   const { currentCustomer } = useContext(CustomerContext)
@@ -40,6 +45,14 @@ function CustomerAuctionPage({ navigation, route }) {
   const [tempUser, setTempUser] = useState(null)
   const [submitted, setSubmitted] = useState(false)
   const [selectedBusiness, setSelectedBusiness] = useState({})
+  const [fontsLoaded] = useFonts({
+    'Comfortaa-Bold': require('../assets/Fonts/Comfortaa-Bold.ttf'),
+    'Comfortaa-Light': require('../assets/Fonts/Comfortaa-Light.ttf'),
+    'Comfortaa-Medium': require('../assets/Fonts/Comfortaa-Medium.ttf'),
+    'Comfortaa-Regular': require('../assets/Fonts/Comfortaa-Regular.ttf'),
+    'Comfortaa-SemiBold': require('../assets/Fonts/Comfortaa-SemiBold.ttf'),
+    'KodeMono-Regular': require('../assets/Fonts/KodeMono-Regular.ttf'),
+  })
   const createAlert = (msg) =>
     Alert.alert('A new bid!', msg, [
       { text: 'OK', onPress: () => console.log('OK Pressed') },
@@ -214,9 +227,14 @@ function CustomerAuctionPage({ navigation, route }) {
   }
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View style={styles.container}>
+      <View style={styles.darkContainer}>
+        <View style={styles.topNavStrip}>
+          <Pressable style={styles.backButton}>
+            <Text style={styles.backButtonText}>← SEATING</Text>
+          </Pressable>
+        </View>
         <View style={auctionStyles.container}>
-          <View style={{ width: '100%' }}>
+          {/* <View style={{ width: '100%' }}>
             <Text
               style={{ textAlign: 'center', fontSize: 25, marginBottom: 10 }}
             >
@@ -246,11 +264,43 @@ function CustomerAuctionPage({ navigation, route }) {
                 <Text>Start time: {convertTime(start_time.start_time)}</Text>
               </View>
             </View>
+  </View>*/}
+
+          <View style={[selectedMovieStyle.eventContainer, { padding: 20 }]}>
+            <View style={selectedMovieStyle.imageContainer}>
+              <Image
+                source={{ uri: poster.poster }}
+                style={{ width: 112.5, height: 166.5 }}
+              />
+            </View>
+            <View style={selectedMovieStyle.eventInfo}>
+              <Text style={selectedMovieStyle.eventHeader}>
+                {film_title.film_title}, {certificate.certificate}
+              </Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <FontAwesome5 name="map-marker-alt" size={12} color="#f5f5f5" />
+                <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
+                  {selectedBusiness.business_name}, {selectedBusiness.postcode}{' '}
+                </Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <AntDesign name="clockcircleo" size={12} color="#f5f5f5" />
+                <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
+                  {run_time.run_time} minutes
+                </Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Fontisto name="date" size={12} color="#f5f5f5" />
+                <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
+                  {convertTime(start_time.start_time)}
+                </Text>
+              </View>
+            </View>
           </View>
           <View style={auctionStyles.singleInfoContainer}>
-            <Text style={{ textAlign: 'center' }}>
-              Seat selection:{' '}
-              <Text style={{ fontWeight: 'bold' }}>
+            <Text style={auctionStyles.auctionHeaders}>
+              SEAT SELECTION:{' '}
+              <Text style={auctionStyles.auctionData}>
                 {seat_selection.selectedSeats.join(', ')}
               </Text>
             </Text>
@@ -258,23 +308,21 @@ function CustomerAuctionPage({ navigation, route }) {
           {auctionID ? (
             <View style={auctionStyles.biddingInfoContainer}>
               <View style={auctionStyles.highestBidInfoContainer}>
-                <Text style={{ textAlign: 'center' }}>
-                  Current highest bid:
+                <Text style={auctionStyles.auctionHeaders}>CURRENT BID:</Text>
+                <Text style={auctionStyles.auctionData}>
+                  £{Number(displayAuction.current_price).toFixed(2)}
                 </Text>
-                <Text style={{ textAlign: 'center', fontSize: 25 }}>
-                  £{displayAuction.current_price}
-                </Text>
-                <Text style={{ textAlign: 'center' }}>
-                  (Total: £
+                <Text style={auctionStyles.auctionData}>
+                  (£
                   {Number(
                     displayAuction.current_price *
                       seat_selection.selectedSeats.length
-                  ).toFixed(2)}
-                  )
+                  ).toFixed(2)}{' '}
+                  total)
                 </Text>
-                <Text style={{ textAlign: 'center' }}>
-                  Number of bids so far: {displayAuction.bid_counter}
-                </Text>
+                {/* <Text style={auctionStyles.auctionHeaders}>BIDS:</Text>
+                  <Text style={auctionStyles.auctionData}>{displayAuction.bid_counter}
+                </Text> */}
               </View>
               <View style={auctionStyles.otherBidInfoContainer}>
                 <View
@@ -283,8 +331,10 @@ function CustomerAuctionPage({ navigation, route }) {
                     { marginBottom: 5 },
                   ]}
                 >
-                  <Text>Highest bidder:</Text>
-                  <Text style={{ fontSize: 25 }}>{tempUser}</Text>
+                  <Text style={auctionStyles.auctionHeaders}>
+                    HIGHEST BIDDER:
+                  </Text>
+                  <Text style={auctionStyles.auctionData}>{tempUser}</Text>
                 </View>
                 <View
                   style={[
@@ -292,32 +342,52 @@ function CustomerAuctionPage({ navigation, route }) {
                     { marginTop: 5 },
                   ]}
                 >
-                  <Text>Auction status: </Text>
+                  <Text style={auctionStyles.auctionHeaders}>
+                    AUCTION STATUS:{' '}
+                  </Text>
                   {!displayAuction.active ? (
-                    <Text style={{ fontSize: 25 }}>Inactive</Text>
+                    <Text style={auctionStyles.auctionData}>Inactive</Text>
                   ) : (
-                    <Text style={{ fontSize: 25 }}>Active</Text>
+                    <Text style={auctionStyles.auctionData}>Active</Text>
                   )}
                 </View>
               </View>
             </View>
           ) : (
             <View style={auctionStyles.priceInfoContainer}>
-              <Text style={{ textAlign: 'center' }}>
-                Starting Price:{' '}
-                <Text style={{ fontWeight: 'bold' }}>
-                  £{Number(start_price.start_price).toFixed(2)}
+              <Text style={auctionStyles.auctionHeaders}>
+                STARTING PRICE:{' '}
+                <Text style={auctionStyles.auctionData}>
+                  £{Number(start_price.start_price).toFixed(2)}{' '}
+                  {`/ £${Number(start_price.start_price * seat_selection.selectedSeats.length).toFixed(2)} total`}
                 </Text>
-                {` (Total £${Number(start_price.start_price * seat_selection.selectedSeats.length).toFixed(2)})`}
               </Text>
             </View>
           )}
-
+          {displayAuction.bid_counter && (
+            <View style={auctionStyles.singleInfoContainer}>
+              <Text style={auctionStyles.auctionHeaders}>
+                BIDS:{' '}
+                <Text style={auctionStyles.auctionData}>
+                  {displayAuction.bid_counter}
+                </Text>
+              </Text>
+            </View>
+          )}
+          {countdown && (
+            <View style={auctionStyles.timerContainer}>
+              <Text style={auctionStyles.text}>TIME LEFT: </Text>
+              <Text style={auctionStyles.countdownFont}>
+                {countdownStructure.hours}h {countdownStructure.minutes}m{' '}
+                {countdownStructure.seconds}s
+              </Text>
+            </View>
+          )}
           {!displayAuction.active ? (
-            <View>
+            <View style={{marginTop: 20}}>
               <Button
                 disabled={submitted}
-                btnText="start auction"
+                btnText="START AUCTION"
                 onPress={() => {
                   initiateAuction()
                 }}
@@ -326,69 +396,83 @@ function CustomerAuctionPage({ navigation, route }) {
           ) : (
             <>
               <View style={auctionStyles.biddingForm}>
-                <TextInput
-                  style={auctionStyles.bidInput}
-                  placeholder="Enter your bid here"
-                  onChangeText={(value) => setUserBid(value)}
-                  value={userBid}
-                  keyboardType="numeric"
-                />
+                {!countdownStructure.ended && (
+                  <>
+                    <Text style={[auctionStyles.text, { marginRight: 5 }]}>
+                      £
+                    </Text>
+                    <TextInput
+                      style={auctionStyles.bidInput}
+                      placeholder="Enter bid"
+                      onChangeText={(value) => setUserBid(value)}
+                      value={userBid}
+                      keyboardType="numeric"
+                    />
+                    <View>
+                      <Button
+                        disabled={submitted}
+                        btnText="SUBMIT"
+                        onPress={() => {
+                          handleNewBid(auctionID)
+                        }}
+                      />
+                    </View>
+                  </>
+                )}
               </View>
-              <Text>
+              {/* <Text>
                 Total: £
                 {userBid && !isNaN(userBid)
                   ? Number(
                       userBid * seat_selection.selectedSeats.length
                     ).toFixed(2)
                   : '0.00'}
-              </Text>
-              <View>
+              </Text> */}
+              {/* <View>
                 <Button
                   disabled={submitted}
-                  btnText="place bid"
+                  btnText="PLACE BID"
                   onPress={() => {
                     handleNewBid(auctionID)
                   }}
                 />
-              </View>
+              </View> */}
             </>
           )}
-          {errorMessage ? (
+          {errorMessage && !countdownStructure.ended ? (
             <View style={auctionStyles.statusContainer}>
-              <Text style={{ textAlign: 'center', color: 'red' }}>
-                {errorMessage}
-              </Text>
+              <Text style={auctionStyles.errors}>{errorMessage}</Text>
             </View>
           ) : null}
-          {countdown && (
+          {/* {countdown && (
             <View style={auctionStyles.timerContainer}>
-              <Text style={{ color: 'white' }}>Timer:</Text>
-              <Text style={{ fontSize: 25, color: 'white' }}>
+              <Text style={auctionStyles.text}>Time left: </Text>
+              <Text style={auctionStyles.countdownFont}>
                 {countdownStructure.hours}h {countdownStructure.minutes}m{' '}
                 {countdownStructure.seconds}s
               </Text>
             </View>
-          )}
+          )} */}
           <View style={auctionStyles.auctionResultButton}>
             {countdownStructure.ended &&
               displayAuction.current_highest_bidder ===
                 currentCustomer.user_id && (
-                <TouchableOpacity
-                  title="ViewOrder"
-                  onPress={() => navigation.navigate('PreviousOrders')}
-                >
-                  <Text>View your order</Text>
-                </TouchableOpacity>
+                <Button
+                  btnText="VIEW YOUR ORDER"
+                  onPress={() => {
+                    navigation.navigate('PreviousOrders')
+                  }}
+                />
               )}
             {countdownStructure.ended &&
               displayAuction.current_highest_bidder !==
                 currentCustomer.user_id && (
-                <TouchableOpacity
-                  title="BackToHomepage"
-                  onPress={() => navigation.navigate('CustomerHomepage')}
-                >
-                  <Text>Back to auctions</Text>
-                </TouchableOpacity>
+                <Button
+                  btnText="BACK TO SCREENINGS"
+                  onPress={() => {
+                    navigation.navigate('CustomerHomepage')
+                  }}
+                />
               )}
           </View>
         </View>
