@@ -4,8 +4,8 @@ export const seatStyles = StyleSheet.create({
   seatsContainer: {
     // marginBottom: 100,
     width: 'auto',
-    borderColor: 'grey',
-    borderWidth: 1,
+    // borderColor: 'grey',
+    // borderWidth: 1,
   },
   rowContainer: {
     flexDirection: 'row',

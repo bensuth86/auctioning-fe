@@ -23,6 +23,8 @@ import { homeStyles } from '../style-sheet-customer-home'
 import { TextInput } from 'react-native-paper'
 import { userLocation } from '../utils'
 import { CurrentAuction } from './Customer-current-auctions-section'
+import { useFonts } from 'expo-font'
+
 
 function CustomerHomepage({ navigation }) {
   
@@ -32,6 +34,13 @@ function CustomerHomepage({ navigation }) {
   const [isLoading, setIsLoading] = useState(true)
   const [radius, setRadius] = useState(8)
   const [expandRadius, setExpandRadius] = useState(null)
+  const [fontsLoaded] = useFonts({
+    'Comfortaa-Bold': require('../assets/Fonts/Comfortaa-Bold.ttf'),
+    'Comfortaa-Light': require('../assets/Fonts/Comfortaa-Light.ttf'),
+    'Comfortaa-Medium': require('../assets/Fonts/Comfortaa-Medium.ttf'),
+    'Comfortaa-Regular': require('../assets/Fonts/Comfortaa-Regular.ttf'),
+    'Comfortaa-SemiBold': require('../assets/Fonts/Comfortaa-SemiBold.ttf'),
+  })
 
   useEffect(() => {
     getEventsByUserId(currentCustomer.user_id, expandRadius).then((response) => {
@@ -59,6 +68,10 @@ function CustomerHomepage({ navigation }) {
     setExpandRadius(radius)
   }
 
+  if (!fontsLoaded){
+    return undefined
+  }
+
   if (isLoading)
     return (
       <View style={styles.container}>
@@ -70,6 +83,11 @@ function CustomerHomepage({ navigation }) {
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
         <View style={homeStyles.navigation}>
+            <Text style={{fontFamily: 'Comfortaa-Bold'}}>This is to test out the font</Text>
+            <Text style={{fontFamily: 'Comfortaa-Light'}}>This is to test out the font</Text>
+            <Text style={{fontFamily: 'Comfortaa-Medium'}}>This is to test out the font</Text>
+            <Text style={{fontFamily: 'Comfortaa-Regular'}}>This is to test out the font</Text>
+            <Text style={{fontFamily: 'Comfortaa-SemiBold'}}>This is to test out the font</Text>
           <View style={homeStyles.topNavigation}>
             <Text>Hello {currentCustomer.username}</Text>
             <Button btnText={'Log out'} onPress={() => logUserOut()} />
