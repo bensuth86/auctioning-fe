@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Image } from 'react-native'
 import Button from '../helpers'
 import { styles } from '../style-sheet'
 import { getAllEventsByBusinessId } from '../utils'
+import { eventStyles } from '../style-sheet-events'
+import { FontAwesome5 } from '@expo/vector-icons'
+import { AntDesign } from '@expo/vector-icons'
+import { Fontisto } from '@expo/vector-icons'
+import { convertTime } from '../helpers'
 
 function BusinessHomepage({ navigation, route }) {
   const { business_id } = route.params
-  console.log(business_id)
   const [events, setEvents] = useState([])
-  console.log(events)
+
+  const [seatingPlan, setSeatingPlan] = useState([])
+
   useEffect(() => {
     getAllEventsByBusinessId(business_id)
       .then((response) => {
         setEvents(response.data.events)
+        setSeatingPlan(response.available_seats)
       })
       .catch((error) => {
         console.error('Error fetching events:', error)
@@ -21,11 +28,28 @@ function BusinessHomepage({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <Text>Hello, it's Business Homepage :D</Text>
       <Text>Events for Business ID: {business_id}</Text>
-      <View>
+      <View style={eventStyles.eventcard}>
         {events.map((event) => (
-          <Text key={event.event_id}>{event.film_title}</Text>
+          <View key={event.event_id} style={eventStyles.eventcard}>
+            <View style={eventStyles.mainContent}>
+              <Image
+                source={{ uri: event.poster }}
+                style={{ width: 130, height: 180.5 }}
+              />
+              <View style={eventStyles.rightSide}>
+                <Text style={eventStyles.cardHeader}>{event.film_title}</Text>
+                <Text style={eventStyles.cardText}>
+                  <AntDesign name="clockcircleo" size={16} color="black" />{' '}
+                  {event.run_time} minutes
+                </Text>
+                <Text style={eventStyles.cardText}>
+                  <Fontisto name="date" size={16} color="black" />{' '}
+                  {convertTime(event.start_time)}
+                </Text>
+              </View>
+            </View>
+          </View>
         ))}
       </View>
       <TouchableOpacity
