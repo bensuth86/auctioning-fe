@@ -27,41 +27,53 @@ export const auctionStyles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: 220,
+    // borderRadius: 20
   },
   singleInfoContainer: {
     flexDirection: 'row',
     width: '100%',
-    backgroundColor: '#e4e5eb',
+    // backgroundColor: '#e4e5eb',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     padding: 20,
     marginBottom: 10,
     justifyContent: 'center',
+    borderRadius: 20,
+    marginTop: 10
   },
   priceInfoContainer: {
     flexDirection: 'row',
     width: '100%',
-    backgroundColor: '#e4e5eb',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     padding: 20,
     justifyContent: 'center',
+    borderRadius: 20
   },
   highestBidInfoContainer: {
     flex: 1,
-    backgroundColor: '#e4e5eb',
+    // backgroundColor: '#e4e5eb',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     padding: 20,
     marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 20
   },
   otherBidInfoContainer: {
     flex: 2,
     flexDirection: 'column',
     height: 'auto',
+    // borderRadius: 20
+
   },
   smallerBidInfoContainer: {
-    backgroundColor: '#e4e5eb',
+    // backgroundColor: '#e4e5eb',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     flex: 1,
     padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 20
+
   },
   auctionForm: {
     width: '100%',
@@ -69,10 +81,15 @@ export const auctionStyles = StyleSheet.create({
   },
   bidInput: {
     height: 40,
-    borderWidth: 1,
-    width: 150,
+    // borderWidth: 1,
+    width: 140,
     backgroundColor: 'white',
-    padding: 5,
+    // padding: 5,
+    paddingBottom: 5,
+    paddingTop: 5,
+    paddingRight: 15,
+    paddingLeft: 15,
+    borderRadius: 20
   },
   biddingForm: {
     flexDirection: 'row',
@@ -85,13 +102,13 @@ export const auctionStyles = StyleSheet.create({
     marginBottom: 30,
   },
   timerContainer: {
-    backgroundColor: 'pink',
     width: '100%',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
-    backgroundColor: '#838383',
+    marginTop: 20
+    // backgroundColor: '#838383',
   },
   auctionResultButton: {
     width: '100%',
@@ -102,4 +119,34 @@ export const auctionStyles = StyleSheet.create({
     marginTop: 10,
     padding: 20,
   },
+  auctionHeaders: {
+    fontFamily: 'Comfortaa-Regular',
+    textAlign: 'center',
+    color: 'rgba(255, 255, 255, 0.4)',
+    fontSize: 12
+  },
+  auctionData: {
+    fontFamily: 'Comfortaa-Regular',
+    textAlign: 'center',
+    color: 'rgba(255, 255, 255, 1)',
+    fontSize: 16
+  },
+  countdownFont: {
+    fontFamily: 'KodeMono-Regular',
+    fontSize: 40,
+    color: '#f5f5f5'
+  },
+  text: {
+    fontFamily: 'Comfortaa-Light',
+    fontSize: 12,
+    color: '#f5f5f5'
+  },
+  BidInfoContainer: {
+  },
+  errors: {
+    textAlign: 'center',
+    color: 'red',
+    fontFamily: 'Comfortaa-Light',
+    fontSize: 12,
+  }
 })

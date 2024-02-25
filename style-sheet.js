@@ -7,11 +7,19 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  darkContainer: {
+    flex: 1,
+    backgroundColor: '#2b1d41',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   button: {
     margin: 10,
     padding: 10,
     borderRadius: 20,
     backgroundColor: '#e00c3e',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   buttontext: {
     // letterSpacing: 0.25,
@@ -19,6 +27,8 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Comfortaa-Light',
     fontSize: 12,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   textbox: {
     // for text entry
@@ -42,7 +52,7 @@ export const styles = StyleSheet.create({
     borderColor: '#777',
   },
   backButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     padding: 10,
     borderRadius: 20,
     width: 'auto',
