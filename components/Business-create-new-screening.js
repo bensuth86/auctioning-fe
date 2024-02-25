@@ -15,7 +15,7 @@ import { homeStyles } from '../style-sheet-customer-home.js'
 
 //accepts user input from signup
 // const [availableSeats, setAvailableSeats] = useState([]) // PATCH /api/events/event_id (available_seats)
-function BusinessCreateScreening() {
+function BusinessCreateScreening(navigation) {
   const seatingPlan = [
     ['A1', 'A2', 'A3'],
     ['B1', 'B2', 'B3'],
@@ -26,18 +26,12 @@ function BusinessCreateScreening() {
   const [loading, setIsLoading] = useState(false)
   const [price, setPrice] = useState(1)
   const [date, setDate] = useState(new Date())
-  const [show, setShow] = useState(false)
-  const [mode, setMode] = useState('date')
+  console.log(date)
 
   //patch with changePrice
 
   function onChange(e, selectedDate) {
     setDate(selectedDate)
-    setShow(false)
-  }
-  function showMode(modeToShow) {
-    setShow(true)
-    setMode(modeToShow)
   }
 
   function increasePrice() {
@@ -62,19 +56,22 @@ function BusinessCreateScreening() {
       <View style={styles.container}>
         <View style={{ maxWidth: 300 }}></View>
         <View style={{ marginTop: 20, marginBottom: 20 }}>
-          <Button onPress={() => showMode('date')} btnText={"Choose Date"} />
-          <Button onPress={() => showMode('time')} btnText={"Choose Time"} />
-          {show && (
-            <DateTimePicker
-              value={date}
-              mode={mode}
-              is24HOUR={true}
-              onChange={onChange}
-            />
-          )}
+          <DateTimePicker
+            value={date}
+            mode={'date'}
+            is24HOUR={true}
+            onChange={onChange}
+          />
+          <DateTimePicker
+            value={date}
+            mode={'time'}
+            is24HOUR={true}
+            onChange={onChange}
+          />
+          <Text>{date.toLocaleString()}</Text>
           <View style={homeStyles.radiusSelection}>
             <Text>Please select your starting price:</Text>
-            <Button btnText={"-"} onPress={decreasePrice} />
+            <Button btnText={'-'} onPress={decreasePrice} />
             <TextInput
               value={price.toString()}
               onChangeText={(text) =>
@@ -83,7 +80,7 @@ function BusinessCreateScreening() {
               keyboardType="numeric"
               style={homeStyles.numberDial}
             />
-            <Button btnText={"+"} onPress={increasePrice} />
+            <Button btnText={'+'} onPress={increasePrice} />
           </View>
 
           <Text
