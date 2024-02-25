@@ -15,7 +15,7 @@ import { Button } from '../helpers'
 import { styles } from '../style-sheet'
 import { eventStyles } from '../style-sheet-events'
 import { getEventsByUserId } from '../utils'
-import EventsCard from './Customer-events-card'
+import { EventsCard, UnavailableEventsCard } from './Customer-events-card'
 import CustomerSeating from './Customer-seating-selection'
 import CustomerContext from '../Contexts/LoggedInCustomerContext'
 import { useContext } from 'react'
@@ -25,9 +25,7 @@ import { userLocation } from '../utils'
 import { CurrentAuction } from './Customer-current-auctions-section'
 import { useFonts } from 'expo-font'
 
-
 function CustomerHomepage({ navigation }) {
-  
   const { currentCustomer, setCurrentCustomer } = useContext(CustomerContext)
 
   const [eventsList, setEventsList] = useState([])
@@ -43,10 +41,12 @@ function CustomerHomepage({ navigation }) {
   })
 
   useEffect(() => {
-    getEventsByUserId(currentCustomer.user_id, expandRadius).then((response) => {
-      setEventsList(response)
-      setIsLoading(false)
-    })
+    getEventsByUserId(currentCustomer.user_id, expandRadius).then(
+      (response) => {
+        setEventsList(response)
+        setIsLoading(false)
+      }
+    )
   }, [currentCustomer.user_id, expandRadius])
 
   function logUserOut() {
@@ -68,7 +68,7 @@ function CustomerHomepage({ navigation }) {
     setExpandRadius(radius)
   }
 
-  if (!fontsLoaded){
+  if (!fontsLoaded) {
     return undefined
   }
 
@@ -79,69 +79,99 @@ function CustomerHomepage({ navigation }) {
       </View>
     )
 
-  return (<>
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View style={styles.container}>
-        <View style={homeStyles.navigation}>
-            <Text style={{fontFamily: 'Comfortaa-Bold'}}>This is to test out the font</Text>
-            <Text style={{fontFamily: 'Comfortaa-Light'}}>This is to test out the font</Text>
-            <Text style={{fontFamily: 'Comfortaa-Medium'}}>This is to test out the font</Text>
-            <Text style={{fontFamily: 'Comfortaa-Regular'}}>This is to test out the font</Text>
-            <Text style={{fontFamily: 'Comfortaa-SemiBold'}}>This is to test out the font</Text>
-          <View style={homeStyles.topNavigation}>
-            <Text>Hello {currentCustomer.username}</Text>
-            <Button btnText={'Log out'} onPress={() => logUserOut()} />
+  return (
+    <>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.container}>
+          <View style={homeStyles.navigation}>
+            <Text style={{ fontFamily: 'Comfortaa-Bold' }}>
+              This is to test out the font
+            </Text>
+            <Text style={{ fontFamily: 'Comfortaa-Light' }}>
+              This is to test out the font
+            </Text>
+            <Text style={{ fontFamily: 'Comfortaa-Medium' }}>
+              This is to test out the font
+            </Text>
+            <Text style={{ fontFamily: 'Comfortaa-Regular' }}>
+              This is to test out the font
+            </Text>
+            <Text style={{ fontFamily: 'Comfortaa-SemiBold' }}>
+              This is to test out the font
+            </Text>
+            <View style={homeStyles.topNavigation}>
+              <Text>Hello {currentCustomer.username}</Text>
+              <Button btnText={'Log out'} onPress={() => logUserOut()} />
+            </View>
+            <View>
+              <Button
+                btnText={'View previous orders'}
+                onPress={() => navigation.navigate('PreviousOrders')}
+              />
+            </View>
+            <Text style={{ textAlign: 'center' }}>Adjust radius: </Text>
+            <View style={homeStyles.radiusSelection}>
+              <Button btnText={'-'} onPress={decreaseRadius} />
+              <TextInput
+                value={radius.toString()}
+                onChangeText={(text) => setRadius(parseInt(text) || 8)}
+                keyboardType="numeric"
+                style={homeStyles.numberDial}
+              />
+              <Button btnText={'+'} onPress={increaseRadius} />
+              <Button
+                btnText={'submit radius'}
+                onPress={() => submitRadius()}
+              />
+            </View>
+            <CurrentAuction />
           </View>
-          <View>
-          <Button btnText={'View previous orders'} onPress={() => navigation.navigate('PreviousOrders')} />
-          </View>
-          <Text style={{textAlign: 'center'}}>Adjust radius: </Text>
-          <View style={homeStyles.radiusSelection}>
-            <Button btnText={'-'} onPress={decreaseRadius} />
-            <TextInput
-              value={radius.toString()}
-              onChangeText={(text) => setRadius(parseInt(text) || 8)}
-              keyboardType="numeric"
-              style={homeStyles.numberDial}
-            />
-            <Button btnText={'+'} onPress={increaseRadius} />
-            <Button btnText={'submit radius'} onPress={() => submitRadius()}/>
-          </View>
-          <CurrentAuction/>
-        </View>
           {!expandRadius ? (
-            <Text style={homeStyles.resultsIntro}>Showing all cinema events for auctions within an 8 mile radius of {currentCustomer.postcode}: </Text>
-            ):(
-            <Text style={homeStyles.resultsIntro}>Showing all cinema events for auctions within a {expandRadius} mile radius of {currentCustomer.postcode}: </Text>
+            <Text style={homeStyles.resultsIntro}>
+              Showing all cinema events for auctions within an 8 mile radius of{' '}
+              {currentCustomer.postcode}:{' '}
+            </Text>
+          ) : (
+            <Text style={homeStyles.resultsIntro}>
+              Showing all cinema events for auctions within a {expandRadius}{' '}
+              mile radius of {currentCustomer.postcode}:{' '}
+            </Text>
           )}
-        <View style={eventStyles.eventslist}>
-          {eventsList.map((event, i) => {
-            // console.log('event: ', event)
-            return (
-              <TouchableOpacity
-              key={i}
-                onPress={() =>
-                  navigation.navigate('SeatingPage', {
-                    event_id: event.event_id,
-                    business_id: event.business_id,
-                    start_price: event.start_price,
-                    active: event.active,
-                    available_seats: event.available_seats,
-                    start_time: event.start_time,
-                    film_title: event.film_title,
-                    poster: event.poster,
-                    run_time: event.run_time,
-                    certificate: event.certificate,
-                  })
-                }
-              >
-                <EventsCard key={event.event_id} event={event} />
-              </TouchableOpacity>
-            )
-          })}
+          <View style={eventStyles.eventslist}>
+            {eventsList.map((event, i) => {
+              const availableSeats = event.available_seats.length
+              return (
+                <>
+                  {availableSeats > 0 ? (
+                    <TouchableOpacity
+                      key={i}
+                      onPress={() =>
+                        navigation.navigate('SeatingPage', {
+                          event_id: event.event_id,
+                          business_id: event.business_id,
+                          start_price: event.start_price,
+                          active: event.active,
+                          available_seats: event.available_seats,
+                          start_time: event.start_time,
+                          film_title: event.film_title,
+                          poster: event.poster,
+                          run_time: event.run_time,
+                          certificate: event.certificate,
+                        })
+                      }
+                    >
+                      <EventsCard key={event.event_id} event={event} />
+                    </TouchableOpacity>
+                  ) : (
+                    <UnavailableEventsCard key={event.event_id} event={event} />
+                  )}
+                </>
+              )
+            })}
+          </View>
         </View>
-      </View>
-    </ScrollView></>
+      </ScrollView>
+    </>
   )
 }
 
