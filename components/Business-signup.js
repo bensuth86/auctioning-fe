@@ -15,7 +15,7 @@ function BusinessSignUp({ navigation }) {
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const [selectedRow, setSelectedRow] = useState('')
   const [selectedColumn, setSelectedColumn] = useState('')
-  
+  const [success, setSuccess] = useState(false)
 
   useEffect(() => {
     validateForm()
@@ -37,19 +37,29 @@ function BusinessSignUp({ navigation }) {
 
   const handleSubmit = () => {
     if (isFormValid) {
-    const seatGrid = generateSeatGrid(parseInt(selectedRow), parseInt(selectedColumn));
-    postBusiness({ business_name: businessName }, postcode, seatGrid)
-    .then(() => {
-        // navigation.navigate('Login')
-        console.log('Form submitted successfully!')
-        setSnackbarMessage('Business account created successfully!')
-        setVisible(true)
-    })
-    .catch((error) => {
-        console.error('Error submitting form:', error)
-        setSnackbarMessage('Failed to submit form. Please try again.')
-        setVisible(true)
-    })
+      const seatGrid = generateSeatGrid(
+        parseInt(selectedRow),
+        parseInt(selectedColumn)
+      )
+      postBusiness({ business_name: businessName }, postcode, seatGrid)
+        .then(() => {
+          // navigation.navigate('Login')
+          console.log('Form submitted successfully!')
+          setSnackbarMessage(
+            'Business account created successfully! Please go to login...'
+          )
+          setVisible(true)
+          setPostcode('')
+          setBusinessName('')
+          setSelectedRow('')
+          setSelectedColumn('')
+          setSuccess(true)
+        })
+        .catch((error) => {
+          console.error('Error submitting form:', error)
+          setSnackbarMessage('Failed to submit form. Please try again.')
+          setVisible(true)
+        })
     } else {
       console.log('Form has errors. Please correct them.')
     }
@@ -77,6 +87,7 @@ function BusinessSignUp({ navigation }) {
   return (
     <View style={styles.container}>
       <Text>Become Auctioning-fe seller</Text>
+
       <TextInput
         style={styles.textbox}
         placeholder="Business Name"
