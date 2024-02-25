@@ -84,7 +84,7 @@ function CustomerHomepage({ navigation }) {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={styles.container}>
           <View style={homeStyles.navigation}>
-            <Text style={{ fontFamily: 'Comfortaa-Bold' }}>
+            {/* <Text style={{ fontFamily: 'Comfortaa-Bold' }}>
               This is to test out the font
             </Text>
             <Text style={{ fontFamily: 'Comfortaa-Light' }}>
@@ -98,7 +98,7 @@ function CustomerHomepage({ navigation }) {
             </Text>
             <Text style={{ fontFamily: 'Comfortaa-SemiBold' }}>
               This is to test out the font
-            </Text>
+            </Text> */}
             <View style={homeStyles.topNavigation}>
               <Text>Hello {currentCustomer.username}</Text>
               <Button btnText={'Log out'} onPress={() => logUserOut()} />
