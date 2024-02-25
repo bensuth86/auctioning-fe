@@ -16,14 +16,6 @@ function WelcomePage({ navigation }) {
           navigation.navigate('Login', { usertype: 'Business' })
         }}
       />
-      <Button
-        btnText="Create Listing Temp button"
-        onPress={() => {
-          navigation.navigate('BusinessCreateScreening', {
-            usertype: 'Business',
-          })
-        }}
-      />
     </View>
   )
 }
