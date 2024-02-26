@@ -54,12 +54,14 @@ function getAuctionsByEventId(id) {
 }
 
 function postBusiness(businessName, postcode, seatGrid) {
-  const toEnter = { business_name: businessName.business_name, postcode: postcode, seating_layout: seatGrid }
-  return prjApi
-    .post('/businesses', toEnter)
-    .then((res) => {
-      return res.data
-    })
+  const toEnter = {
+    business_name: businessName.business_name,
+    postcode: postcode,
+    seating_layout: seatGrid,
+  }
+  return prjApi.post('/businesses', toEnter).then((res) => {
+    return res.data
+  })
 }
 
 function postNewAuction(info) {
@@ -74,13 +76,11 @@ function getAuctionByAuctionId(id) {
   })
 }
 
-
 function updateBid(auctionID, info) {
   return prjApi.patch(`/auctions/${auctionID}`, info).then((response) => {
-      return response
+    return response
   })
 }
-
 
 function getAllBusinesses() {
   return prjApi.get('/businesses').then((response) => {
@@ -88,15 +88,15 @@ function getAllBusinesses() {
   })
 }
 
-function getAllEventsByBusinessId(business_id){
+function getAllEventsByBusinessId(business_id) {
   return prjApi.get(`/events/business/${business_id}`).then((response) => {
     return response
-})
+  })
 }
 function getWonAuctionsByUser(id) {
   return prjApi.get(`/auctions/won/${id}`).then((response) => {
     return response
-})
+  })
 }
 
 function getCurrentAuctionsByUser(id) {
@@ -106,7 +106,7 @@ function getCurrentAuctionsByUser(id) {
 }
 
 function postNewEvent(info) {
-  return prjApi.post('/auctions', info).then((response) => {
+  return prjApi.post('/events', info).then((response) => {
     return response
   })
 }
@@ -126,5 +126,6 @@ export {
   getAllBusinesses,
   getAllEventsByBusinessId,
   getWonAuctionsByUser,
-  getCurrentAuctionsByUser
+  getCurrentAuctionsByUser,
+  postNewEvent,
 }
