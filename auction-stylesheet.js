@@ -84,7 +84,7 @@ export const auctionStyles = StyleSheet.create({
     height: 40,
     // borderWidth: 1,
     width: 140,
-    backgroundColor: 'white',
+    backgroundColor: '#f5f5f5',
     // padding: 5,
     paddingBottom: 5,
     paddingTop: 5,

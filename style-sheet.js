@@ -41,6 +41,20 @@ export const styles = StyleSheet.create({
     padding: 8,
     margin: 10,
     width: 200,
+    borderRadius: 20,
+    height: 40
+  },
+  textboxLight: {
+    borderWidth: 1,
+    backgroundColor: '#f5f5f5',
+    paddingBottom: 5,
+    paddingTop: 5,
+    paddingLeft: 15,
+    paddingRight: 15,
+    margin: 10,
+    width: 200,
+    borderRadius: 20,
+    height: 40
   },
   dropdownContainer: {
     flexDirection: 'row',
@@ -73,6 +87,10 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-start',
     padding: 20,
   },
+  error: {
+    color: 'red',
+    fontFamily: 'Comfortaa-Light'
+  }
   // loadingContainer: {
   //   backgroundColor: 'yellow'
   // }
