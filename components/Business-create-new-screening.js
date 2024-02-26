@@ -14,7 +14,7 @@ import { styles } from '../style-sheet'
 import { useRoute } from '@react-navigation/native'
 import { useEffect } from 'react'
 
-function BusinessCreateScreening(navigation) {
+function BusinessCreateScreening({navigation}) {
   const route = useRoute()
   const business_id = route.params.business_id
   const [loading, setIsLoading] = useState(false)
@@ -24,6 +24,8 @@ function BusinessCreateScreening(navigation) {
   const [fullData, setFullData] = useState([])
   const [err, setErr] = useState(null)
   const apiEndpoint = `https://www.omdbapi.com/?apikey=f593767e&t=${searchQuerySlug}`
+  const [title, setTitle] = useState('')
+  const [poster, setPoster] = useState('')
 
   const movieEndpoint = `https://api.themoviedb.org/3/search/movie?api_key=2ff74c9759be7b397da331e5c4e692ee&query=${searchQuerySlug}&include_adult=false&language=en-US&page=1`
 
@@ -113,11 +115,14 @@ function BusinessCreateScreening(navigation) {
       )}
       <TouchableOpacity
         style={styles.button}
-        // onPress={() =>
-        //   navigation.navigate('BusinessCreateScreening', {
-        //     business_id,
-        //   })
-        // }
+        onPress={() => {
+            navigation.navigate('BusinessListingPage', { business_id })
+          }
+        }
+        // title: title,
+        // poster: poster,
+        // certificate: certificate,
+        // runtime: runtime,
       >
         <Text style={styles.buttonText}>Continue</Text>
       </TouchableOpacity>

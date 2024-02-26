@@ -16,7 +16,7 @@ import { useRoute } from '@react-navigation/native'
 import { getBusinessById } from '../utils.js'
 import { useEffect } from 'react'
 
-function BusinessCreateScreening(navigation) {
+function BusinessListing(navigation) {
   const route = useRoute()
   const business_id = route.params.business_id
   const [seatingPlan, setSeatingPlan] = useState([])
@@ -182,5 +182,4 @@ function BusinessCreateScreening(navigation) {
   )
 }
 
-export default BusinessCreateScreening
-
+export default BusinessListing
