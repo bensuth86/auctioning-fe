@@ -9,11 +9,14 @@ import { useState } from 'react'
 import { convertTime } from '../helpers'
 import { currentAuctions } from '../style-sheet-current-auctions'
 import { ActivityIndicator } from 'react-native-paper'
+import { useIsFocused } from '@react-navigation/native'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export function CurrentAuction({ navigation }) {
   const { currentCustomer, setCurrentCustomer } = useContext(CustomerContext)
   const [userActiveAuctions, setUserActiveAuctions] = useState([])
   const [loading, setLoading] = useState(false)
+  const isFocused = useIsFocused()
 
   useEffect(() => {
     getCurrentAuctionsByUser(currentCustomer.user_id).then((response) => {
@@ -23,7 +26,7 @@ export function CurrentAuction({ navigation }) {
       setLoading(true)
       setUserActiveAuctions(activeAuctions)
     })
-  }, [])
+  }, [isFocused])
   // removed dependencies, not sure if needed
   if (!loading)
     return (
@@ -107,6 +110,7 @@ export function CurrentAuction({ navigation }) {
                     <Text style={currentAuctions.textBold}>loosing!</Text>
                   </Text>
                 )}
+                <Text style={{textAlign: 'left'}}><MaterialCommunityIcons name="cursor-default-click" size={20} color="#f5f5f5" /></Text>
               </View>
             </TouchableOpacity>
           )
