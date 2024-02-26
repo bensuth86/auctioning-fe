@@ -24,6 +24,9 @@ import { TextInput } from 'react-native-paper'
 import { userLocation } from '../utils'
 import { CurrentAuction } from './Customer-current-auctions-section'
 import { useFonts } from 'expo-font'
+import { Pressable } from 'react-native'
+import { AntDesign } from '@expo/vector-icons'
+// import { TouchableOpacity } from 'react-native-web'
 
 function CustomerHomepage({ navigation }) {
   const { currentCustomer, setCurrentCustomer } = useContext(CustomerContext)
@@ -85,56 +88,69 @@ function CustomerHomepage({ navigation }) {
         <View style={styles.container}>
           <View style={homeStyles.navigation}>
             <View style={homeStyles.topNavigation}>
-              <Text>Hello {currentCustomer.username}</Text>
-              <Button btnText={'Log out'} onPress={() => logUserOut()} />
+              <Pressable style={styles.backButton}>
+                <Text
+                  style={styles.backButtonText}
+                  onPress={() => logUserOut()}
+                >
+                  SIGN OUT
+                </Text>
+              </Pressable>
+              {/* <Text>HELLO {currentCustomer.username}</Text> */}
+              {/* <Button btnText={'Log out'} onPress={() => logUserOut()} /> */}
             </View>
-            <View>
+            <View style={styles.topNavStrip}></View>
+            <View style={homeStyles.greetingsOrders}>
+              <Text
+                style={{
+                  fontFamily: 'Comfortaa-Regular',
+                  color: '#f5f5f5',
+                  fontSize: 20,
+                }}
+              >
+                HELLO {currentCustomer.username}
+              </Text>
               <Button
-                btnText={'View previous orders'}
+                btnText={'VIEW ORDERS'}
                 onPress={() => navigation.navigate('PreviousOrders')}
               />
             </View>
-            {/* <Text style={{ textAlign: 'center' }}>Adjust radius: </Text>
-            <View style={homeStyles.radiusSelection}>
-              <Button btnText={'-'} onPress={decreaseRadius} />
-              <TextInput
-                value={radius.toString()}
-                onChangeText={(text) => setRadius(parseInt(text) || 8)}
-                keyboardType="numeric"
-                style={homeStyles.numberDial}
-              />
-              <Button btnText={'+'} onPress={increaseRadius} />
-              <Button
-                btnText={'submit radius'}
-                onPress={() => submitRadius()}
-              />
-            </View> */}
             <CurrentAuction />
           </View>
-          <Text style={{ textAlign: 'center' }}>Adjust radius: </Text>
+          <Text>SEARCH FOR SCREENINGS</Text>
+          <View style={homeStyles.radiusContainer}>
+            <Text style={{ textAlign: 'center' }}>Adjust radius: </Text>
             <View style={homeStyles.radiusSelection}>
-              <Button btnText={'-'} onPress={decreaseRadius} />
+              <TouchableOpacity
+                style={homeStyles.adjustments}
+                onPress={decreaseRadius}
+              >
+                <AntDesign name="minus" size={24} color="black" />
+              </TouchableOpacity>
               <TextInput
                 value={radius.toString()}
                 onChangeText={(text) => setRadius(parseInt(text) || 8)}
                 keyboardType="numeric"
                 style={homeStyles.numberDial}
               />
-              <Button btnText={'+'} onPress={increaseRadius} />
-              <Button
-                btnText={'submit radius'}
-                onPress={() => submitRadius()}
-              />
+              <TouchableOpacity
+                style={homeStyles.adjustments}
+                onPress={increaseRadius}
+              >
+                <AntDesign name="plus" size={24} color="black" />
+              </TouchableOpacity>
             </View>
+            <Button btnText={'SUBMIT'} onPress={() => submitRadius()} />
+          </View>
           {!expandRadius ? (
             <Text style={homeStyles.resultsIntro}>
-              Showing all cinema events for auctions within an 8 mile radius of{' '}
+              All screenings for auction within an 8 mile radius of{' '}
               {currentCustomer.postcode}:{' '}
             </Text>
           ) : (
             <Text style={homeStyles.resultsIntro}>
-              Showing all cinema events for auctions within a {expandRadius}{' '}
-              mile radius of {currentCustomer.postcode}:{' '}
+              All screenings for auction within an {expandRadius} mile radius of{' '}
+              {currentCustomer.postcode}:{' '}
             </Text>
           )}
           <View style={eventStyles.eventslist}>

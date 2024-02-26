@@ -37,7 +37,7 @@ export function CurrentAuction() {
   return (
     userActiveAuctions.length > 0 && (
       <View>
-        <Text>Currently bidding on:</Text>
+        <Text style={{ color: '#f5f5f5', textAlign: 'center', fontFamily: 'Comfortaa-Regular', marginBottom: 10}}>YOUR LIVE AUCTIONS: </Text>
         {userActiveAuctions.map((auction, i) => {
           return (
             <View key={i} style={currentAuctions.container}>

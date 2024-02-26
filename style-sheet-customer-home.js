@@ -6,6 +6,9 @@ export const homeStyles = StyleSheet.create({
     backgroundColor: '#2b1d41',
     width: '100%',
     padding: 10,
+    paddingBottom: 10,
+    // borderBottomEndRadius: 50,
+    // borderBottomLeftRadius: 50,
   },
   radiusSelection: {
     flexDirection: 'row',
@@ -14,8 +17,10 @@ export const homeStyles = StyleSheet.create({
   },
   topNavigation: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
+    // backgroundColor: 'red',
+    padding: 10
   },
   numberDial: {
     height: 30,
@@ -27,5 +32,20 @@ export const homeStyles = StyleSheet.create({
   resultsIntro: {
     textAlign: 'center',
     padding: 10
+  },
+  greetingsOrders: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 40
+  },
+  radiusContainer: {
+    flexDirection: 'column',
+    width: 'auto'
+  },
+  adjustments: {
+    width: 20,
+    height: 20,
+    margin: 10
   }
 })

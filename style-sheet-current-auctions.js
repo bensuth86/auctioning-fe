@@ -17,9 +17,13 @@ export const currentAuctions = StyleSheet.create({
       color: 'rgba(255, 255, 255, 0.4)'
      },
      textBold: {
-      fontFamily: 'Comfortaa-Bold',
+      fontFamily: 'Comfortaa-Light',
       fontSize: 12,
       textAlign: 'right',
       color: '#f5f5f5'
-     }
+     },
+   //   title: {
+   //    fontFamily: 16,
+   //    color: '#f5f5f5'
+   //   }
 })

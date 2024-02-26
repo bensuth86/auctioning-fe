@@ -19,7 +19,9 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: '#e00c3e',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    alignSelf: 'center'
+
   },
   buttontext: {
     // letterSpacing: 0.25,
