@@ -78,7 +78,7 @@ function CustomerHomepage({ navigation }) {
   if (isLoading)
     return (
       <View style={styles.container}>
-        <ActivityIndicator color="red"/>
+        <ActivityIndicator color="red" />
       </View>
     )
 
@@ -115,11 +115,26 @@ function CustomerHomepage({ navigation }) {
                 onPress={() => navigation.navigate('PreviousOrders')}
               />
             </View>
-            <CurrentAuction />
+            <CurrentAuction navigation={navigation} />
           </View>
-          <Text style={{fontSize: 20, fontFamily: 'Comfortaa-Regular', paddingTop: 20, paddingBottom: 20, paddingLeft: 40, paddingRight: 40}}>SEARCH FOR SCREENINGS</Text>
+          <Text
+            style={{
+              fontSize: 20,
+              fontFamily: 'Comfortaa-Regular',
+              paddingTop: 20,
+              paddingBottom: 20,
+              paddingLeft: 40,
+              paddingRight: 40,
+            }}
+          >
+            SEARCH FOR SCREENINGS
+          </Text>
           <View style={homeStyles.radiusContainer}>
-            <Text style={{ textAlign: 'center', fontFamily: 'Comfortaa-Regular' }}>Adjust radius: </Text>
+            <Text
+              style={{ textAlign: 'center', fontFamily: 'Comfortaa-Regular' }}
+            >
+              Adjust radius:{' '}
+            </Text>
             <View style={homeStyles.radiusSelection}>
               <TouchableOpacity
                 style={homeStyles.adjustments}
@@ -153,12 +168,16 @@ function CustomerHomepage({ navigation }) {
               {currentCustomer.postcode}:{' '}
             </Text>
           )}
-            {eventsList.length === 0 && (
-              <View style={homeStyles.noResults}>
-                <Text style={homeStyles.noResultsText}>There are currently no auctions near you.</Text>
-                <Text style={homeStyles.noResultsText}>Try again later, or increase your radius for a wider selection.</Text>
-              </View>
-            )}
+          {eventsList.length === 0 && (
+            <View style={homeStyles.noResults}>
+              <Text style={homeStyles.noResultsText}>
+                There are currently no auctions near you.
+              </Text>
+              <Text style={homeStyles.noResultsText}>
+                Try again later, or increase your radius for a wider selection.
+              </Text>
+            </View>
+          )}
           <View style={eventStyles.eventslist}>
             {eventsList.map((event, i) => {
               const availableSeats = event.available_seats.length
