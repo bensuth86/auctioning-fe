@@ -32,7 +32,8 @@ export const styles = StyleSheet.create({
     fontFamily: 'Comfortaa-Light',
     fontSize: 12,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    padding: 2
   },
   textbox: {
     // for text entry

@@ -78,7 +78,7 @@ function CustomerHomepage({ navigation }) {
   if (isLoading)
     return (
       <View style={styles.container}>
-        <ActivityIndicator />
+        <ActivityIndicator color="red"/>
       </View>
     )
 
@@ -117,9 +117,9 @@ function CustomerHomepage({ navigation }) {
             </View>
             <CurrentAuction />
           </View>
-          <Text>SEARCH FOR SCREENINGS</Text>
+          <Text style={{fontSize: 20, fontFamily: 'Comfortaa-Regular', paddingTop: 20, paddingBottom: 20, paddingLeft: 40, paddingRight: 40}}>SEARCH FOR SCREENINGS</Text>
           <View style={homeStyles.radiusContainer}>
-            <Text style={{ textAlign: 'center' }}>Adjust radius: </Text>
+            <Text style={{ textAlign: 'center', fontFamily: 'Comfortaa-Regular' }}>Adjust radius: </Text>
             <View style={homeStyles.radiusSelection}>
               <TouchableOpacity
                 style={homeStyles.adjustments}

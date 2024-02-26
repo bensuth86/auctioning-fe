@@ -17,7 +17,7 @@ function WelcomePage({ navigation }) {
   })
   return (
     <View style={styles.darkContainer}>
-      <View style={{flexDirection: 'column'}}>
+      <View style={{flexDirection: 'column', width: '100%'}}>
         <Text
           style={{
             color: 'green',
@@ -26,6 +26,7 @@ function WelcomePage({ navigation }) {
             color: '#f5f5f5',
             paddingRight: 20,
             paddingLeft: 20,
+            paddingBottom: 10,
             textAlign: 'center',
           }}
         >

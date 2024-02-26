@@ -20,32 +20,38 @@ export const homeStyles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     // backgroundColor: 'red',
-    padding: 10
+    padding: 10,
   },
   numberDial: {
     height: 30,
-    borderWidth: 1,
+    borderWidth: 0, // Remove borderWidth
+    borderColor: 'transparent', // Set borderColor to transparent
     backgroundColor: 'white',
-    padding: 5,
-    width: 80
+    padding: 10,
+    width: 80,
+    borderRadius: 20,
   },
   resultsIntro: {
     textAlign: 'center',
-    padding: 10
+    paddingLeft: 40,
+    paddingRight: 40,
+    marginTop: 20,
+    fontFamily: 'Comfortaa-Regular'
   },
   greetingsOrders: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 40
+    marginBottom: 40,
   },
   radiusContainer: {
     flexDirection: 'column',
-    width: 'auto'
+    width: 'auto',
+    marginTop: 10
   },
   adjustments: {
     width: 20,
     height: 20,
-    margin: 10
-  }
+    margin: 10,
+  },
 })
