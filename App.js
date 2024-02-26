@@ -11,6 +11,7 @@ import CustomerAuctionPage from './components/Customer-auctionpage'
 import CustomerSignUp from './components/Customer-signup'
 import CustomerContext from './Contexts/LoggedInCustomerContext'
 import BusinessSignup from './components/Business-signup'
+import BusinessListing from './components/Business-listing'
 import BusinessCreateScreening from './components/Business-create-new-screening'
 import { useState } from 'react'
 import { socket } from './socket'
@@ -92,6 +93,11 @@ function App() {
             name="BusinessCreateScreening"
             component={BusinessCreateScreening}
             options={{ title: 'Business Create Screening' }}
+          />
+          <Stack.Screen
+            name="BusinessListingPage"
+            component={BusinessListing}
+            options={{ title: 'Business Listing Page' }}
           />
           <Stack.Screen
             name="PreviousOrders"
