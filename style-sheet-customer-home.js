@@ -7,6 +7,10 @@ export const homeStyles = StyleSheet.create({
     width: '100%',
     padding: 10,
     paddingBottom: 10,
+
+    borderBottomEndRadius: 50,
+    borderBottomLeftRadius: 50,
+    paddingBottom: 25,
     // borderBottomEndRadius: 50,
     // borderBottomLeftRadius: 50,
   },
@@ -21,7 +25,7 @@ export const homeStyles = StyleSheet.create({
     alignItems: 'center',
     // backgroundColor: 'red',
     padding: 10,
-    width: '100%'
+    width: '100%',
   },
   numberDial: {
     height: 30,
@@ -31,7 +35,7 @@ export const homeStyles = StyleSheet.create({
     padding: 10,
     width: 80,
     borderRadius: 20,
-    fontFamily: 'Comfortaa-Regular'
+    fontFamily: 'Comfortaa-Regular',
   },
   resultsIntro: {
     textAlign: 'center',
@@ -49,7 +53,7 @@ export const homeStyles = StyleSheet.create({
   radiusContainer: {
     flexDirection: 'column',
     width: 'auto',
-    marginTop: 10
+    marginTop: 10,
   },
   adjustments: {
     width: 20,
@@ -68,11 +72,13 @@ export const homeStyles = StyleSheet.create({
     maxWidth: '100%',
     // marginVertical: 5,
     fontFamily: 'Comfortaa-Regular',
-    color: 'red'
+    color: 'red',
   },
   contrastContainer: {
     backgroundColor: '#f5f5f5',
-    width: '100%'
-  }
-  
+    marginTop: 20,
+    marginBottom: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 })
