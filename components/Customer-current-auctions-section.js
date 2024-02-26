@@ -23,8 +23,8 @@ export function CurrentAuction({ navigation }) {
       const activeAuctions = response.data.auctions.filter((auction) => {
         return auction.active === true
       })
-      setLoading(true)
       setUserActiveAuctions(activeAuctions)
+      setLoading(true)
     })
   }, [isFocused])
   // removed dependencies, not sure if needed

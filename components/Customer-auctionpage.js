@@ -18,6 +18,7 @@ import { useFonts } from 'expo-font'
 import { Fontisto } from '@expo/vector-icons'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
+import { ActivityIndicator } from 'react-native-paper'
 
 function CustomerAuctionPage({ navigation, route }) {
   const { currentCustomer } = useContext(CustomerContext)
@@ -258,11 +259,9 @@ function CustomerAuctionPage({ navigation, route }) {
 
   if (isLoading) {
     return (
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View style={styles.darkContainer}>
-          <Text>Loading...</Text>
-        </View>
-      </ScrollView>
+      <View style={styles.darkContainer}>
+        <ActivityIndicator color="red" />
+      </View>
     )
   }
   // if (apiErr) {

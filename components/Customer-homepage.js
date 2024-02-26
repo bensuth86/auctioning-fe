@@ -77,7 +77,7 @@ function CustomerHomepage({ navigation }) {
 
   if (isLoading)
     return (
-      <View style={styles.container}>
+      <View style={styles.darkContainer}>
         <ActivityIndicator color="red" />
       </View>
     )
@@ -85,7 +85,7 @@ function CustomerHomepage({ navigation }) {
   return (
     <>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View style={styles.container}>
+        <View style={styles.darkContainer}>
           <View style={homeStyles.navigation}>
             <View style={homeStyles.topNavigation}>
               <Pressable style={styles.backButton}>
@@ -117,98 +117,102 @@ function CustomerHomepage({ navigation }) {
             </View>
             <CurrentAuction navigation={navigation} />
           </View>
-          <Text
-            style={{
-              fontSize: 20,
-              fontFamily: 'Comfortaa-Regular',
-              paddingTop: 20,
-              paddingBottom: 20,
-              paddingLeft: 40,
-              paddingRight: 40,
-            }}
-          >
-            SEARCH FOR SCREENINGS
-          </Text>
-          <View style={homeStyles.radiusContainer}>
+          <View style={homeStyles.contrastContainer}>
             <Text
-              style={{ textAlign: 'center', fontFamily: 'Comfortaa-Regular' }}
+              style={{
+                fontSize: 20,
+                fontFamily: 'Comfortaa-Regular',
+                paddingTop: 20,
+                paddingBottom: 20,
+                paddingLeft: 40,
+                paddingRight: 40,
+                textAlign: 'center'
+              }}
             >
-              Adjust radius:{' '}
+              SEARCH FOR SCREENINGS
             </Text>
-            <View style={homeStyles.radiusSelection}>
-              <TouchableOpacity
-                style={homeStyles.adjustments}
-                onPress={decreaseRadius}
+            <View style={homeStyles.radiusContainer}>
+              <Text
+                style={{ textAlign: 'center', fontFamily: 'Comfortaa-Regular' }}
               >
-                <AntDesign name="minus" size={24} color="black" />
-              </TouchableOpacity>
-              <TextInput
-                value={radius.toString()}
-                onChangeText={(text) => setRadius(parseInt(text) || 8)}
-                keyboardType="numeric"
-                style={homeStyles.numberDial}
-              />
-              <TouchableOpacity
-                style={homeStyles.adjustments}
-                onPress={increaseRadius}
-              >
-                <AntDesign name="plus" size={24} color="black" />
-              </TouchableOpacity>
-            </View>
-            <Button btnText={'SUBMIT'} onPress={() => submitRadius()} />
-          </View>
-          {!expandRadius ? (
-            <Text style={homeStyles.resultsIntro}>
-              All screenings for auction within an 8 mile radius of{' '}
-              {currentCustomer.postcode}:{' '}
-            </Text>
-          ) : (
-            <Text style={homeStyles.resultsIntro}>
-              All screenings for auction within an {expandRadius} mile radius of{' '}
-              {currentCustomer.postcode}:{' '}
-            </Text>
-          )}
-          {eventsList.length === 0 && (
-            <View style={homeStyles.noResults}>
-              <Text style={homeStyles.noResultsText}>
-                There are currently no auctions near you.
+                Adjust radius:{' '}
               </Text>
-              <Text style={homeStyles.noResultsText}>
-                Try again later, or increase your radius for a wider selection.
-              </Text>
+              <View style={homeStyles.radiusSelection}>
+                <TouchableOpacity
+                  style={homeStyles.adjustments}
+                  onPress={decreaseRadius}
+                >
+                  <AntDesign name="minus" size={24} color="black" />
+                </TouchableOpacity>
+                <TextInput
+                  value={radius.toString()}
+                  onChangeText={(text) => setRadius(parseInt(text) || 8)}
+                  keyboardType="numeric"
+                  style={homeStyles.numberDial}
+                />
+                <TouchableOpacity
+                  style={homeStyles.adjustments}
+                  onPress={increaseRadius}
+                >
+                  <AntDesign name="plus" size={24} color="black" />
+                </TouchableOpacity>
+              </View>
+              <Button btnText={'SUBMIT'} onPress={() => submitRadius()} />
             </View>
-          )}
-          <View style={eventStyles.eventslist}>
-            {eventsList.map((event, i) => {
-              const availableSeats = event.available_seats.length
-              return (
-                <>
-                  {availableSeats > 0 ? (
-                    <TouchableOpacity
-                      key={i}
-                      onPress={() =>
-                        navigation.navigate('SeatingPage', {
-                          event_id: event.event_id,
-                          business_id: event.business_id,
-                          start_price: event.start_price,
-                          active: event.active,
-                          available_seats: event.available_seats,
-                          start_time: event.start_time,
-                          film_title: event.film_title,
-                          poster: event.poster,
-                          run_time: event.run_time,
-                          certificate: event.certificate,
-                        })
-                      }
-                    >
-                      <EventsCard key={event.event_id} event={event} />
-                    </TouchableOpacity>
-                  ) : (
-                    <UnavailableEventsCard key={i} event={event} />
-                  )}
-                </>
-              )
-            })}
+            {!expandRadius ? (
+              <Text style={homeStyles.resultsIntro}>
+                All screenings for auction within an 8 mile radius of{' '}
+                {currentCustomer.postcode}:{' '}
+              </Text>
+            ) : (
+              <Text style={homeStyles.resultsIntro}>
+                All screenings for auction within an {expandRadius} mile radius
+                of {currentCustomer.postcode}:{' '}
+              </Text>
+            )}
+            {eventsList.length === 0 && (
+              <View style={homeStyles.noResults}>
+                <Text style={homeStyles.noResultsText}>
+                  There are currently no auctions near you.
+                </Text>
+                <Text style={homeStyles.noResultsText}>
+                  Try again later, or increase your radius for a wider
+                  selection.
+                </Text>
+              </View>
+            )}
+            <View style={eventStyles.eventslist}>
+              {eventsList.map((event, i) => {
+                const availableSeats = event.available_seats.length
+                return (
+                  <>
+                    {availableSeats > 0 ? (
+                      <TouchableOpacity
+                        key={i}
+                        onPress={() =>
+                          navigation.navigate('SeatingPage', {
+                            event_id: event.event_id,
+                            business_id: event.business_id,
+                            start_price: event.start_price,
+                            active: event.active,
+                            available_seats: event.available_seats,
+                            start_time: event.start_time,
+                            film_title: event.film_title,
+                            poster: event.poster,
+                            run_time: event.run_time,
+                            certificate: event.certificate,
+                          })
+                        }
+                      >
+                        <EventsCard key={event.event_id} event={event} />
+                      </TouchableOpacity>
+                    ) : (
+                      <UnavailableEventsCard key={i} event={event} />
+                    )}
+                  </>
+                )
+              })}
+            </View>
           </View>
         </View>
       </ScrollView>
