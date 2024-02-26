@@ -9,14 +9,16 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: '100%'
+    minHeight: '100%',
+    flexDirection: 'column'
   },
   darkContainer: {
     flex: 1,
     backgroundColor: '#2b1d41',
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: '100%'
+    minHeight: '100%',
+    flexDirection: 'column'
   },
   button: {
     margin: 10,

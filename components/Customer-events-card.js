@@ -10,6 +10,7 @@ import { convertTime } from '../helpers'
 import { Fontisto } from '@expo/vector-icons'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
+import { homeStyles } from '../style-sheet-customer-home'
 
 export function EventsCard({ event }) {
   return (

@@ -21,6 +21,7 @@ export const homeStyles = StyleSheet.create({
     alignItems: 'center',
     // backgroundColor: 'red',
     padding: 10,
+    width: '100%'
   },
   numberDial: {
     height: 30,
@@ -68,6 +69,10 @@ export const homeStyles = StyleSheet.create({
     // marginVertical: 5,
     fontFamily: 'Comfortaa-Regular',
     color: 'red'
+  },
+  contrastContainer: {
+    backgroundColor: '#f5f5f5',
+    width: '100%'
   }
   
 })
