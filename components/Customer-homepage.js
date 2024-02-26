@@ -85,7 +85,7 @@ function CustomerHomepage({ navigation }) {
   return (
     <>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View style={styles.darkContainer}>
+        <View style={styles.container}>
           <View style={homeStyles.navigation}>
             <View style={homeStyles.topNavigation}>
               <Pressable style={styles.backButton}>
@@ -115,7 +115,7 @@ function CustomerHomepage({ navigation }) {
             </View>
             <CurrentAuction navigation={navigation} />
           </View>
-          {/* <View style={homeStyles.contrastContainer}> */}
+          <View style={homeStyles.contrastContainer}>
             <Text
               style={{
                 fontSize: 20,
@@ -124,7 +124,7 @@ function CustomerHomepage({ navigation }) {
                 paddingBottom: 20,
                 paddingLeft: 40,
                 paddingRight: 40,
-                textAlign: 'center'
+                textAlign: 'center',
               }}
             >
               SEARCH FOR SCREENINGS
@@ -212,7 +212,7 @@ function CustomerHomepage({ navigation }) {
               })}
             </View>
           </View>
-        {/* </View> */}
+        </View>
       </ScrollView>
     </>
   )

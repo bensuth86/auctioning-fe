@@ -286,21 +286,43 @@ function CustomerSeating({ navigation, route }) {
             : availableSelection.push(selectedSeat)
         })} */}
         {selectedSeats.length ? (
-          <Text style={seatStyles.textBigger}>Selected seats: <Text style={seatStyles.textBiggerBold}>{selectedSeats.join(', ')}</Text></Text>
+          <Text style={seatStyles.textBigger}>
+            Selected seats:{' '}
+            <Text style={seatStyles.textBiggerBold}>
+              {selectedSeats.join(', ')}
+            </Text>
+          </Text>
         ) : null}
         {selectedSeats.length ? (
           <Text style={seatStyles.textBigger}>
-            Price: 
-            <Text style={seatStyles.textBiggerBold}>{' '}
-            £{selectedSeats.length && Object.keys(selectedAuction).length
-              ? Number(selectedAuction.current_price).toFixed(2)
-              : Number(start_price).toFixed(2)}</Text>
-            {selectedSeats.length && Object.keys(selectedAuction).length
-              ? <Text style={seatStyles.textBiggerBold}> / {selectedSeats.length} x £{Number(selectedAuction.current_price * selectedSeats.length).toFixed(2)}</Text>
-              : <Text style={seatStyles.textBiggerBold}> / {selectedSeats.length} x £{Number(start_price * selectedSeats.length).toFixed(2)}</Text>}
+            Price:
+            <Text style={seatStyles.textBiggerBold}>
+              {' '}
+              £
+              {selectedSeats.length && Object.keys(selectedAuction).length
+                ? Number(selectedAuction.current_price).toFixed(2)
+                : Number(start_price).toFixed(2)}
+            </Text>
+            {selectedSeats.length && Object.keys(selectedAuction).length ? (
+              <Text style={seatStyles.textBiggerBold}>
+                {' '}
+                / {selectedSeats.length} x £
+                {Number(
+                  selectedAuction.current_price * selectedSeats.length
+                ).toFixed(2)}
+              </Text>
+            ) : (
+              <Text style={seatStyles.textBiggerBold}>
+                {' '}
+                / {selectedSeats.length} x £
+                {Number(start_price * selectedSeats.length).toFixed(2)}
+              </Text>
+            )}
           </Text>
         ) : null}
-        {!selectedSeats.length ? <Text style={seatStyles.textBigger}>Please select a seat</Text> : null}
+        {!selectedSeats.length ? (
+          <Text style={seatStyles.textBigger}>Please select a seat</Text>
+        ) : null}
         {rowErr ? (
           <Text style={seatStyles.textBiggerError}>
             Seats must be in the same row.
