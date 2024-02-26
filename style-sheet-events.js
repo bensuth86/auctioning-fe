@@ -2,8 +2,10 @@ import { StyleSheet } from 'react-native'
 
 export const eventStyles = StyleSheet.create({
   eventcard: {
-    margin: 20,
+    // margin: 20,
     width: '100%',
+    alignItems: 'center',
+    marginBottom: 60
   },
   eventslist: {
     alignItems: 'center',
@@ -14,10 +16,10 @@ export const eventStyles = StyleSheet.create({
     flexDirection: 'row',
   },
   rightSide: {
-    backgroundColor: '#66808080',
+    // backgroundColor: '#66808080',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    width: 190,
+    width: 'auto',
     padding: 10,
   },
   cardText: {
@@ -32,5 +34,12 @@ export const eventStyles = StyleSheet.create({
     marginBottom: 5,
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  topNavigation: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    padding: 20,
+    width: '100%',
   },
 })
