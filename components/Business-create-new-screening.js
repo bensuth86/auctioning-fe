@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { styles } from '../style-sheet'
 import { useRoute } from '@react-navigation/native'
 import { useEffect } from 'react'
+import { ScrollView } from 'react-native'
 
 function BusinessCreateScreening({ navigation }) {
   const route = useRoute()
@@ -129,68 +130,71 @@ function BusinessCreateScreening({ navigation }) {
   // }
 
   return (
-    <SafeAreaView style={{ flex: 1, marginHorizontal: 2 }}>
-      <TextInput
-        placeholder="search"
-        clearButtonMode="always"
-        autoCapitalize="none"
-        autoCorrect={false}
-        value={searchQuery}
-        onChangeText={(query) => handleSearch(query)}
-        style={{
-          paddingHorizontal: 20,
-          paddingVertical: 10,
-          borderColor: '#ccc',
-          borderWidth: 1,
-          borderRadius: 8,
-        }}
-      />
-      {loading === true ? (
-        <View style={styles.container}>
-          <ActivityIndicator />
-        </View>
-      ) : (
-        <View style={{ height: 400 }}>
-          <FlatList
-            data={data}
-            renderItem={({ item }) => {
-              return (
-                <View>
-                  <TouchableOpacity
-                    onPress={() => {
-                      handlePress(item)
-                    }}
-                  >
-                    <Image
-                      source={{
-                        uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`,
+    <SafeAreaView style={{ flex: 1, marginHorizontal: 2, backgroundColor: 'black' }}>
+      <View style={[styles.container, { borderWidth: 0 }]}>
+        <Text>Search for a film to list: </Text>
+        <TextInput
+          placeholder="search"
+          clearButtonMode="always"
+          autoCapitalize="none"
+          autoCorrect={false}
+          value={searchQuery}
+          onChangeText={(query) => handleSearch(query)}
+          style={{
+            paddingHorizontal: 20,
+            paddingVertical: 10,
+            borderColor: '#ccc',
+            borderWidth: 1,
+            borderRadius: 8,
+          }}
+        />
+        {loading === true ? (
+          <View style={styles.container}>
+            <ActivityIndicator />
+          </View>
+        ) : (
+          <View style={{ height: 400 }}>
+            <FlatList
+              data={data}
+              renderItem={({ item }) => {
+                return (
+                  <View>
+                    <TouchableOpacity
+                      onPress={() => {
+                        handlePress(item)
                       }}
-                      style={{ width: 80, height: 100 }}
-                    />
-                    <View>
-                      <Text>{item.title}</Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              )
-            }}
-          ></FlatList>
-        </View>
-      )}
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          navigation.navigate('BusinessListingPage', {
-            business_id,
-            title: title,
-            poster: poster,
-            runtime: runtime,
-            certificate: certificate,
-          })
-        }}
-      >
-        <Text style={styles.buttonText}>Continue</Text>
-      </TouchableOpacity>
+                    >
+                      <Image
+                        source={{
+                          uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`,
+                        }}
+                        style={{ width: 80, height: 100 }}
+                      />
+                      <View>
+                        <Text>{item.title}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                )
+              }}
+            ></FlatList>
+          </View>
+        )}
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            navigation.navigate('BusinessListingPage', {
+              business_id,
+              title: title,
+              poster: poster,
+              runtime: runtime,
+              certificate: certificate,
+            })
+          }}
+        >
+          <Text style={styles.buttonText}>Continue</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   )
 }
