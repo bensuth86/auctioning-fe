@@ -6,6 +6,7 @@ import { postBusiness } from '../utils'
 import { SelectList } from 'react-native-dropdown-select-list'
 import { generateSeatGrid } from '../helpers'
 import { Button } from '../helpers'
+import { ScrollView } from 'react-native'
 
 function BusinessSignUp({ navigation }) {
   const [businessName, setBusinessName] = useState('')
@@ -86,6 +87,8 @@ function BusinessSignUp({ navigation }) {
   ]
 
   return (
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+
     <View style={styles.darkContainer}>
       <Text
         style={{
@@ -111,7 +114,15 @@ function BusinessSignUp({ navigation }) {
         value={postcode}
         onChangeText={(postcode) => setPostcode(postcode)}
       />
-      <Text>Select Seating Layout</Text>
+      <Text style={{
+          color: '#f5f5f5',
+          fontFamily: 'Comfortaa-Regular',
+          paddingRight: 20,
+          paddingLeft: 20,
+          textAlign: 'center',
+          marginTop: 40,
+          marginBottom: 10
+        }}>Select Seating Layout</Text>
       <View style={{flexDirection: 'row'}}>
         <View style={styles.dropdownContainer}>
           <SelectList
@@ -164,7 +175,9 @@ function BusinessSignUp({ navigation }) {
         {snackbarMessage}
       </Snackbar>
     </View>
+  </ScrollView>
   )
+
 }
 
 export default BusinessSignUp
