@@ -8,6 +8,7 @@ import { FontAwesome5 } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
 import { Fontisto } from '@expo/vector-icons'
 import { convertTime } from '../helpers'
+import { ScrollView } from 'react-native-web'
 
 function BusinessHomepage({ navigation, route }) {
   const { business_id } = route.params
@@ -27,6 +28,8 @@ function BusinessHomepage({ navigation, route }) {
   }, [business_id])
 
   return (
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+
     <View style={styles.container}>
       <Text>Events for Business ID: {business_id}</Text>
       <View style={eventStyles.eventcard}>
@@ -63,6 +66,8 @@ function BusinessHomepage({ navigation, route }) {
         <Text style={styles.buttonText}>Create Screening</Text>
       </TouchableOpacity>
     </View>
+    </ScrollView>
+
   )
 }
 
