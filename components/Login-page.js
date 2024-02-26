@@ -194,7 +194,6 @@ function Login({ navigation, route }) {
               fontFamily: 'Comfortaa-Regular',
               color: '#f5f5f5',
               fontSize: 12,
-              border
             }}
           >
             PRE-EXISTING LOGINS

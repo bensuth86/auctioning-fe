@@ -16,10 +16,19 @@ import BusinessCreateScreening from './components/Business-create-new-screening'
 import { useState } from 'react'
 import { socket } from './socket'
 import { PreviousOrders } from './components/Customer-view-prev-orders'
+import { useFonts } from 'expo-font';
 
 const Stack = createNativeStackNavigator()
 
 function App() {
+  const [fontsLoaded] = useFonts({
+    'Comfortaa-Bold': require('./assets/Fonts/Comfortaa-Bold.ttf'),
+    'Comfortaa-Light': require('./assets/Fonts/Comfortaa-Light.ttf'),
+    'Comfortaa-Medium': require('./assets/Fonts/Comfortaa-Medium.ttf'),
+    'Comfortaa-Regular': require('./assets/Fonts/Comfortaa-Regular.ttf'),
+    'Comfortaa-SemiBold': require('./assets/Fonts/Comfortaa-SemiBold.ttf'),
+    'KodeMono-Regular': require('./assets/Fonts/KodeMono-Regular.ttf'),
+  })
   const [currentCustomer, setCurrentCustomer] = useState({
     username: null,
     user_id: null,
@@ -44,6 +53,10 @@ function App() {
       socket.off('disconnect', onDisconnect)
     }
   }, [])
+
+  if (!fontsLoaded) {
+    return undefined
+  }
 
   return (
     <CustomerContext.Provider value={{ currentCustomer, setCurrentCustomer }}>
