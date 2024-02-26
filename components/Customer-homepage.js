@@ -96,8 +96,6 @@ function CustomerHomepage({ navigation }) {
                   SIGN OUT
                 </Text>
               </Pressable>
-              {/* <Text>HELLO {currentCustomer.username}</Text> */}
-              {/* <Button btnText={'Log out'} onPress={() => logUserOut()} /> */}
             </View>
             <View style={styles.topNavStrip}></View>
             <View style={homeStyles.greetingsOrders}>
@@ -117,7 +115,7 @@ function CustomerHomepage({ navigation }) {
             </View>
             <CurrentAuction navigation={navigation} />
           </View>
-          <View style={homeStyles.contrastContainer}>
+          {/* <View style={homeStyles.contrastContainer}> */}
             <Text
               style={{
                 fontSize: 20,
@@ -214,7 +212,7 @@ function CustomerHomepage({ navigation }) {
               })}
             </View>
           </View>
-        </View>
+        {/* </View> */}
       </ScrollView>
     </>
   )
