@@ -128,12 +128,12 @@ function CustomerAuctionPage({ navigation, route }) {
     if (isNaN(userBid)) {
       setErrorMessage(`Please enter a number.`)
       return false
-    } else if (userBid <= displayAuction.current_price) {
+    } else if (Number(userBid) <= Number(displayAuction.current_price)) {
       setErrorMessage(
         `You need to place a bid greater than £${displayAuction.current_price}.`
       )
       return false
-    } else if (userBid < start_price.start_price) {
+    } else if (Number(userBid) < Number(start_price.start_price)) {
       setErrorMessage(
         `You need to place a minimum bid of £${Number(start_price.start_price) + 1}.`
       )

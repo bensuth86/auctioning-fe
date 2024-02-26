@@ -41,7 +41,7 @@ export function PreviousOrders() {
         <Modal animationType="slide" transparent={true} visible={showQRCode}>
           <View
             style={{
-              height: '45%',
+              height: '50%',
               width: '100%',
               borderTopRightRadius: 18,
               borderTopLeftRadius: 18,
