@@ -44,6 +44,8 @@ function CustomerAuctionPage({ navigation, route }) {
   const [displayAuction, setDisplayAuction] = useState({})
   const [tempUser, setTempUser] = useState(null)
   const [submitted, setSubmitted] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [apiErr, setApiErr] = useState(null)
   const [selectedBusiness, setSelectedBusiness] = useState({})
   const [fontsLoaded] = useFonts({
     'Comfortaa-Bold': require('../assets/Fonts/Comfortaa-Bold.ttf'),
@@ -63,23 +65,29 @@ function CustomerAuctionPage({ navigation, route }) {
     ])
 
   useEffect(() => {
-    getBusinessById(business_id.business_id).then((response) => {
-      setSelectedBusiness(response)
-    })
-    if (auctionID) {
-      getAuctionByAuctionId(auctionID)
-        .then(({ data: { auction } }) => {
-          setDisplayAuction(auction)
-          getCountdown(auction.time_ending)
-          setCountdown(true)
-          return auction.current_highest_bidder
-        })
-        .then((user_id) => {
-          getUsersById(user_id).then((user) => {
-            setTempUser(user.username)
-          })
-        })
-    }
+    getBusinessById(business_id.business_id)
+      .then((response) => {
+        setSelectedBusiness(response)
+      })
+      .then(() => {
+        if (auctionID) {
+          getAuctionByAuctionId(auctionID)
+            .then(({ data: { auction } }) => {
+              setDisplayAuction(auction)
+              getCountdown(auction.time_ending)
+              setCountdown(true)
+              return auction.current_highest_bidder
+            })
+            .then((user_id) => {
+              getUsersById(user_id).then((user) => {
+                setTempUser(user.username)
+                setIsLoading(false)
+              })
+            })
+        } else {
+          setIsLoading(false)
+        }
+      })
   }, [])
 
   useEffect(() => {
@@ -88,7 +96,8 @@ function CustomerAuctionPage({ navigation, route }) {
         seat_selection.selectedSeats.some((seat) =>
           bidData.seats.includes(seat)
         ) &&
-        currentCustomer.username !== bidData.username
+        currentCustomer.username !== bidData.username &&
+        !auctionID
       ) {
         exitAlert(`One of the seats you selected has been bid on!`)
       } else if (
@@ -115,7 +124,6 @@ function CustomerAuctionPage({ navigation, route }) {
   }, [auctionID])
 
   function submitBid() {
-    // const priceCap = displayAuction.current_price * 4 // multiply starting price by 4 (anything over will be blocked)
     if (isNaN(userBid)) {
       setErrorMessage(`Please enter a number.`)
       return false
@@ -130,12 +138,6 @@ function CustomerAuctionPage({ navigation, route }) {
       )
       return false
     }
-    // } else if (userBid > priceCap) {
-    //   setErrorMessage(
-    //     `You have exceeded the price cap of this auction. Please enter an amount less than £${priceCap}.`
-    //   )
-    //   return false
-    // }
     setErrorMessage('')
     setUserBid('')
     return true
@@ -149,6 +151,14 @@ function CustomerAuctionPage({ navigation, route }) {
       current_price: Number(start_price.start_price),
       user_id: Number(currentCustomer.user_id),
     }
+    setDisplayAuction({
+      current_price: start_price.start_price,
+      bid_counter: 1,
+      active: true,
+    })
+    getCountdown(new Date().setMinutes(new Date().getMinutes() + 5))
+    setCountdown(true)
+    setTempUser(currentCustomer.username)
     postNewAuction(newAuctionData)
       .then(({ data: { auction } }) => {
         socket.emit('new bid', {
@@ -157,22 +167,34 @@ function CustomerAuctionPage({ navigation, route }) {
           seats: auction.seat_selection,
           username: currentCustomer.username,
         })
-        setDisplayAuction(auction)
         setAuctionID(auction.auction_id)
         setSubmitted(false)
-        getCountdown(auction.time_ending)
-        setCountdown(true)
-        setTempUser(currentCustomer.username)
+        setDisplayAuction(auction)
+        //getCountdown(auction.time_ending)
       })
       .catch((err) => {
-        setApiErr(err)
-        setDisplayAuction(null)
+        setApiErr(err.message)
+        setDisplayAuction({})
+        setTempUser(null)
+        setCountdown(false)
+        setSubmitted(false)
       })
   }
 
   function handleNewBid() {
+    const currentInfo = {
+      user: tempUser,
+      bid: displayAuction.current_price,
+      count: displayAuction.bid_counter,
+    }
     setSubmitted(true)
     if (!submitBid(userBid)) return
+    setDisplayAuction({
+      ...displayAuction,
+      current_price: userBid,
+      bid_counter: displayAuction.bid_counter + 1,
+    })
+    setTempUser(currentCustomer.username)
     updateBid(auctionID, {
       current_bid: Number(userBid),
       user_id: currentCustomer.user_id,
@@ -184,12 +206,20 @@ function CustomerAuctionPage({ navigation, route }) {
           newBid: userBid,
           auction_id: auctionID,
           username: currentCustomer.username,
+          seats: seat_selection.selectedSeats,
         })
         setUserBid('')
         setSubmitted(false)
       })
       .catch((err) => {
-        console.log(err)
+        setSubmitted(false)
+        setTempUser(currentInfo.user)
+        setDisplayAuction({
+          ...displayAuction,
+          current_price: currentInfo.bid,
+          bid_counter: currentInfo.count,
+        })
+        setApiErr(err.message)
       })
   }
 
@@ -225,6 +255,26 @@ function CustomerAuctionPage({ navigation, route }) {
       })
     }, 1000)
   }
+
+  if (isLoading) {
+    return (
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.darkContainer}>
+          <Text>Loading...</Text>
+        </View>
+      </ScrollView>
+    )
+  }
+  // if (apiErr) {
+  //   return (
+  //     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+  //       <View style={styles.darkContainer}>
+  //         <Text>{apiErr}</Text>
+  //       </View>
+  //     </ScrollView>
+  //   )
+  // }
+
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.darkContainer}>
@@ -242,8 +292,8 @@ function CustomerAuctionPage({ navigation, route }) {
             </Text>
           </View>
         )}
-        {!displayAuction.active ? (
-          <View style={{ marginTop: 20 }}>
+        {!Object.keys(displayAuction).length ? (
+          <View>
             <Button
               disabled={submitted}
               btnText="START AUCTION"
@@ -298,6 +348,13 @@ function CustomerAuctionPage({ navigation, route }) {
               </View> */}
           </>
         )}
+        {apiErr ? (
+          <View style={auctionStyles.statusContainer}>
+            <Text style={auctionStyles.errors}>
+              {apiErr} // Please try again.
+            </Text>
+          </View>
+        ) : null}
         {errorMessage && !countdownStructure.ended ? (
           <View style={auctionStyles.statusContainer}>
             <Text style={auctionStyles.errors}>{errorMessage}</Text>
@@ -312,6 +369,28 @@ function CustomerAuctionPage({ navigation, route }) {
               </Text>
             </View>
           )} */}
+
+        {/* Thought this was affecting styling, will remove
+        {countdownStructure.ended ? (
+          <View style={auctionStyles.auctionResultButton}>
+            {displayAuction.current_highest_bidder ===
+            currentCustomer.user_id ? (
+              <Button
+                btnText="VIEW YOUR ORDER"
+                onPress={() => {
+                  navigation.navigate('PreviousOrders')
+                }}
+              />
+            ) : (
+              <Button
+                btnText="BACK TO SCREENINGS"
+                onPress={() => {
+                  navigation.navigate('CustomerHomepage')
+                }}
+              />
+            )}
+          </View>
+        ) : null} */}
         <View style={auctionStyles.auctionResultButton}>
           {countdownStructure.ended &&
             displayAuction.current_highest_bidder ===
@@ -343,7 +422,7 @@ function CustomerAuctionPage({ navigation, route }) {
               </Text>
             </Text>
           </View>
-          {auctionID ? (
+          {Object.keys(displayAuction).length ? (
             <View style={auctionStyles.biddingInfoContainer}>
               <View style={auctionStyles.highestBidInfoContainer}>
                 <Text style={auctionStyles.auctionHeaders}>CURRENT BID:</Text>

@@ -7,7 +7,7 @@ export const auctionStyles = StyleSheet.create({
     justifyContent: 'center',
     // margin: 20,
     width: '90%',
-    marginTop: -40
+    marginTop: -40,
   },
   selectionContainer: {
     justifyContent: 'center',
@@ -39,7 +39,7 @@ export const auctionStyles = StyleSheet.create({
     marginBottom: 10,
     justifyContent: 'center',
     borderRadius: 20,
-    marginTop: 10
+    marginTop: 10,
   },
   priceInfoContainer: {
     flexDirection: 'row',
@@ -47,7 +47,7 @@ export const auctionStyles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     padding: 20,
     justifyContent: 'center',
-    borderRadius: 20
+    borderRadius: 20,
   },
   highestBidInfoContainer: {
     flex: 1,
@@ -57,14 +57,13 @@ export const auctionStyles = StyleSheet.create({
     marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 20
+    borderRadius: 20,
   },
   otherBidInfoContainer: {
     flex: 2,
     flexDirection: 'column',
     height: 'auto',
     // borderRadius: 20
-
   },
   smallerBidInfoContainer: {
     // backgroundColor: '#e4e5eb',
@@ -73,8 +72,7 @@ export const auctionStyles = StyleSheet.create({
     padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 20
-
+    borderRadius: 20,
   },
   auctionForm: {
     width: '100%',
@@ -90,7 +88,7 @@ export const auctionStyles = StyleSheet.create({
     paddingTop: 5,
     paddingRight: 15,
     paddingLeft: 15,
-    borderRadius: 20
+    borderRadius: 20,
   },
   biddingForm: {
     flexDirection: 'row',
@@ -108,7 +106,7 @@ export const auctionStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
-    marginTop: 20
+    marginTop: 20,
     // backgroundColor: '#838383',
   },
   auctionResultButton: {
@@ -124,30 +122,29 @@ export const auctionStyles = StyleSheet.create({
     fontFamily: 'Comfortaa-Regular',
     textAlign: 'center',
     color: 'rgba(255, 255, 255, 0.4)',
-    fontSize: 12
+    fontSize: 12,
   },
   auctionData: {
     fontFamily: 'Comfortaa-Regular',
     textAlign: 'center',
     color: 'rgba(255, 255, 255, 1)',
-    fontSize: 16
+    fontSize: 16,
   },
   countdownFont: {
     fontFamily: 'KodeMono-Regular',
     fontSize: 40,
-    color: '#f5f5f5'
+    color: '#f5f5f5',
   },
   text: {
     fontFamily: 'Comfortaa-Light',
     fontSize: 12,
-    color: '#f5f5f5'
+    color: '#f5f5f5',
   },
-  BidInfoContainer: {
-  },
+  BidInfoContainer: {},
   errors: {
     textAlign: 'center',
     color: 'red',
     fontFamily: 'Comfortaa-Light',
     fontSize: 12,
-  }
+  },
 })
