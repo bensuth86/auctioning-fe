@@ -15,15 +15,18 @@ import { homeStyles } from '../style-sheet-customer-home.js'
 import { useRoute } from '@react-navigation/native'
 import { getBusinessById } from '../utils.js'
 import { useEffect } from 'react'
+import { postNewEvent } from '../utils.js'
 
-function BusinessListing(navigation) {
+function BusinessListing({ navigation }) {
   const route = useRoute()
-  const business_id = route.params.business_id
+  const { business_id, title, poster, runtime, certificate } = route.params
   const [seatingPlan, setSeatingPlan] = useState([])
   const [selectedSeats, setSelectedSeats] = useState([])
   const [loading, setIsLoading] = useState(false)
   const [price, setPrice] = useState(1)
   const [date, setDate] = useState(new Date())
+  const [err, setErr] = useState(null)
+
   useEffect(() => {
     getBusinessById(business_id)
       .then((response) => {
@@ -49,9 +52,28 @@ function BusinessListing(navigation) {
     }
   }
 
-  // console.log(price)
-  // console.log(selectedSeats)
-  // console.log(date)
+  const new_event = {
+    film_title: title,
+    poster: poster,
+    certificate: certificate,
+    run_time: runtime,
+    start_time: date,
+    available_seats: selectedSeats,
+    start_price: price,
+    business_id: business_id,
+  }
+
+  function handleListing() {
+    postNewEvent(new_event)
+      .then(() => {
+        console.log('Success!')
+        navigation.navigate('BusinessHomepage', { business_id })
+      })
+      .catch((err) => {
+        setErr(err)
+        console.log(err)
+      })
+  }
 
   if (loading)
     return (
@@ -166,9 +188,7 @@ function BusinessListing(navigation) {
           <Button
             key={'listeventbtn'}
             btnText="List event"
-            onPress={() => {
-              navigation.navigate('BusinessHomepage')
-            }}
+            onPress={handleListing}
           />
         ) : (
           <View style={seatStyles.errorContainer}>
