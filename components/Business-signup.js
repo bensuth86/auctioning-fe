@@ -5,6 +5,7 @@ import { Snackbar } from 'react-native-paper'
 import { postBusiness } from '../utils'
 import { SelectList } from 'react-native-dropdown-select-list'
 import { generateSeatGrid } from '../helpers'
+import { Button } from '../helpers'
 
 function BusinessSignUp({ navigation }) {
   const [businessName, setBusinessName] = useState('')
@@ -85,47 +86,68 @@ function BusinessSignUp({ navigation }) {
   ]
 
   return (
-    <View style={styles.container}>
-      <Text>Become Auctioning-fe seller</Text>
+    <View style={styles.darkContainer}>
+      <Text
+        style={{
+          color: '#f5f5f5',
+          fontFamily: 'Comfortaa-Regular',
+          paddingRight: 20,
+          paddingLeft: 20,
+          textAlign: 'center',
+        }}
+      >
+        Become an **APP NAME** seller
+      </Text>
 
       <TextInput
-        style={styles.textbox}
+        style={styles.textboxLight}
         placeholder="Business Name"
         value={businessName}
         onChangeText={(businessName) => setBusinessName(businessName)}
       />
       <TextInput
-        style={styles.textbox}
+        style={styles.textboxLight}
         placeholder="Postcode"
         value={postcode}
         onChangeText={(postcode) => setPostcode(postcode)}
       />
       <Text>Select Seating Layout</Text>
-      <View style={styles.dropdownContainer}>
-        <SelectList
-          setSelected={(val) => setSelectedRow(val)}
-          data={data}
-          save="value"
-          style={styles.dropdown}
-          search={false}
-          placeholder="Rows"
-        />
-        <SelectList
-          setSelected={(val) => setSelectedColumn(val)}
-          data={data2}
-          save="value"
-          style={styles.dropdown}
-          search={false}
-          placeholder="Columns"
-        />
+      <View style={{flexDirection: 'row'}}>
+        <View style={styles.dropdownContainer}>
+          <SelectList
+            setSelected={(val) => setSelectedRow(val)}
+            data={data}
+            save="value"
+            style={styles.dropdown}
+            search={false}
+            placeholder="Rows"
+            boxStyles={{borderRadius:20, backgroundColor: '#f5f5f5'}}
+            dropdownStyles={{backgroundColor: '#f5f5f5', fontSize: 12}}
+            fontFamily='Comfortaa-Light'
+          />
+        </View>
+        <View style={styles.dropdownContainer}>
+          <SelectList
+            setSelected={(val) => setSelectedColumn(val)}
+            data={data2}
+            save="value"
+            style={styles.dropdown}
+            search={false}
+            placeholder="Columns"
+            boxStyles={{borderRadius:20, backgroundColor: '#f5f5f5'}}
+            dropdownStyles={{backgroundColor: '#f5f5f5'}}
+            fontFamily='Comfortaa-Light'
+          />
+        </View>
       </View>
-      <TouchableOpacity
+      <Button btnText="SUBMIT" onPress={handleSubmit} disabled={!isFormValid} />
+      {/* <TouchableOpacity
         style={[styles.button, { opacity: isFormValid ? 1 : 0.5 }]}
         disabled={!isFormValid}
         onPress={handleSubmit}
       >
         <Text style={styles.buttonText}>Submit</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       {Object.values(errors).map((error, index) => (
         <Text key={index} style={styles.error}>
           {error}

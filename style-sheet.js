@@ -60,21 +60,31 @@ export const styles = StyleSheet.create({
     margin: 10,
     width: 200,
     borderRadius: 20,
-    height: 40
+    height: 40,
+    fontWeight: 'normal',
+    fontFamily: 'Comfortaa-Light'
   },
   dropdownContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: 10,
+    // flexDirection: 'row',
+    // alignItems: 'center',
+    // marginHorizontal: 10,
+    // backgroundColor: '#f5f5f5',
+    // borderRadius: 20,
+    // borderWidth: 0,
+    // height: 40
+    marginLeft: 10,
+    marginRight: 10
   },
-  dropdown: {
-    minWidth: 50,
-    maxWidth: 50,
-    width: 50,
-    marginHorizontal: 10,
-    borderWidth: 1,
-    borderColor: '#777',
-  },
+  // dropdown: {
+  //   minWidth: 50,
+  //   maxWidth: 50,
+  //   borderRadius: 20,
+  //   width: 50,
+  //   marginHorizontal: 10,
+  //   borderWidth: 0,
+  //   backgroundColor: '#f5f5f5',
+  //   height: 40
+  // },
   backButton: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     padding: 10,
