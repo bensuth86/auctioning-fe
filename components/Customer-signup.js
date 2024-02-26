@@ -4,6 +4,8 @@ import { styles } from '../style-sheet'
 import { postUser } from '../utils'
 import { Snackbar } from 'react-native-paper'
 import CustomerContext from '../Contexts/LoggedInCustomerContext'
+import { useFonts } from 'expo-font'
+import { Button } from '../helpers'
 
 function CustomerSignUp({ navigation }) {
   const [username, setUserName] = useState('')
@@ -13,6 +15,13 @@ function CustomerSignUp({ navigation }) {
   const [visible, setVisible] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const { setCurrentCustomer } = useContext(CustomerContext)
+  const [fontsLoaded] = useFonts({
+    'Comfortaa-Bold': require('../assets/Fonts/Comfortaa-Bold.ttf'),
+    'Comfortaa-Light': require('../assets/Fonts/Comfortaa-Light.ttf'),
+    'Comfortaa-Medium': require('../assets/Fonts/Comfortaa-Medium.ttf'),
+    'Comfortaa-Regular': require('../assets/Fonts/Comfortaa-Regular.ttf'),
+    'Comfortaa-SemiBold': require('../assets/Fonts/Comfortaa-SemiBold.ttf'),
+  })
 
   useEffect(() => {
     validateForm()
@@ -39,7 +48,7 @@ function CustomerSignUp({ navigation }) {
         .then(({ user }) => {
           setCurrentCustomer(user)
           navigation.navigate('CustomerHomepage')
-          console.log('Form submitted successfully!')
+          // console.log('Form submitted successfully!')
           setSnackbarMessage('Form submitted successfully!')
           setVisible(true)
         })
@@ -54,27 +63,38 @@ function CustomerSignUp({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
-      <Text>Sign up to see all Auctions</Text>
+    <View style={styles.darkContainer}>
+      <Text
+        style={{
+          color: '#f5f5f5',
+          fontFamily: 'Comfortaa-Regular',
+          paddingRight: 20,
+          paddingLeft: 20,
+          textAlign: 'center'
+        }}
+      >
+        Sign up to see all auctions near you!
+      </Text>
       <TextInput
-        style={styles.textbox}
+        style={styles.textboxLight}
         placeholder="Username"
         value={username}
         onChangeText={(username) => setUserName(username)}
       />
       <TextInput
-        style={styles.textbox}
+        style={styles.textboxLight}
         placeholder="Postcode"
         value={postcode}
         onChangeText={(postcode) => setPostcode(postcode)}
       />
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={[styles.button, { opacity: isFormValid ? 1 : 0.5 }]}
         disabled={!isFormValid}
         onPress={handleSubmit}
       >
         <Text style={styles.buttonText}>Submit</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+      <Button btnText="SUBMIT" onPress={handleSubmit} disabled={!isFormValid} />
       {Object.values(errors).map((error, index) => (
         <Text key={index} style={styles.error}>
           {error}
