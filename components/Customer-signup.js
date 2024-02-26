@@ -24,6 +24,7 @@ function CustomerSignUp({ navigation }) {
   })
 
   useEffect(() => {
+    setErrors({})
     validateForm()
   }, [username, postcode])
 
@@ -37,6 +38,10 @@ function CustomerSignUp({ navigation }) {
       errors.postcode = 'Postcode is required'
     } else if (postcode.length < 5) {
       errors.postcode = 'Postcode must be at least 5 characters'
+    } else if (
+      !postcode.match(/^([A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}|GIR ?0A{2})$/gim)
+    ) {
+      errors.postcode = 'Postcode invalid'
     }
     setErrors(errors)
     setIsFormValid(Object.keys(errors).length === 0)
@@ -44,11 +49,11 @@ function CustomerSignUp({ navigation }) {
 
   const handleSubmit = () => {
     if (isFormValid) {
-      postUser({ username: username, postcode: postcode })
+      const formattedPostcode = postcode.replace(/\s/g, '').toUpperCase()
+      postUser({ username: username, postcode: formattedPostcode })
         .then(({ user }) => {
           setCurrentCustomer(user)
           navigation.navigate('CustomerHomepage')
-          // console.log('Form submitted successfully!')
           setSnackbarMessage('Form submitted successfully!')
           setVisible(true)
         })
@@ -58,7 +63,7 @@ function CustomerSignUp({ navigation }) {
           setVisible(true)
         })
     } else {
-      console.log('Form has errors. Please correct them.')
+      setSnackbarMessage('Form has errors. Please correct them.')
     }
   }
 
@@ -70,7 +75,7 @@ function CustomerSignUp({ navigation }) {
           fontFamily: 'Comfortaa-Regular',
           paddingRight: 20,
           paddingLeft: 20,
-          textAlign: 'center'
+          textAlign: 'center',
         }}
       >
         Sign up to see all auctions near you!
