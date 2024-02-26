@@ -2,18 +2,21 @@ import { StyleSheet } from 'react-native'
 import { useFonts } from 'expo-font'
 
 
+
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    minHeight: '100%'
   },
   darkContainer: {
     flex: 1,
     backgroundColor: '#2b1d41',
     alignItems: 'center',
     justifyContent: 'center',
+    minHeight: '100%'
   },
   button: {
     margin: 10,
