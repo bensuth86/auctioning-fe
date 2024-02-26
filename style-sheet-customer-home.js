@@ -30,13 +30,14 @@ export const homeStyles = StyleSheet.create({
     padding: 10,
     width: 80,
     borderRadius: 20,
+    fontFamily: 'Comfortaa-Regular'
   },
   resultsIntro: {
     textAlign: 'center',
     paddingLeft: 40,
     paddingRight: 40,
     marginTop: 20,
-    fontFamily: 'Comfortaa-Regular'
+    fontFamily: 'Comfortaa-Regular',
   },
   greetingsOrders: {
     flexDirection: 'column',
@@ -54,4 +55,19 @@ export const homeStyles = StyleSheet.create({
     height: 20,
     margin: 10,
   },
+  noResults: {
+    margin: 40,
+    width: 250,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noResultsText: {
+    textAlign: 'center',
+    maxWidth: '100%',
+    // marginVertical: 5,
+    fontFamily: 'Comfortaa-Regular',
+    color: 'red'
+  }
+  
 })
