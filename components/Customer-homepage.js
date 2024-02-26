@@ -153,6 +153,12 @@ function CustomerHomepage({ navigation }) {
               {currentCustomer.postcode}:{' '}
             </Text>
           )}
+            {eventsList.length === 0 && (
+              <View style={homeStyles.noResults}>
+                <Text style={homeStyles.noResultsText}>There are currently no auctions near you.</Text>
+                <Text style={homeStyles.noResultsText}>Try again later, or increase your radius for a wider selection.</Text>
+              </View>
+            )}
           <View style={eventStyles.eventslist}>
             {eventsList.map((event, i) => {
               const availableSeats = event.available_seats.length
