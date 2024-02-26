@@ -71,9 +71,9 @@ function CustomerHomepage({ navigation }) {
     setExpandRadius(radius)
   }
 
-  if (!fontsLoaded) {
-    return undefined
-  }
+  // if (!fontsLoaded) {
+  //   return undefined
+  // }
 
   if (isLoading)
     return (
