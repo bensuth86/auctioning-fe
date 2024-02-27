@@ -109,7 +109,4 @@ export const styles = StyleSheet.create({
     fontFamily: 'Comfortaa-Light',
     textAlign: 'center'
   }
-  // loadingContainer: {
-  //   backgroundColor: 'yellow'
-  // }
 })
