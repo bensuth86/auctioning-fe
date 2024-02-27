@@ -17,6 +17,10 @@ import { getBusinessById } from '../utils.js'
 import { useEffect } from 'react'
 import { postNewEvent } from '../utils.js'
 import { Snackbar } from 'react-native-paper'
+import { Pressable } from 'react-native'
+import { AntDesign } from '@expo/vector-icons'
+
+import { Alert } from 'react-native'
 
 function BusinessListing({ navigation }) {
   const route = useRoute()
@@ -99,39 +103,71 @@ function BusinessListing({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View style={styles.container}>
-        <View style={{ maxWidth: 300 }}>
-          <Text>Listing for {title}</Text>
+      <View style={styles.darkContainer}>
+        <View style={homeStyles.topNavigation}>
+          <Pressable style={styles.backButton}>
+            <Text style={styles.backButtonText}>SIGN OUT</Text>
+          </Pressable>
         </View>
-        <View style={{ marginTop: 20, marginBottom: 20 }}>
-          {show === false ? (
-            <Button
-              btnText="Choose Date"
-              onPress={() => showMode('date')}
-            ></Button>
-          ) : null}
+        <View style={{ maxWidth: 300 }}>
+          <Text
+            style={{
+              fontFamily: 'Comfortaa-Regular',
+              fontSize: 20,
+              color: '#f5f5f5',
+              textAlign: 'center',
+            }}
+          >
+            Listing for {'\n'}
+            <Text style={{ fontFamily: 'Comfortaa-Bold' }}>{title}</Text>
+          </Text>
+        </View>
+        <View style={{ marginTop: 10, width: '100%' }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            {show === false ? (
+              <Button
+                btnText="CHOOSE DATE"
+                onPress={() => showMode('date')}
+              ></Button>
+            ) : null}
 
-          {show === false ? (
-            <Button
-              btnText="Choose Time"
-              onPress={() => showMode('time')}
-            ></Button>
-          ) : (
-            <Button btnText="Close" onPress={() => setShow(false)}></Button>
-          )}
+            {show === false ? (
+              <Button
+                btnText="CHOOSE TIME"
+                onPress={() => showMode('time')}
+              ></Button>
+            ) : (
+              <Button btnText="CLOSE" onPress={() => setShow(false)}></Button>
+            )}
 
-          {show && (
-            <DateTimePicker
-              value={date}
-              mode={mode}
-              display={'spinner'}
-              is24HOUR={true}
-              onChange={onChange}
-            />
-          )}
+            {show && (
+              <DateTimePicker
+                value={date}
+                mode={mode}
+                display={'spinner'}
+                is24HOUR={true}
+                onChange={onChange}
+              />
+            )}
+          </View>
 
-          <Text>
-            You have chosen date:{' '}
+          <Text
+            style={{
+              fontFamily: 'Comfortaa-Light',
+              fontSize: 12,
+              color: '#f5f5f5',
+              textAlign: 'center',
+            }}
+          >
+            <Text style={{ color: 'rgba(255, 255, 255, 0.4)' }}>
+              You have chosen the following date:{'\n'}
+            </Text>
             {date.toLocaleString([], {
               year: 'numeric',
               month: 'numeric',
@@ -140,114 +176,189 @@ function BusinessListing({ navigation }) {
               minute: '2-digit',
             })}
           </Text>
-          <View style={homeStyles.radiusSelection}>
-            <Text>Please select your starting price:</Text>
-            <Button btnText={'-'} onPress={decreasePrice} />
-            <TextInput
-              value={`£${price.toString()}`}
-              onChangeText={(text) => setPrice(parseInt(text) || 1)}
-              keyboardType="numeric"
-              style={homeStyles.numberDial}
-              selectionColor={'rgba(43, 29, 65, 0.1)'}
-            />
-            <Button btnText={'+'} onPress={increasePrice} />
-          </View>
-          <Text
-            style={{ textAlign: 'center', marginTop: 20, marginBottom: 20 }}
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'column',
+            }}
           >
-            Please select all available seats:
-          </Text>
-          {seatingPlan.map((row, i) => {
-            return (
-              <View key={i} style={seatStyles.seatsContainer}>
-                <View key={i} style={seatStyles.rowContainer}>
-                  {row.map((seat) => {
-                    const isSelected = selectedSeats.includes(seat)
-                    return (
-                      <View key={seat}>
-                        <SeatButton
-                          seatStyle={
-                            isSelected
-                              ? seatStyles.availableSeatButton
-                              : seatStyles.numberedSeatButton
-                          }
-                          key={seat}
-                          btnText={seat}
-                          onPress={() => {
-                            {
+            <Text
+              style={{
+                textAlign: 'center',
+                marginTop: 20,
+                // marginBottom: 20,
+                fontFamily: 'Comfortaa-Regular',
+                color: '#f5f5f5',
+                fontSize: 12,
+              }}
+            >
+              Please select your starting price:
+            </Text>
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'row',
+                marginBottom: 20,
+                marginTop: 10
+              }}
+            >
+              <TouchableOpacity
+                style={homeStyles.adjustments}
+                onPress={decreasePrice}
+              >
+                <AntDesign name="minus" size={24} color="#f5f5f5" />
+              </TouchableOpacity>
+              <TextInput
+                value={`£${price.toString()}`}
+                onChangeText={(text) => setPrice(parseInt(text) || 1)}
+                keyboardType="numeric"
+                style={{backgroundColor: '#f5f5f5', borderRadius: 20, height: 40, width: 80, textAlign: 'center'}}
+                selectionColor={'rgba(43, 29, 65, 0.1)'}
+              />
+              <TouchableOpacity
+                style={homeStyles.adjustments}
+                onPress={increasePrice}
+              >
+                <AntDesign name="plus" size={24} color="#f5f5f5" />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View
+            style={{
+              backgroundColor: '#f5f5f5',
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                marginTop: 20,
+                marginBottom: 20,
+                fontFamily: 'Comfortaa-Regular',
+              }}
+            >
+              Please select all available seats:
+            </Text>
+            <View style={seatStyles.screen}>
+              <Text style={seatStyles.screenText}>SCREEN</Text>
+            </View>
+            {seatingPlan.map((row, i) => {
+              return (
+                <View key={i} style={seatStyles.seatsContainer}>
+                  <View key={i} style={seatStyles.rowContainer}>
+                    {row.map((seat) => {
+                      const isSelected = selectedSeats.includes(seat)
+                      return (
+                        <View key={seat}>
+                          <SeatButton
+                            seatStyle={
                               isSelected
-                                ? setSelectedSeats(
-                                    selectedSeats.filter(
-                                      (item) => seat !== item
-                                    )
-                                  )
-                                : setSelectedSeats([...selectedSeats, seat])
+                                ? seatStyles.availableSeatButton
+                                : seatStyles.numberedSeatButton
                             }
-                          }}
-                        ></SeatButton>
-                      </View>
-                    )
-                  })}
+                            key={seat}
+                            btnText={seat}
+                            onPress={() => {
+                              {
+                                isSelected
+                                  ? setSelectedSeats(
+                                      selectedSeats.filter(
+                                        (item) => seat !== item
+                                      )
+                                    )
+                                  : setSelectedSeats([...selectedSeats, seat])
+                              }
+                            }}
+                          ></SeatButton>
+                        </View>
+                      )
+                    })}
+                  </View>
                 </View>
+              )
+            })}
+            {/* </View> */}
+            {/* <View style={seatStyles.screen}>
+            <Text style={seatStyles.screenText}>SCREEN</Text>
+          </View> */}
+            <View style={{ marginTop: 10 }}>
+              <View style={seatStyles.keyContainer}>
+                <View
+                  style={[seatStyles.seatKey, { backgroundColor: '#7bc47f' }]}
+                ></View>
+                <Text style={{ fontFamily: 'Comfortaa-Light', fontSize: 12 }}>
+                  Available
+                </Text>
               </View>
-            )
-          })}
-        </View>
-        <View style={seatStyles.screen}>
-          <Text style={seatStyles.screenText}>SCREEN</Text>
-        </View>
-        <View style={{ marginTop: 10 }}>
-          <View style={seatStyles.keyContainer}>
-            <View
-              style={[seatStyles.seatKey, { backgroundColor: '#7bc47f' }]}
-            ></View>
-            <Text>Available</Text>
-          </View>
 
-          <View style={seatStyles.keyContainer}>
-            <View
-              style={[seatStyles.seatKey, { backgroundColor: '#626262' }]}
-            ></View>
-            <Text>Unavailable</Text>
+              <View style={seatStyles.keyContainer}>
+                <View
+                  style={[seatStyles.seatKey, { backgroundColor: '#626262' }]}
+                ></View>
+                <Text style={{ fontFamily: 'Comfortaa-Light', fontSize: 12 }}>
+                  Unavailable
+                </Text>
+              </View>
+            </View>
+            {/* <TouchableOpacity
+            onPress={() => {
+              Alert.alert(
+                'Selection instructions',
+                'This is where all of the info for seat selections will be.'
+              )
+            }}
+            title="?"
+          >
+            <Text>?</Text>
+          </TouchableOpacity> */}
+            {date < today.setMinutes(today.getMinutes() + 59) ? (
+              <View>
+                <Text
+                  style={[
+                    styles.error,
+                    {
+                      fontFamily: 'Comfortaa-Light',
+                      textAlign: 'center',
+                      margin: 20,
+                    },
+                  ]}
+                >
+                  You must set a date more than 1 hour in the future.
+                </Text>
+              </View>
+            ) : selectedSeats.length > 0 ? (
+              <Button btnText={'LIST EVENT'} onPress={handleListing} />
+            ) : (
+              <View>
+                <Text style={[
+                    styles.error,
+                    {
+                      fontFamily: 'Comfortaa-Light',
+                      textAlign: 'center',
+                      margin: 20,
+                    },
+                  ]}>
+                  You must select at least one seat.
+                </Text>
+              </View>
+            )}
           </View>
+          <Snackbar
+            visible={visible}
+            onDismiss={() => setVisible(false)}
+            action={{
+              label: 'Dismiss',
+              onPress: () => setVisible(false),
+            }}
+          >
+            {snackbarMessage}
+          </Snackbar>
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            Alert.alert(
-              'Selection instructions',
-              'This is where all of the info for seat selections will be.'
-            )
-          }}
-          title="?"
-        >
-          <Text>?</Text>
-        </TouchableOpacity>
-        {date < today.setMinutes(today.getMinutes() + 59) ? (
-          <View style={seatStyles.errorContainer}>
-            <Text style={seatStyles.textbox}>
-              You must set a date more than 1 hour in the future.
-            </Text>
-          </View>
-        ) : selectedSeats.length > 0 ? (
-          <Button btnText={'List event'} onPress={handleListing} />
-        ) : (
-          <View style={seatStyles.errorContainer}>
-            <Text style={seatStyles.textbox}>
-              You must select at least one seat.
-            </Text>
-          </View>
-        )}
       </View>
-      <Snackbar
-        visible={visible}
-        onDismiss={() => setVisible(false)}
-        action={{
-          label: 'Dismiss',
-          onPress: () => setVisible(false),
-        }}
-      >
-        {snackbarMessage}
-      </Snackbar>
     </ScrollView>
   )
 }

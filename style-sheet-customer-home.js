@@ -29,7 +29,7 @@ export const homeStyles = StyleSheet.create({
     height: 30,
     borderWidth: 0,
     borderColor: 'transparent', 
-    backgroundColor: 'white',
+    backgroundColor: '#f5f5f5',
     padding: 10,
     width: 80,
     borderRadius: 20,
