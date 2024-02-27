@@ -121,7 +121,7 @@ function Login({ navigation, route }) {
           let foundMatch = false
           response.data.users.forEach((user) => {
             if (loginName === user.username) {
-              sendPushNotification(expoPushToken)
+              // sendPushNotification(expoPushToken)
               setCurrentCustomer({
                 username: user.username,
                 user_id: user.user_id,
