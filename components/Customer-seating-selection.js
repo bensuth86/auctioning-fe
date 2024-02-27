@@ -11,7 +11,7 @@ import {
   Button,
   SeatButton,
   DisabledSeatButton,
-  DisabledButton,
+  // DisabledButton,
 } from '../helpers'
 import { styles } from '../style-sheet'
 import { seatStyles } from '../style-sheet-seats.js'
@@ -405,67 +405,70 @@ function CustomerSeating({ navigation, route }) {
                       Seats must be in the same row.
                     </Text>
                   ) : null}
-                  {auctionSelection.length && availableSelection.length ? (
-                    <>
-                      <View style={seatStyles.errorContainer}>
-                        <Text style={seatStyles.textbox}>
-                          You cannot select tickets both in auction and not in
-                          auction.
-                        </Text>
-                      </View>
-                    </>
-                  ) : selectedSeats.length &&
-                    !Object.keys(selectedAuction).length ? (
-                    <Button
-                      key={'auctionButton'}
-                      btnText="START AUCTION"
-                      onPress={() =>
-                        navigation.navigate('AuctionPage', {
-                          //  auction_info: { auctionSeatInfo },
-                          seat_selection: { selectedSeats },
-                          event_id: { event_id },
-                          business_id: { business_id },
-                          film_title: { film_title },
-                          poster: { poster },
-                          certificate: { certificate },
-                          run_time: { run_time },
-                          start_time: { start_time },
-                          available_seats: { available_seats },
-                          active: { active },
-                          start_price: { start_price },
-                        })
-                      }
-                    />
-                  ) : selectedSeats.length &&
-                    Object.keys(selectedAuction).length ? (
-                    <Button
-                      key={'auctionButton'}
-                      btnText="GO TO AUCTION"
-                      onPress={() =>
-                        navigation.navigate('AuctionPage', {
-                          // auction_info: { auctionSeatInfo },
-                          seat_selection: { selectedSeats },
-                          event_id: { event_id },
-                          business_id: { business_id },
-                          film_title: { film_title },
-                          poster: { poster },
-                          certificate: { certificate },
-                          run_time: { run_time },
-                          start_time: { start_time },
-                          available_seats: { available_seats },
-                          active: { active },
-                          start_price: { start_price },
-                          selectedAuction: selectedAuction.auction_id,
-                        })
-                      }
-                    />
-                  ) : (
-                    <DisabledButton
-                      key={'auctionButton'}
-                      style={{ color: 'pink' }}
-                      btnText="GO TO AUCTION"
-                    />
-                  )}
+                  {
+                    auctionSelection.length && availableSelection.length ? (
+                      <>
+                        <View style={seatStyles.errorContainer}>
+                          <Text style={seatStyles.textbox}>
+                            You cannot select tickets both in auction and not in
+                            auction.
+                          </Text>
+                        </View>
+                      </>
+                    ) : selectedSeats.length &&
+                      !Object.keys(selectedAuction).length ? (
+                      <Button
+                        key={'auctionButton'}
+                        btnText="START AUCTION"
+                        onPress={() =>
+                          navigation.navigate('AuctionPage', {
+                            //  auction_info: { auctionSeatInfo },
+                            seat_selection: { selectedSeats },
+                            event_id: { event_id },
+                            business_id: { business_id },
+                            film_title: { film_title },
+                            poster: { poster },
+                            certificate: { certificate },
+                            run_time: { run_time },
+                            start_time: { start_time },
+                            available_seats: { available_seats },
+                            active: { active },
+                            start_price: { start_price },
+                          })
+                        }
+                      />
+                    ) : selectedSeats.length &&
+                      Object.keys(selectedAuction).length ? (
+                      <Button
+                        key={'auctionButton'}
+                        btnText="GO TO AUCTION"
+                        onPress={() =>
+                          navigation.navigate('AuctionPage', {
+                            // auction_info: { auctionSeatInfo },
+                            seat_selection: { selectedSeats },
+                            event_id: { event_id },
+                            business_id: { business_id },
+                            film_title: { film_title },
+                            poster: { poster },
+                            certificate: { certificate },
+                            run_time: { run_time },
+                            start_time: { start_time },
+                            available_seats: { available_seats },
+                            active: { active },
+                            start_price: { start_price },
+                            selectedAuction: selectedAuction.auction_id,
+                          })
+                        }
+                      />
+                    ) : null
+                    // (
+                    //   <DisabledButton
+                    //     key={'auctionButton'}
+                    //     style={{ color: 'pink' }}
+                    //     btnText="GO TO AUCTION"
+                    //   />
+                    // )
+                  }
                 </>
               )}
               {/* </View> */}
