@@ -235,6 +235,7 @@ function CustomerAuctionPage({ navigation, route }) {
         clearInterval(interval)
         setCountdown(false)
         setCountdownStructure({
+          days: null,
           hours: null,
           minutes: null,
           seconds: null,
@@ -242,6 +243,7 @@ function CustomerAuctionPage({ navigation, route }) {
         })
         return
       }
+      const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24))
       const hours = Math.floor(
         (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       )
@@ -249,6 +251,7 @@ function CustomerAuctionPage({ navigation, route }) {
       const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000)
 
       setCountdownStructure({
+        days: days,
         hours: hours,
         minutes: minutes,
         seconds: seconds,
@@ -286,8 +289,8 @@ function CustomerAuctionPage({ navigation, route }) {
           <View style={auctionStyles.timerContainer}>
             <Text style={auctionStyles.text}>TIME LEFT: </Text>
             <Text style={auctionStyles.countdownFont}>
-              {countdownStructure.hours}h {countdownStructure.minutes}m{' '}
-              {countdownStructure.seconds}s
+              {countdownStructure.days}d {countdownStructure.hours}h{' '}
+              {countdownStructure.minutes}m {countdownStructure.seconds}s
             </Text>
           </View>
         )}
