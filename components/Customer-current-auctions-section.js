@@ -11,6 +11,7 @@ import { currentAuctions } from '../style-sheet-current-auctions'
 import { ActivityIndicator } from 'react-native-paper'
 import { useIsFocused } from '@react-navigation/native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { Feather } from '@expo/vector-icons'
 
 export function CurrentAuction({ navigation }) {
   const { currentCustomer, setCurrentCustomer } = useContext(CustomerContext)
@@ -96,38 +97,34 @@ export function CurrentAuction({ navigation }) {
                 }
               >
                 <View key={i} style={currentAuctions.container}>
-                  <Text style={currentAuctions.textBold}>
-                    {auction.film_title}, {'\n'}
-                    {auction.business_name}
-                  </Text>
-                  {/* <Text style={currentAuctions.text}>{auction.business_name}, {auction.postcode}</Text> */}
-                  {/* <Text>{auction.postcode}</Text> */}
-                  <Text style={currentAuctions.text}>
-                    Bidding on{' '}
-                    <Text style={currentAuctions.textBold}>
-                      {auction.seat_selection.join(', ')}
-                    </Text>{' '}
-                    {'\n'}
-                    at{' '}
-                    <Text style={currentAuctions.textBold}>
-                      £{Number(auction.current_price).toFixed(2)}
-                    </Text>{' '}
-                    per seat
-                  </Text>
-                  {/* <Text style={currentAuctions.text}>Screening date: {convertTime(auction.start_time)}</Text> */}
-                  <Text style={currentAuctions.text}>
-                    Ends in:{'\n'}
-                    <Text style={currentAuctions.textBold}>
-                      {convertTime(auction.time_ending)}
+                  <View style={currentAuctions.left}>
+                    <Text style={{ textAlign: 'left', paddingLeft: 10 }}>
+                      <Feather name="mouse-pointer" size={20} color="#f5f5f5" />
                     </Text>
-                  </Text>
-                  {/* <Text style={currentAuctions.text}>
-              Current bid: £{Number(auction.current_price).toFixed(2)}
-            </Text> */}
-                  <View>
-                    <View>
-                      
-                    </View>
+                  </View>
+                  <View style={currentAuctions.right}>
+                    <Text style={currentAuctions.textBold}>
+                      {auction.film_title}, {'\n'}
+                      {auction.business_name}
+                    </Text>
+                    <Text style={currentAuctions.text}>
+                      Bidding on{' '}
+                      <Text style={currentAuctions.textBold}>
+                        {auction.seat_selection.join(', ')}
+                      </Text>{' '}
+                      {'\n'}
+                      at{' '}
+                      <Text style={currentAuctions.textBold}>
+                        £{Number(auction.current_price).toFixed(2)}
+                      </Text>{' '}
+                      per seat
+                    </Text>
+                    <Text style={currentAuctions.text}>
+                      Ends in:{'\n'}
+                      <Text style={currentAuctions.textBold}>
+                        {convertTime(auction.time_ending)}
+                      </Text>
+                    </Text>
                     <Text style={currentAuctions.text}>
                       <Text style={currentAuctions.textBold}>
                         {auction.users_involved.length}
@@ -137,23 +134,27 @@ export function CurrentAuction({ navigation }) {
                       currentCustomer.user_id ? (
                         <Text style={currentAuctions.text}>
                           You are{' '}
-                          <Text style={currentAuctions.textBold}>winning!</Text>
+                          <Text
+                            style={[
+                              currentAuctions.textBold,
+                              { color: '#7bc47f' },
+                            ]}
+                          >
+                            winning!
+                          </Text>
                         </Text>
                       ) : (
                         <Text style={currentAuctions.text}>
                           You are{' '}
-                          <Text style={currentAuctions.textBold}>loosing!</Text>
+                          <Text
+                            style={[currentAuctions.textBold, { color: 'red' }]}
+                          >
+                            loosing!
+                          </Text>
                         </Text>
                       )}
                     </Text>
                   </View>
-                  <Text style={{ textAlign: 'left' }}>
-                    <MaterialCommunityIcons
-                      name="cursor-default-click"
-                      size={20}
-                      color="#f5f5f5"
-                    />
-                  </Text>
                 </View>
               </TouchableOpacity>
             ))}

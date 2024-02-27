@@ -6,7 +6,7 @@ export const homeStyles = StyleSheet.create({
     backgroundColor: '#2b1d41',
     width: '100%',
     padding: 10,
-    paddingBottom: 30,
+    paddingBottom: 10,
     backgroundColor: '#2b1d41',
 
     // borderBottomEndRadius: 50,
