@@ -3,18 +3,18 @@ import { View } from 'react-native'
 import { Button } from '../helpers'
 import { styles } from '../style-sheet'
 import { Text } from 'react-native'
-import { useFonts } from 'expo-font'
-import { useState } from 'react'
+// import { useFonts } from 'expo-font'
+// import { useState } from 'react'
 // import { useState } from 'react'
 
 function WelcomePage({ navigation }) {
-  const [fontsLoaded] = useFonts({
-    'Comfortaa-Bold': require('../assets/Fonts/Comfortaa-Bold.ttf'),
-    'Comfortaa-Light': require('../assets/Fonts/Comfortaa-Light.ttf'),
-    'Comfortaa-Medium': require('../assets/Fonts/Comfortaa-Medium.ttf'),
-    'Comfortaa-Regular': require('../assets/Fonts/Comfortaa-Regular.ttf'),
-    'Comfortaa-SemiBold': require('../assets/Fonts/Comfortaa-SemiBold.ttf'),
-  })
+  // const [fontsLoaded] = useFonts({
+  //   'Comfortaa-Bold': require('../assets/Fonts/Comfortaa-Bold.ttf'),
+  //   'Comfortaa-Light': require('../assets/Fonts/Comfortaa-Light.ttf'),
+  //   'Comfortaa-Medium': require('../assets/Fonts/Comfortaa-Medium.ttf'),
+  //   'Comfortaa-Regular': require('../assets/Fonts/Comfortaa-Regular.ttf'),
+  //   'Comfortaa-SemiBold': require('../assets/Fonts/Comfortaa-SemiBold.ttf'),
+  // })
   return (
     <View style={styles.darkContainer}>
       <View style={{flexDirection: 'column', width: '100%'}}>

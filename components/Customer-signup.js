@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useContext} from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { View, TextInput, Text, TouchableOpacity } from 'react-native'
 import { styles } from '../style-sheet'
 import { postUser } from '../utils'
 import { Snackbar } from 'react-native-paper'
 import CustomerContext from '../Contexts/LoggedInCustomerContext'
-import { useFonts } from 'expo-font'
 import { Button } from '../helpers'
+import { homeStyles } from '../style-sheet-customer-home'
+import { Pressable } from 'react-native'
 
 function CustomerSignUp({ navigation }) {
   const [username, setUserName] = useState('')
@@ -15,15 +16,6 @@ function CustomerSignUp({ navigation }) {
   const [visible, setVisible] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const { setCurrentCustomer } = useContext(CustomerContext)
-
-  const [fontsLoaded] = useFonts({
-    'Comfortaa-Bold': require('../assets/Fonts/Comfortaa-Bold.ttf'),
-    'Comfortaa-Light': require('../assets/Fonts/Comfortaa-Light.ttf'),
-    'Comfortaa-Medium': require('../assets/Fonts/Comfortaa-Medium.ttf'),
-    'Comfortaa-Regular': require('../assets/Fonts/Comfortaa-Regular.ttf'),
-    'Comfortaa-SemiBold': require('../assets/Fonts/Comfortaa-SemiBold.ttf'),
-  })
-
 
   useEffect(() => {
     setErrors({})
@@ -71,6 +63,11 @@ function CustomerSignUp({ navigation }) {
 
   return (
     <View style={styles.darkContainer}>
+      <View style={homeStyles.topNavigation}>
+        <Pressable style={styles.backButton}>
+          <Text style={styles.backButtonText}>WELCOME PAGE</Text>
+        </Pressable>
+      </View>
       <Text
         style={{
           color: '#f5f5f5',

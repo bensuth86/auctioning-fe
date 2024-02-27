@@ -106,7 +106,7 @@ function BusinessListing({ navigation }) {
       <View style={styles.darkContainer}>
         <View style={homeStyles.topNavigation}>
           <Pressable style={styles.backButton}>
-            <Text style={styles.backButtonText}>SIGN OUT</Text>
+            <Text style={styles.backButtonText}>FILMS</Text>
           </Pressable>
         </View>
         <View style={{ maxWidth: 300 }}>

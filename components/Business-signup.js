@@ -7,6 +7,8 @@ import { SelectList } from 'react-native-dropdown-select-list'
 import { generateSeatGrid } from '../helpers'
 import { Button } from '../helpers'
 import { ScrollView } from 'react-native'
+import { homeStyles } from '../style-sheet-customer-home'
+import { Pressable } from 'react-native'
 
 function BusinessSignUp({ navigation }) {
   const [businessName, setBusinessName] = useState('')
@@ -95,6 +97,11 @@ function BusinessSignUp({ navigation }) {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.darkContainer}>
+      <View style={homeStyles.topNavigation}>
+        <Pressable style={styles.backButton}>
+          <Text style={styles.backButtonText}>WELCOME PAGE</Text>
+        </Pressable>
+      </View>
         <Text
           style={{
             color: '#f5f5f5',

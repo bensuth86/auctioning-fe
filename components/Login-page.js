@@ -7,13 +7,13 @@ import { getAllUsers, getAllBusinesses } from '../utils'
 import { useEffect } from 'react'
 import { useContext } from 'react'
 import CustomerContext from '../Contexts/LoggedInCustomerContext'
-import { useFonts } from 'expo-font'
 import { Alert } from 'react-native'
 import { TouchableOpacity } from 'react-native'
+import { homeStyles } from '../style-sheet-customer-home'
+import { Pressable } from 'react-native'
 // import * as Device from 'expo-device';
 // import * as Notifications from 'expo-notifications';
 // import Constants from 'expo-constants';
-
 
 function Login({ navigation, route }) {
   const usertype = route.params.usertype
@@ -26,143 +26,133 @@ function Login({ navigation, route }) {
   // const [notification, setNotification] = useState(false);
   // const notificationListener = useRef();
   // const responseListener = useRef();
-  const [fontsLoaded] = useFonts({
-    'Comfortaa-Bold': require('../assets/Fonts/Comfortaa-Bold.ttf'),
-    'Comfortaa-Light': require('../assets/Fonts/Comfortaa-Light.ttf'),
-    'Comfortaa-Medium': require('../assets/Fonts/Comfortaa-Medium.ttf'),
-    'Comfortaa-Regular': require('../assets/Fonts/Comfortaa-Regular.ttf'),
-    'Comfortaa-SemiBold': require('../assets/Fonts/Comfortaa-SemiBold.ttf'),
-  })
+
   const { setCurrentCustomer } = useContext(CustomerContext)
 
-//   Notifications.setNotificationHandler({
-//     handleNotification: async () => ({
-//       shouldShowAlert: true,
-//       shouldPlaySound: false,
-//       shouldSetBadge: false,
-//     }),
-//   });
+  //   Notifications.setNotificationHandler({
+  //     handleNotification: async () => ({
+  //       shouldShowAlert: true,
+  //       shouldPlaySound: false,
+  //       shouldSetBadge: false,
+  //     }),
+  //   });
 
-//   async function sendPushNotification(expoPushToken) {
-//     const message = {
-//       to: expoPushToken,
-//       title: 'Welcome Back!',
-//       body: 'You have successfully logged in.',
-//     };
-  
-//     await fetch('https://exp.host/--/api/v2/push/send', {
-//       method: 'POST',
-//       headers: {
-//         Accept: 'application/json',
-//         'Accept-encoding': 'gzip, deflate',
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify(message),
-//     });
-//   }
+  //   async function sendPushNotification(expoPushToken) {
+  //     const message = {
+  //       to: expoPushToken,
+  //       title: 'Welcome Back!',
+  //       body: 'You have successfully logged in.',
+  //     };
 
+  //     await fetch('https://exp.host/--/api/v2/push/send', {
+  //       method: 'POST',
+  //       headers: {
+  //         Accept: 'application/json',
+  //         'Accept-encoding': 'gzip, deflate',
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(message),
+  //     });
+  //   }
 
-// // CODE FROM EXPO DOCS
-// async function registerForPushNotificationsAsync() {
-//   let token;
+  // // CODE FROM EXPO DOCS
+  // async function registerForPushNotificationsAsync() {
+  //   let token;
 
-//   if (Platform.OS === 'android') {
-//     Notifications.setNotificationChannelAsync('default', {
-//       name: 'default',
-//       importance: Notifications.AndroidImportance.MAX,
-//       vibrationPattern: [0, 250, 250, 250],
-//       lightColor: '#FF231F7C',
-//     });
-//   }
+  //   if (Platform.OS === 'android') {
+  //     Notifications.setNotificationChannelAsync('default', {
+  //       name: 'default',
+  //       importance: Notifications.AndroidImportance.MAX,
+  //       vibrationPattern: [0, 250, 250, 250],
+  //       lightColor: '#FF231F7C',
+  //     });
+  //   }
 
-//   if (Device.isDevice) {
-//     const { status: existingStatus } = await Notifications.getPermissionsAsync();
-//     let finalStatus = existingStatus;
-//     if (existingStatus !== 'granted') {
-//       const { status } = await Notifications.requestPermissionsAsync();
-//       finalStatus = status;
-//     }
-//     if (finalStatus !== 'granted') {
-//       alert('Failed to get push token for push notification!');
-//       return;
-//     }
-//     token = await Notifications.getExpoPushTokenAsync({
-//       projectId: Constants.expoConfig.extra.eas.projectId,
-//     });
-//   } else {
-//     alert('Must use physical device for Push Notifications');
-//   }
+  //   if (Device.isDevice) {
+  //     const { status: existingStatus } = await Notifications.getPermissionsAsync();
+  //     let finalStatus = existingStatus;
+  //     if (existingStatus !== 'granted') {
+  //       const { status } = await Notifications.requestPermissionsAsync();
+  //       finalStatus = status;
+  //     }
+  //     if (finalStatus !== 'granted') {
+  //       alert('Failed to get push token for push notification!');
+  //       return;
+  //     }
+  //     token = await Notifications.getExpoPushTokenAsync({
+  //       projectId: Constants.expoConfig.extra.eas.projectId,
+  //     });
+  //   } else {
+  //     alert('Must use physical device for Push Notifications');
+  //   }
 
-//   return token.data;
-// }
+  //   return token.data;
+  // }
 
+  //   useEffect(() => {
+  //     registerForPushNotificationsAsync().then(token => {console.log(token), setExpoPushToken(token)});
 
-//   useEffect(() => {
-//     registerForPushNotificationsAsync().then(token => {console.log(token), setExpoPushToken(token)});
+  //     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+  //       setNotification(notification);
+  //     });
 
-//     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-//       setNotification(notification);
-//     });
+  //     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+  //       console.log(response);
+  //     });
 
-//     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-//       console.log(response);
-//     });
-
-//     return () => {
-//       Notifications.removeNotificationSubscription(notificationListener.current);
-//       Notifications.removeNotificationSubscription(responseListener.current);
-//     };
-//   }, []);
+  //     return () => {
+  //       Notifications.removeNotificationSubscription(notificationListener.current);
+  //       Notifications.removeNotificationSubscription(responseListener.current);
+  //     };
+  //   }, []);
 
   useEffect(() => {
     if (submitCustomerClicked) {
-      getAllUsers()
-        .then((response) => {
-          let foundMatch = false
-          response.data.users.forEach((user) => {
-            if (loginName === user.username) {
-              // sendPushNotification(expoPushToken)
-              setCurrentCustomer({
-                username: user.username,
-                user_id: user.user_id,
-                postcode: user.postcode,
-              })
-              navigation.navigate('CustomerHomepage')
-              // setMatch(true);
-              foundMatch = true
-              setLoginName('')
-              setErrorMessage('')
-            }
-          })
-          if (!foundMatch) {
-            setErrorMessage('That is not a valid username. Please try again')
+      getAllUsers().then((response) => {
+        let foundMatch = false
+        response.data.users.forEach((user) => {
+          if (loginName === user.username) {
+            // sendPushNotification(expoPushToken)
+            setCurrentCustomer({
+              username: user.username,
+              user_id: user.user_id,
+              postcode: user.postcode,
+            })
+            navigation.navigate('CustomerHomepage')
+            // setMatch(true);
+            foundMatch = true
+            setLoginName('')
+            setErrorMessage('')
           }
-          setCustomerSubmitClicked(false)
         })
+        if (!foundMatch) {
+          setErrorMessage('That is not a valid username. Please try again')
+        }
+        setCustomerSubmitClicked(false)
+      })
     }
 
     if (submitBusinessClicked) {
-      getAllBusinesses()
-        .then((response) => {
-          let foundMatch = false
-          response.data.businesses.forEach((business) => {
-            if (loginName === business.business_name) {
-              // sendPushNotification(expoPushToken)
-              // setCurrentCustomer({ business: business.business_name });
-              navigation.navigate('BusinessHomepage', {
-                business_id: business.business_id,
-              })
-              // setMatch(true);
-              foundMatch = true
-              setLoginName('')
-              setErrorMessage('')
-            }
-          })
-          if (!foundMatch) {
-            setErrorMessage('That is not a valid username. Please try again')
+      getAllBusinesses().then((response) => {
+        let foundMatch = false
+        response.data.businesses.forEach((business) => {
+          if (loginName === business.business_name) {
+            // sendPushNotification(expoPushToken)
+            // setCurrentCustomer({ business: business.business_name });
+            navigation.navigate('BusinessHomepage', {
+              business_id: business.business_id,
+            })
+            // setMatch(true);
+            foundMatch = true
+            setLoginName('')
+            setErrorMessage('')
           }
-          setBusinessClicked(false)
         })
+        if (!foundMatch) {
+          setErrorMessage('That is not a valid username. Please try again')
+        }
+        setBusinessClicked(false)
+      })
     }
   }, [submitCustomerClicked, submitBusinessClicked])
 
@@ -189,19 +179,21 @@ function Login({ navigation, route }) {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.darkContainer}>
-        {/* <Text style={{ color: 'green' }}>LOGINS: (some may be out of radius if no results show up):</Text>
-      <Text style={{ color: 'green' }}>BLOST (Birmingham logins): 'mrgrumpy19', 'smink123', 'tiahontoast', 'johnsmith'</Text>
-      <Text style={{ color: 'green' }}>BLOST (Manchester logins): 'pelicanlogsong', 'oldeuboi', 'nixrolls'</Text>
-      <Text style={{ color: 'green' }}>BLOST (Business logins): 'Cultplex', 'Odeon Great Northern', 'VUE Star City'</Text> */}
+        <View style={homeStyles.topNavigation}>
+          <Pressable style={styles.backButton}>
+            <Text style={styles.backButtonText}>WELCOME PAGE</Text>
+          </Pressable>
+        </View>
         <Text
           style={{
             fontFamily: 'Comfortaa-Regular',
             color: '#f5f5f5',
             fontSize: 12,
-            textAlign: 'center'
+            textAlign: 'center',
           }}
         >
-          Already have an account? {`\n`} Enter {usertype.toLowerCase()} username:
+          Already have an account? {`\n`} Enter {usertype.toLowerCase()}{' '}
+          username:
         </Text>
         <TextInput
           style={styles.textboxLight}
@@ -254,34 +246,40 @@ function Login({ navigation, route }) {
           />
         )}
         {usertype === 'Customer' && (
-          <TouchableOpacity onPress={() =>
-            showAlert('mrgrumpy19\nsmink123\nnixrolls\ntiahontoast\npelicanlogsong')
-          }>
-        <Text
-          style={{
-            fontFamily: 'Comfortaa-Regular',
-            color: '#f5f5f5',
-            fontSize: 12,
-          }}
-        >
-          PRE-EXISTING LOGINS
-        </Text>
-      </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              showAlert(
+                'mrgrumpy19\nsmink123\nnixrolls\ntiahontoast\npelicanlogsong'
+              )
+            }
+          >
+            <Text
+              style={{
+                fontFamily: 'Comfortaa-Regular',
+                color: '#f5f5f5',
+                fontSize: 12,
+              }}
+            >
+              PRE-EXISTING LOGINS
+            </Text>
+          </TouchableOpacity>
         )}
         {usertype === 'Business' && (
-        <TouchableOpacity onPress={() =>
+          <TouchableOpacity
+            onPress={() =>
               showAlert('VUE Star City\nCultplex\nOdeon Great Northern')
-            }>
-          <Text
-            style={{
-              fontFamily: 'Comfortaa-Regular',
-              color: '#f5f5f5',
-              fontSize: 12,
-            }}
+            }
           >
-            PRE-EXISTING LOGINS
-          </Text>
-        </TouchableOpacity>
+            <Text
+              style={{
+                fontFamily: 'Comfortaa-Regular',
+                color: '#f5f5f5',
+                fontSize: 12,
+              }}
+            >
+              PRE-EXISTING LOGINS
+            </Text>
+          </TouchableOpacity>
         )}
       </View>
     </ScrollView>
