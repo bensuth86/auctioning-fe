@@ -16,115 +16,134 @@ export function CurrentAuction({ navigation }) {
   const { currentCustomer, setCurrentCustomer } = useContext(CustomerContext)
   const [userActiveAuctions, setUserActiveAuctions] = useState([])
   const [loading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const isFocused = useIsFocused()
 
   useEffect(() => {
-    getCurrentAuctionsByUser(currentCustomer.user_id).then((response) => {
-      const activeAuctions = response.data.auctions.filter((auction) => {
-        return auction.active === true
+    getCurrentAuctionsByUser(currentCustomer.user_id)
+      .then((response) => {
+        const activeAuctions = response.data.auctions.filter((auction) => {
+          return auction.active === true
+        })
+        setUserActiveAuctions(activeAuctions)
+        setLoading(true)
       })
-      setUserActiveAuctions(activeAuctions)
-      setLoading(true)
-    })
+      .catch((err) => {
+        setLoading(true)
+        if (err.response.data.msg === 'User not found.') {
+          setErrorMessage(
+            'Sorry - your user ID does not exist.\nCannot fetch your current auctions.'
+          )
+        }
+        if (err.response.data.msg === 'Bad request') {
+          setErrorMessage(
+            'Sorry - your user ID is invalid.\nCannot fetch your current auctions.'
+          )
+        }
+      })
   }, [isFocused])
 
-  // if (!loading)
-  //   return (
-  //     <View style={styles.darkContainer}>
-  //       <ActivityIndicator color="red" />
-  //     </View>
-  //   )
-
-  return (
-    userActiveAuctions.length > 0 && (
-      <View>
-        <Text
-          style={{
-            color: '#f5f5f5',
-            textAlign: 'center',
-            fontFamily: 'Comfortaa-Regular',
-            marginBottom: 10,
-          }}
-        >
-          YOUR LIVE AUCTIONS:{' '}
-        </Text>
-        {!loading && (
-          <View style={{ padding: 20 }}>
-            <ActivityIndicator color="red" />
-          </View>
-        )}
-        {loading &&
-          userActiveAuctions.map((auction, i) => (
-            <TouchableOpacity
-              key={`auction-${i}`}
-              onPress={() =>
-                navigation.navigate('AuctionPage', {
-                  selectedAuction: auction.auction_id,
-                  event_id: { event_id: auction.event_id },
-                  business_id: { business_id: auction.business_id },
-                  film_title: { film_title: auction.film_title },
-                  poster: { poster: auction.poster },
-                  certificate: { certificate: auction.certificate },
-                  run_time: { run_time: auction.run_time },
-                  start_time: { start_time: auction.start_time },
-                  seat_selection: { selectedSeats: auction.seat_selection },
-                })
-              }
-            >
-              <View key={i} style={currentAuctions.container}>
-                <Text style={currentAuctions.textBold}>
-                  {auction.film_title}, {auction.business_name}
-                </Text>
-                {/* <Text style={currentAuctions.text}>{auction.business_name}, {auction.postcode}</Text> */}
-                {/* <Text>{auction.postcode}</Text> */}
-                <Text style={currentAuctions.text}>
-                  Bidding on{' '}
-                  <Text style={currentAuctions.textBold}>
-                    {auction.seat_selection.join(', ')}
-                  </Text>{' '}
-                  at{' '}
-                  <Text style={currentAuctions.textBold}>
-                    £{Number(auction.current_price).toFixed(2)}
-                  </Text>
-                </Text>
-                {/* <Text style={currentAuctions.text}>Screening date: {convertTime(auction.start_time)}</Text> */}
-                <Text style={currentAuctions.text}>
-                  Auction ends in:{' '}
-                  <Text style={currentAuctions.textBold}>
-                    {convertTime(auction.time_ending)}
-                  </Text>
-                </Text>
-                {/* <Text style={currentAuctions.text}>
-              Current bid: £{Number(auction.current_price).toFixed(2)}
-            </Text> */}
-                <Text style={currentAuctions.text}>
-                  <Text style={currentAuctions.textBold}>
-                    {auction.users_involved.length}
-                  </Text>{' '}
-                  bidders involved
-                </Text>
-                {auction.current_highest_bidder === currentCustomer.user_id ? (
-                  <Text style={currentAuctions.text}>
-                    You are{' '}
-                    <Text style={currentAuctions.textBold}>winning!</Text>
-                  </Text>
-                ) : (
-                  <Text style={currentAuctions.text}>
-                    You are{' '}
-                    <Text style={currentAuctions.textBold}>loosing!</Text>
-                  </Text>
-                )}
-                <Text style={{ textAlign: 'left' }}>
-                  <MaterialCommunityIcons
-                    name="cursor-default-click"
-                    size={20}
-                    color="#f5f5f5"
-                  />
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))}
+  if (errorMessage !== '') {
+    return (
+      <View style={{height: 100, justifyContent: 'center', alignItems: 'center', padding: 20}}>
+        <Text style={styles.error}>{errorMessage}</Text>
       </View>
     )
-  )
+  }
+
+  if (errorMessage === '') {
+    return (
+      userActiveAuctions.length > 0 && (
+        <View>
+          <Text
+            style={{
+              color: '#f5f5f5',
+              textAlign: 'center',
+              fontFamily: 'Comfortaa-Regular',
+              marginBottom: 10,
+            }}
+          >
+            YOUR LIVE AUCTIONS:{' '}
+          </Text>
+          {!loading && (
+            <View style={{ padding: 20 }}>
+              <ActivityIndicator color="red" />
+            </View>
+          )}
+          {loading &&
+            userActiveAuctions.map((auction, i) => (
+              <TouchableOpacity
+                key={`auction-${i}`}
+                onPress={() =>
+                  navigation.navigate('AuctionPage', {
+                    selectedAuction: auction.auction_id,
+                    event_id: { event_id: auction.event_id },
+                    business_id: { business_id: auction.business_id },
+                    film_title: { film_title: auction.film_title },
+                    poster: { poster: auction.poster },
+                    certificate: { certificate: auction.certificate },
+                    run_time: { run_time: auction.run_time },
+                    start_time: { start_time: auction.start_time },
+                    seat_selection: { selectedSeats: auction.seat_selection },
+                  })
+                }
+              >
+                <View key={i} style={currentAuctions.container}>
+                  <Text style={currentAuctions.textBold}>
+                    {auction.film_title}, {auction.business_name}
+                  </Text>
+                  {/* <Text style={currentAuctions.text}>{auction.business_name}, {auction.postcode}</Text> */}
+                  {/* <Text>{auction.postcode}</Text> */}
+                  <Text style={currentAuctions.text}>
+                    Bidding on{' '}
+                    <Text style={currentAuctions.textBold}>
+                      {auction.seat_selection.join(', ')}
+                    </Text>{' '}
+                    at{' '}
+                    <Text style={currentAuctions.textBold}>
+                      £{Number(auction.current_price).toFixed(2)}
+                    </Text>
+                  </Text>
+                  {/* <Text style={currentAuctions.text}>Screening date: {convertTime(auction.start_time)}</Text> */}
+                  <Text style={currentAuctions.text}>
+                    Auction ends in:{' '}
+                    <Text style={currentAuctions.textBold}>
+                      {convertTime(auction.time_ending)}
+                    </Text>
+                  </Text>
+                  {/* <Text style={currentAuctions.text}>
+              Current bid: £{Number(auction.current_price).toFixed(2)}
+            </Text> */}
+                  <Text style={currentAuctions.text}>
+                    <Text style={currentAuctions.textBold}>
+                      {auction.users_involved.length}
+                    </Text>{' '}
+                    bidders involved
+                  </Text>
+                  {auction.current_highest_bidder ===
+                  currentCustomer.user_id ? (
+                    <Text style={currentAuctions.text}>
+                      You are{' '}
+                      <Text style={currentAuctions.textBold}>winning!</Text>
+                    </Text>
+                  ) : (
+                    <Text style={currentAuctions.text}>
+                      You are{' '}
+                      <Text style={currentAuctions.textBold}>loosing!</Text>
+                    </Text>
+                  )}
+                  <Text style={{ textAlign: 'left' }}>
+                    <MaterialCommunityIcons
+                      name="cursor-default-click"
+                      size={20}
+                      color="#f5f5f5"
+                    />
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+        </View>
+      )
+    )
+  }
 }

@@ -98,13 +98,13 @@ function getWonAuctionsByUser(id) {
     return response
   })
 }
-
+/////
 function getCurrentAuctionsByUser(id) {
   return prjApi.get(`/auctions/user/${id}`).then((response) => {
     return response
   })
 }
-
+/////
 function postNewEvent(info) {
   return prjApi.post('/events', info).then((response) => {
     return response

@@ -106,7 +106,8 @@ export const styles = StyleSheet.create({
   },
   error: {
     color: 'red',
-    fontFamily: 'Comfortaa-Light'
+    fontFamily: 'Comfortaa-Light',
+    textAlign: 'center'
   }
   // loadingContainer: {
   //   backgroundColor: 'yellow'
