@@ -28,18 +28,22 @@ export const eventStyles = StyleSheet.create({
   },
   cardText: {
     flexWrap: 'wrap',
-    width: '100%'
+    width: '100%',
+    fontFamily: 'Comfortaa-Light',
+    fontSize: 12
   },
   unavailcardText: {
     flexWrap: 'wrap',
     color: 'grey',
-    width: '100%'
+    width: '100%',
+    fontFamily: 'Comfortaa-Light',
+    fontSize: 12
   },
   cardHeader: {
     textAlign: 'center',
     marginBottom: 5,
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'Comfortaa-Bold'
   },
   topNavigation: {
     flexDirection: 'row',
@@ -48,7 +52,4 @@ export const eventStyles = StyleSheet.create({
     padding: 20,
     width: '100%',
   },
-  // unavailableeventcard: {
-  //   backgroundColor: 'yellow'
-  // }
 })

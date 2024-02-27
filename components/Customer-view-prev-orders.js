@@ -14,7 +14,7 @@ import { Pressable, Modal } from 'react-native'
 import QRCode from 'react-native-qrcode-svg'
 import { Button } from '../helpers'
 
-export function PreviousOrders() {
+export function PreviousOrders({ navigation }) {
   const { currentCustomer, setCurrentCustomer } = useContext(CustomerContext)
   const [allOrders, setAllOrders] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -66,7 +66,7 @@ export function PreviousOrders() {
             <View
               style={{
                 height: '16%',
-                backgroundColor: '#413454',
+                backgroundColor: '#e00c3e',
                 borderTopRightRadius: 10,
                 borderTopLeftRadius: 10,
                 paddingHorizontal: 20,
@@ -89,24 +89,24 @@ export function PreviousOrders() {
                     fontSize: 12,
                   }}
                 >
-                  Close
+                  CLOSE
                 </Text>
               </Pressable>
             </View>
             <View
               style={{
                 flex: 1,
-                backgroundColor: 'white',
+                backgroundColor: '#f5f5f5',
                 paddingHorizontal: 20,
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <QRCode value={QRCodeStr} size={200} />
+              <QRCode value={QRCodeStr} size={160} />
               <Text
                 style={{
-                  fontFamily: 'Comfortaa-Light',
+                  fontFamily: 'Comfortaa-Bold',
                   fontSize: 14,
                   marginTop: 5,
                 }}
@@ -117,7 +117,8 @@ export function PreviousOrders() {
                 style={{
                   fontFamily: 'Comfortaa-Light',
                   fontSize: 14,
-                  marginTop: 5,
+                  marginTop: 10,
+                  textAlign: 'center'
                 }}
               >
                 Simply show this code when picking up your tickets.
@@ -127,7 +128,7 @@ export function PreviousOrders() {
           </View>
         </Modal>
         <View style={orderHistory.topNav}>
-          <Pressable style={styles.backButton}>
+          <Pressable style={styles.backButton} onPress={() => navigation.navigate('CustomerHomepage')}>
             <Text style={styles.backButtonText}>← HOME</Text>
           </Pressable>
           {/* <Text>HELLO {currentCustomer.username}</Text> */}
