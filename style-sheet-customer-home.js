@@ -8,9 +8,6 @@ export const homeStyles = StyleSheet.create({
     padding: 10,
     paddingBottom: 10,
     backgroundColor: '#2b1d41',
-
-    // borderBottomEndRadius: 50,
-    // borderBottomLeftRadius: 50,
   },
   radiusSelection: {
     flexDirection: 'row',
@@ -24,6 +21,12 @@ export const homeStyles = StyleSheet.create({
     // backgroundColor: 'red',
     padding: 10,
     width: '100%',
+    // position: 'absolute',
+    // top: 10,
+    // left: 10,
+    // right: 0,
+    // padding: 10,
+    // zIndex: 1,
   },
   numberDial: {
     height: 30,

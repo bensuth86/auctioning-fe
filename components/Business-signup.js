@@ -113,7 +113,6 @@ function BusinessSignUp({ navigation }) {
         >
           Become an **APP NAME** seller
         </Text>
-
         <TextInput
           style={styles.textboxLight}
           placeholder="Business Name"
@@ -174,13 +173,6 @@ function BusinessSignUp({ navigation }) {
           onPress={handleSubmit}
           disabled={!isFormValid}
         />
-        {/* <TouchableOpacity
-        style={[styles.button, { opacity: isFormValid ? 1 : 0.5 }]}
-        disabled={!isFormValid}
-        onPress={handleSubmit}
-      >
-        <Text style={styles.buttonText}>Submit</Text>
-      </TouchableOpacity> */}
         {Object.values(errors).map((error, index) => (
           <Text key={index} style={styles.error}>
             {error}

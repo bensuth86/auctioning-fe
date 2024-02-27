@@ -65,12 +65,32 @@ function App() {
           <Stack.Screen
             name="Welcome_page"
             component={WelcomePage}
-            options={{ title: 'Welcome to Blost cinema auctions' }}
+            
+            options={
+              { title: '',
+              headerStyle: {
+                backgroundColor: '#2b1d41',
+              },
+              headerTintColor: '#f5f5f5',
+              headerTitleStyle: {
+                fontFamily: 'Comfortaa-Regular',
+              } }
+            }
+            
           />
           <Stack.Screen
             name="Login"
             component={Login}
-            options={{ title: 'Enter account details' }}
+            options={{ title: '',
+            headerStyle: {
+              backgroundColor: '#2b1d41',
+            },
+            headerTintColor: '#f5f5f5',
+            headerTitleStyle: {
+              fontFamily: 'Comfortaa-Regular',
+            },
+          
+          }}
           />
           <Stack.Screen
             name="CustomerHomepage"
@@ -95,7 +115,16 @@ function App() {
           <Stack.Screen
             name="CustomerSignUpPage"
             component={CustomerSignUp}
-            options={{ title: 'Customer Sign Up' }}
+            options={{ title: '',
+            headerStyle: {
+              backgroundColor: '#2b1d41',
+            },
+            headerTintColor: '#f5f5f5',
+            headerTitleStyle: {
+              fontFamily: 'Comfortaa-Regular',
+            },
+          
+          }}
           />
           <Stack.Screen
             name="BusinessSignupPage"
