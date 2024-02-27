@@ -11,7 +11,7 @@ import {
   Button,
   SeatButton,
   DisabledSeatButton,
-  // DisabledButton,
+  DisabledButton,
 } from '../helpers'
 import { styles } from '../style-sheet'
 import { seatStyles } from '../style-sheet-seats.js'
@@ -141,40 +141,35 @@ function CustomerSeating({ navigation, route }) {
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.darkContainer}>
         <View style={seatStyles.topContainer}>
-          {/* <View style={[styles.topNavStrip, { marginTop: 10 }]}>
-            <Pressable style={styles.backButton}>
-              <Text style={styles.backButtonText}>← SCREENINGS</Text>
-            </Pressable>
-          </View> */}
           <SelectedEvent event_id={event_id} />
         </View>
-        <View
-          style={{
-            marginTop: 20,
-            // marginBottom: 20,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'white',
-            width: '100%',
-            height: '65%',
-          }}
-        >
-          {errorMessage !== '' && (
+        {errorMessage !== '' && (
+          <View
+            style={{
+              height: '70%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: 20,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#f5f5f5',
+            }}
+          >
+            <Text style={styles.error}>{errorMessage}</Text>
+          </View>
+        )}
+        {errorMessage === '' && (
+          <>
             <View
               style={{
-                height: '70%',
+                backgroundColor: '#f5f5f5',
+                width: '100%',
                 justifyContent: 'center',
                 alignItems: 'center',
-                padding: 20,
+                minHeight: 700
               }}
             >
-              <Text style={styles.error}>{errorMessage}</Text>
-            </View>
-          )}
-          {errorMessage === '' && (
-            // <View>
-            <>
-              <View>
+              <View style={{marginTop: 10}}>
                 <Text style={seatStyles.seatHeader}>SELECT YOUR SEATING</Text>
               </View>
               <View style={seatStyles.screen}>
@@ -354,7 +349,7 @@ function CustomerSeating({ navigation, route }) {
                 </View>
               )}
               {auctionError === '' && (
-                <>
+                <View style={{width: 'auto', height: 125}}>
                   {selectedSeats.length ? (
                     <Text style={seatStyles.textBigger}>
                       Selected seats:{' '}
@@ -460,21 +455,20 @@ function CustomerSeating({ navigation, route }) {
                           })
                         }
                       />
-                    ) : null
-                    // (
-                    //   <DisabledButton
-                    //     key={'auctionButton'}
-                    //     style={{ color: 'pink' }}
-                    //     btnText="GO TO AUCTION"
-                    //   />
-                    // )
+                    ) :
+                    (
+                      <DisabledButton
+                        key={'auctionButton'}
+                        style={{ color: 'pink' }}
+                        btnText="GO TO AUCTION"
+                      />
+                    )
                   }
-                </>
+                </View>
               )}
-              {/* </View> */}
-            </>
-          )}
-        </View>
+            </View>
+          </>
+        )}
       </View>
     </ScrollView>
   )

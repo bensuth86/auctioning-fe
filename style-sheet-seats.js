@@ -5,11 +5,12 @@ export const seatStyles = StyleSheet.create({
     backgroundColor: '#2b1d41',
     width: '100%',
     alignItems: 'center',
-
-    borderBottomEndRadius: 50,
-    borderBottomLeftRadius: 50,
-    paddingBottom: 25,
-    // paddingTop: 25
+    justifyContent: 'center',
+    height: 'auto',
+    // borderBottomEndRadius: 50,
+    // borderBottomLeftRadius: 50,
+    paddingBottom: 20,
+    paddingTop: 20
   },
   seatHeader: {
     textAlign: 'center',

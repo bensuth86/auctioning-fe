@@ -2,20 +2,21 @@ import { StyleSheet } from 'react-native'
 
 export const selectedMovieStyle = StyleSheet.create({
     eventInfo: {
-        // backgroundColor: 'yellow',
         padding: 10,
         marginLeft: 5,
         justifyContent: 'center',
         flex: 1,
+        width: 200,
         // backgroundColor: 'pink'
     },
     eventContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
-        width: 'auto',
-        // backgroundColor: 'yellow'
-        // marginBottom: 10,
-        // backgroundColor: 'yellow'
+        alignItems: 'center',
+        width: '100%',
+        height: 'auto',
+        marginTop: 20,
+        marginBottom: 20
     },
     text: {
         flexWrap: 'wrap',
