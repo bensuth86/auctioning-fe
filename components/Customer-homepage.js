@@ -30,7 +30,7 @@ import { AntDesign } from '@expo/vector-icons'
 
 function CustomerHomepage({ navigation }) {
   const { currentCustomer, setCurrentCustomer } = useContext(CustomerContext)
-
+  const [errorMessage, setErrorMessage] = useState('')
   const [eventsList, setEventsList] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [radius, setRadius] = useState(8)
@@ -50,6 +50,16 @@ function CustomerHomepage({ navigation }) {
         setIsLoading(false)
       }
     )
+    .catch((err) => {
+      setIsLoading(false)
+      if (err.response.data.msg === 'User not found.') {
+        setErrorMessage('Sorry - your user ID does not exist.\nCannot fetch search results.')
+      }
+      if (err.response.data.msg === 'Bad request') {
+        setErrorMessage('Sorry - your user ID is invalid.\nCannot fetch search results.')
+      }
+
+    })
   }, [currentCustomer.user_id, expandRadius])
 
   function logUserOut() {
@@ -129,6 +139,13 @@ function CustomerHomepage({ navigation }) {
             >
               SEARCH FOR SCREENINGS
             </Text>
+            {errorMessage !== '' && (
+              <View style={{height: 300, justifyContent: 'center', alignItems: 'center', padding: 20}}>
+                <Text style={styles.error}>{errorMessage}</Text>
+              </View>
+            )}
+            {errorMessage === '' && (
+              <>
             <View style={homeStyles.radiusContainer}>
               <Text
                 style={{ textAlign: 'center', fontFamily: 'Comfortaa-Regular' }}
@@ -211,7 +228,10 @@ function CustomerHomepage({ navigation }) {
                 )
               })}
             </View>
-          </View>
+            
+              </>
+            )}
+            </View>
         </View>
       </ScrollView>
     </>
