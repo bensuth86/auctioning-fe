@@ -23,9 +23,10 @@ function BusinessHomepage({ navigation, route }) {
   })
   const [isLoading, setIsLoading] = useState(true)
   const [seatingPlan, setSeatingPlan] = useState([])
+  const [active, setActive] = useState(true)
 
   useEffect(() => {
-    getAllEventsByBusinessId(business_id)
+    getAllEventsByBusinessId(business_id, active)
       .then((response) => {
         setEvents(response.data.events)
         setSeatingPlan(response.available_seats)
@@ -36,17 +37,28 @@ function BusinessHomepage({ navigation, route }) {
           })
           setIsLoading(false)
         })
-      })//add error to jsx
+      }) //add error to jsx
       .catch((err) => {
         setIsLoading(false)
-        if (err.response.data.msg === 'Bad request') {
-          setErrorMessage('Sorry - your business ID is invalid.\nCannot fetch your listings.')
+        if (err.msg === 'Bad request') {
+          setErrorMessage(
+            'Sorry - your business ID is invalid.\nCannot fetch your listings.'
+          )
         }
       })
   }, [events, business_id])
 
   function logUserOut() {
     navigation.navigate('Welcome_page')
+  }
+
+  function handlePressPast() {
+    setActive(false)
+    setIsLoading(true)
+  }
+  function handlePressActive() {
+    setActive(true)
+    setIsLoading(true)
   }
 
   if (isLoading)
@@ -67,107 +79,140 @@ function BusinessHomepage({ navigation, route }) {
           </Pressable>
         </View>
         {errorMessage !== '' && (
-                <View style={{height: 300, justifyContent: 'center', alignItems: 'center', padding: 20}}>
-                <Text style={styles.error}>{errorMessage}</Text>
-              </View>
+          <View
+            style={{
+              height: 300,
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: 20,
+            }}
+          >
+            <Text style={styles.error}>{errorMessage}</Text>
+          </View>
         )}
         {errorMessage === '' && (
           <>
-        <Text
-          style={{
-            fontFamily: 'Comfortaa-Regular',
-            color: '#f5f5f5',
-            fontSize: 20,
-            textAlign: 'center',
-          }}
-        >
-          HELLO {businessInfo.business_name}!
-        </Text>
-        <Button
-          btnText={'CREATE SCREENING'}
-          onPress={() =>
-            navigation.navigate('BusinessCreateScreening', {
-              business_id,
-            })
-          }
-        />
-        <Text
-          style={{
-            fontFamily: 'Comfortaa-Regular',
-            color: '#f5f5f5',
-            fontSize: 16,
-            textAlign: 'center',
-            marginTop: 40,
-            marginBottom: 40,
-          }}
-        >
-          Here are your events{'\n'}at location {businessInfo.postcode}:
-        </Text>
-        <View style={eventStyles.eventcard}>
-          {events.map((event) => (
-            <>
-              <Text style={orderHistory.cardHeader}>
-                <Text style={orderHistory.cardHeaderBold}>
-                  {event.film_title}, {event.certificate}
+            <Text
+              style={{
+                fontFamily: 'Comfortaa-Regular',
+                color: '#f5f5f5',
+                fontSize: 20,
+                textAlign: 'center',
+              }}
+            >
+              HELLO {businessInfo.business_name}!
+            </Text>
+
+            <Button
+              btnText={'CREATE SCREENING'}
+              onPress={() =>
+                navigation.navigate('BusinessCreateScreening', {
+                  business_id,
+                })
+              }
+            />
+            {active ? (
+              <Button
+                btnText={'SEE PAST SCREENINGS'}
+                onPress={handlePressPast}
+              ></Button>
+            ) : (
+              <Button
+                btnText={'SEE ACTIVE SCREENINGS'}
+                onPress={handlePressActive}
+              ></Button>
+            )}
+            <Text
+              style={{
+                fontFamily: 'Comfortaa-Regular',
+                color: '#f5f5f5',
+                fontSize: 16,
+                textAlign: 'center',
+                marginTop: 40,
+                marginBottom: 40,
+              }}
+            >
+              Here are your events{'\n'}at location {businessInfo.postcode}:
+            </Text>
+            <View style={eventStyles.eventcard}>
+              {!events.length && (
+                <Text
+                  style={{
+                    fontFamily: 'Comfortaa-Regular',
+                    color: '#f5f5f5',
+                    fontSize: 16,
+                    textAlign: 'center',
+                    marginTop: 40,
+                    marginBottom: 40,
+                  }}
+                >
+                  Sorry, no events to show!
                 </Text>
-              </Text>
-              <View key={event.event_id} style={eventStyles.eventcard}>
-                <View style={eventStyles.mainContent}>
-                  <Image
-                    source={{ uri: event.poster }}
-                    style={{ width: 150.5, height: 230 }}
-                  />
-                  <View style={eventStyles.rightSide}>
-                    {event.available_seats.length === 0 ? (
-                      <Text style={orderHistory.sideInfoHeaders}>
-                        Seats left:{'\n'}
-                        <Text style={orderHistory.info}>sold out!</Text>
-                      </Text>
-                    ) : (
-                      <Text style={orderHistory.sideInfoHeaders}>
-                        Seats left:{'\n'}
-                        <Text style={orderHistory.info}>
-                          {event.available_seats.length}
+              )}
+              {events.map((event) => (
+                <>
+                  <Text style={orderHistory.cardHeader}>
+                    <Text style={orderHistory.cardHeaderBold}>
+                      {event.film_title}, {event.certificate}
+                    </Text>
+                  </Text>
+                  <View key={event.event_id} style={eventStyles.eventcard}>
+                    <View style={eventStyles.mainContent}>
+                      <Image
+                        source={{ uri: event.poster }}
+                        style={{ width: 150.5, height: 230 }}
+                      />
+                      <View style={eventStyles.rightSide}>
+                        {event.available_seats.length === 0 ? (
+                          <Text style={orderHistory.sideInfoHeaders}>
+                            Seats left:{'\n'}
+                            <Text style={orderHistory.info}>sold out!</Text>
+                          </Text>
+                        ) : (
+                          <Text style={orderHistory.sideInfoHeaders}>
+                            Seats left:{'\n'}
+                            <Text style={orderHistory.info}>
+                              {event.available_seats.length}
+                            </Text>
+                          </Text>
+                        )}
+                        <Text style={orderHistory.sideInfoHeaders}>
+                          Run time:{'\n'}
+                          <Text style={orderHistory.info}>
+                            <AntDesign
+                              name="clockcircleo"
+                              size={12}
+                              color="#f5f5f5"
+                            />{' '}
+                            {event.run_time} minutes
+                          </Text>
                         </Text>
-                      </Text>
-                    )}
-                    <Text style={orderHistory.sideInfoHeaders}>
-                      Run time:{'\n'}
-                      <Text style={orderHistory.info}>
-                        <AntDesign
-                          name="clockcircleo"
-                          size={12}
-                          color="#f5f5f5"
-                        />{' '}
-                        {event.run_time} minutes
-                      </Text>
-                    </Text>
-                    <Text style={orderHistory.sideInfoHeaders}>
-                      Starting price:{'\n'}
-                      <Text style={orderHistory.info}>
-                        {
-                          <FontAwesome5
-                            name="money-bill-wave"
-                            size={12}
-                            color="#f5f5f5"
-                          />
-                        }{' '}
-                        £{Number(event.start_price).toFixed(2)}
-                      </Text>
-                    </Text>
-                    <Text style={orderHistory.sideInfoHeaders}>
-                      Screening date:{'\n'}
-                      <Text style={orderHistory.info}>
-                        <Fontisto name="date" size={12} color="#f5f5f5" />{' '}
-                        {convertTime(event.start_time)}
-                      </Text>
-                    </Text>
+                        <Text style={orderHistory.sideInfoHeaders}>
+                          Starting price:{'\n'}
+                          <Text style={orderHistory.info}>
+                            {
+                              <FontAwesome5
+                                name="money-bill-wave"
+                                size={12}
+                                color="#f5f5f5"
+                              />
+                            }{' '}
+                            £{Number(event.start_price).toFixed(2)}
+                          </Text>
+                        </Text>
+                        <Text style={orderHistory.sideInfoHeaders}>
+                          Screening date:{'\n'}
+                          <Text style={orderHistory.info}>
+                            <Fontisto name="date" size={12} color="#f5f5f5" />{' '}
+                            {convertTime(event.start_time)}
+                          </Text>
+                        </Text>
+                      </View>
+                    </View>
                   </View>
-                </View>
-              </View>
-            </>
-          ))}
-        </View>
+                </>
+              ))}
+            </View>
           </>
         )}
       </View>

@@ -88,8 +88,8 @@ function getAllBusinesses() {
   })
 }
 //////
-function getAllEventsByBusinessId(business_id) {
-  return prjApi.get(`/events/business/${business_id}`).then((response) => {
+function getAllEventsByBusinessId(business_id, active) {
+  return prjApi.get(`/events/business/${business_id}`, {params: {active: active}}).then((response) => {
     return response
   })
 }
