@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { View, TextInput, Text, TouchableOpacity, Platform } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, TextInput, Text, TouchableOpacity } from 'react-native'
 import { styles } from '../style-sheet'
 import { Snackbar } from 'react-native-paper'
 import { postBusiness } from '../utils'
@@ -7,9 +7,6 @@ import { SelectList } from 'react-native-dropdown-select-list'
 import { generateSeatGrid } from '../helpers'
 import { Button } from '../helpers'
 import { ScrollView } from 'react-native'
-import * as Device from 'expo-device';
-import * as Notifications from 'expo-notifications';
-import Constants from 'expo-constants';
 
 function BusinessSignUp({ navigation }) {
   const [businessName, setBusinessName] = useState('')
@@ -21,85 +18,6 @@ function BusinessSignUp({ navigation }) {
   const [selectedRow, setSelectedRow] = useState('')
   const [selectedColumn, setSelectedColumn] = useState('')
   const [success, setSuccess] = useState(false)
-  const [expoPushToken, setExpoPushToken] = useState(null);
-  const [notification, setNotification] = useState(false);
-  const notificationListener = useRef();
-  const responseListener = useRef();
-
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldShowAlert: true,
-      shouldPlaySound: false,
-      shouldSetBadge: false,
-    }),
-  });
-
-  async function sendPushNotification(expoPushToken) {
-    const message = {
-      to: expoPushToken,
-      title: 'Business Account Created!',
-      body: 'You have access to all Business ',
-    };
-  
-    await fetch('https://exp.host/--/api/v2/push/send', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Accept-encoding': 'gzip, deflate',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(message),
-    });
-  }
-// CODE FROM EXPO DOCS
-async function registerForPushNotificationsAsync() {
-  let token;
-  if (Platform.OS === 'android') {
-    Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
-    });
-  }
-  if (Device.isDevice) {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-    if (finalStatus !== 'granted') {
-      alert('Failed to get push token for push notification!');
-      return;
-    }
-    token = await Notifications.getExpoPushTokenAsync({
-      projectId: Constants.expoConfig.extra.eas.projectId,
-    });
-  } else {
-    alert('Must use physical device for Push Notifications');
-  }
-  return token.data;
-}
-
-useEffect(() => {
-  registerForPushNotificationsAsync().then(token => {console.log(token), setExpoPushToken(token)});
-
-  notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-    setNotification(notification);
-  });
-
-  responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-    console.log(response);
-  });
-
-  return () => {
-    Notifications.removeNotificationSubscription(notificationListener.current);
-    Notifications.removeNotificationSubscription(responseListener.current);
-  };
-}, []);
-
-
 
   useEffect(() => {
     setErrors({})
@@ -126,7 +44,6 @@ useEffect(() => {
 
   const handleSubmit = () => {
     if (isFormValid) {
-      sendPushNotification(expoPushToken)
       const formattedPostcode = postcode.replace(/\s/g, '').toUpperCase()
       const seatGrid = generateSeatGrid(
         parseInt(selectedRow),
