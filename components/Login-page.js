@@ -179,11 +179,6 @@ function Login({ navigation, route }) {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.darkContainer}>
-        {/* <View style={homeStyles.topNavigation}>
-          <Pressable style={styles.backButton}>
-            <Text style={styles.backButtonText}>WELCOME PAGE</Text>
-          </Pressable>
-        </View> */}
         <Text
           style={{
             fontFamily: 'Comfortaa-Regular',
@@ -256,7 +251,7 @@ function Login({ navigation, route }) {
             <Text
               style={{
                 fontFamily: 'Comfortaa-Regular',
-                color: '#f5f5f5',
+                color: 'rgba(255, 255, 255, 0.4)',
                 fontSize: 12,
               }}
             >
@@ -273,7 +268,7 @@ function Login({ navigation, route }) {
             <Text
               style={{
                 fontFamily: 'Comfortaa-Regular',
-                color: '#f5f5f5',
+                color: 'rgba(255, 255, 255, 0.4)',
                 fontSize: 12,
               }}
             >

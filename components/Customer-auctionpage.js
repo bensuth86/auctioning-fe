@@ -174,6 +174,7 @@ function CustomerAuctionPage({ navigation, route }) {
         //getCountdown(auction.time_ending)
       })
       .catch((err) => {
+        console.log(err)
         setApiErr(err.message)
         setDisplayAuction({})
         setTempUser(null)
@@ -213,6 +214,7 @@ function CustomerAuctionPage({ navigation, route }) {
         setSubmitted(false)
       })
       .catch((err) => {
+        console.log(err)
         setSubmitted(false)
         setTempUser(currentInfo.user)
         setDisplayAuction({
