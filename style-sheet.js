@@ -1,8 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { useFonts } from 'expo-font'
 
-
-
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -10,7 +8,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: '100%',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   darkContainer: {
     flex: 1,
@@ -18,7 +16,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: '100%',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   button: {
     margin: 10,
@@ -27,8 +25,16 @@ export const styles = StyleSheet.create({
     backgroundColor: '#e00c3e',
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'center'
-
+    alignSelf: 'center',
+  },
+  disabledButton: {
+    margin: 10,
+    padding: 10,
+    borderRadius: 20,
+    backgroundColor: '#C8C8C8',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
   },
   buttontext: {
     // letterSpacing: 0.25,
@@ -38,7 +44,7 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 2
+    padding: 2,
   },
   textbox: {
     // for text entry
@@ -48,7 +54,7 @@ export const styles = StyleSheet.create({
     margin: 10,
     width: 200,
     borderRadius: 20,
-    height: 40
+    height: 40,
   },
   textboxLight: {
     borderWidth: 1,
@@ -63,7 +69,6 @@ export const styles = StyleSheet.create({
     height: 40,
     fontWeight: 'normal',
     fontFamily: 'Comfortaa-Light',
-    
   },
   dropdownContainer: {
     // flexDirection: 'row',
@@ -74,7 +79,7 @@ export const styles = StyleSheet.create({
     // borderWidth: 0,
     // height: 40
     marginLeft: 10,
-    marginRight: 10
+    marginRight: 10,
   },
   // dropdown: {
   //   minWidth: 50,
@@ -107,6 +112,6 @@ export const styles = StyleSheet.create({
   error: {
     color: 'red',
     fontFamily: 'Comfortaa-Light',
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 })

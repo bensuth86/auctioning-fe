@@ -7,7 +7,12 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native'
-import { Button, SeatButton, DisabledSeatButton } from '../helpers'
+import {
+  Button,
+  SeatButton,
+  DisabledSeatButton,
+  DisabledButton,
+} from '../helpers'
 import { styles } from '../style-sheet'
 import { seatStyles } from '../style-sheet-seats.js'
 import { useState, useEffect } from 'react'
@@ -136,10 +141,7 @@ function CustomerSeating({ navigation, route }) {
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.darkContainer}>
         <View style={seatStyles.topContainer}>
-          <View style={[
-                        styles.topNavStrip,
-                        { marginTop: 10 },
-                      ]}>
+          <View style={[styles.topNavStrip, { marginTop: 10 }]}>
             <Pressable style={styles.backButton}>
               <Text style={styles.backButtonText}>← SCREENINGS</Text>
             </Pressable>
@@ -154,7 +156,7 @@ function CustomerSeating({ navigation, route }) {
             alignItems: 'center',
             backgroundColor: 'white',
             width: '100%',
-            height: '65%'
+            height: '65%',
           }}
         >
           {errorMessage !== '' && (
@@ -394,7 +396,8 @@ function CustomerSeating({ navigation, route }) {
                   ) : null}
                   {!selectedSeats.length ? (
                     <Text style={seatStyles.textBigger}>
-                      Please select a seat
+                      {` Please select a seat
+                      `}
                     </Text>
                   ) : null}
                   {rowErr ? (
@@ -456,10 +459,16 @@ function CustomerSeating({ navigation, route }) {
                         })
                       }
                     />
-                  ) : null}
+                  ) : (
+                    <DisabledButton
+                      key={'auctionButton'}
+                      style={{ color: 'pink' }}
+                      btnText="GO TO AUCTION"
+                    />
+                  )}
                 </>
               )}
-            {/* </View> */}
+              {/* </View> */}
             </>
           )}
         </View>
