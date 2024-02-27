@@ -26,6 +26,8 @@ function BusinessListing({ navigation }) {
   const [price, setPrice] = useState(1)
   const [date, setDate] = useState(new Date())
   const [err, setErr] = useState(null)
+  const [show, setShow] = useState(false)
+  const [mode, setMode] = useState('date')
 
   useEffect(() => {
     getBusinessById(business_id)
@@ -40,6 +42,7 @@ function BusinessListing({ navigation }) {
 
   function onChange(e, selectedDate) {
     setDate(selectedDate)
+    setShow(false)
   }
 
   function increasePrice() {
@@ -50,6 +53,11 @@ function BusinessListing({ navigation }) {
     if (price > 1) {
       setPrice((prevPrice) => prevPrice - 1)
     }
+  }
+
+  function showMode(modeToShow) {
+    setShow(true)
+    setMode(modeToShow)
   }
 
   const new_event = {
@@ -85,36 +93,44 @@ function BusinessListing({ navigation }) {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
-        <View style={{ maxWidth: 300 }}></View>
+        <View style={{ maxWidth: 300 }}>
+          <Text>Listing for {title}</Text>
+        </View>
         <View style={{ marginTop: 20, marginBottom: 20 }}>
-          <DateTimePicker
-            value={date}
-            mode={'date'}
-            is24HOUR={true}
-            onChange={onChange}
-          />
-          <DateTimePicker
-            value={date}
-            mode={'time'}
-            is24HOUR={true}
-            onChange={onChange}
-          />
-          <Text>{date.toLocaleString()}</Text>
+          <Button
+            btnText={'Choose Date'}
+            onPress={() => showMode('date')}
+          ></Button>
+          <Button
+            btnText={'Choose Time'}
+            onPress={() => showMode('time')}
+          ></Button>
+          {show && (
+            <DateTimePicker
+              value={date}
+              mode={mode}
+              is24HOUR={true}
+              onChange={onChange}
+            />
+          )}
+          {date < new Date() ? (
+            <Text>Please select a date</Text>
+          ) : (
+            <Text>You have chosen date: {date.toLocaleString()}</Text>
+          )}
+
           <View style={homeStyles.radiusSelection}>
             <Text>Please select your starting price:</Text>
             <Button btnText={'-'} onPress={decreasePrice} />
             <TextInput
-              value={price.toString()}
-              onChangeText={(text) =>
-                setPrice((`£` && parseInt(text)) || (`£` && 1))
-              }
+              value={`£${price.toString()}`}
+              onChangeText={(text) => setPrice(parseInt(text) || 1)}
               keyboardType="numeric"
               style={homeStyles.numberDial}
               selectionColor={'rgba(43, 29, 65, 0.1)'}
             />
             <Button btnText={'+'} onPress={increasePrice} />
           </View>
-
           <Text
             style={{ textAlign: 'center', marginTop: 20, marginBottom: 20 }}
           >
@@ -185,7 +201,13 @@ function BusinessListing({ navigation }) {
         >
           <Text>?</Text>
         </TouchableOpacity>
-        {selectedSeats.length > 0 ? (
+        {date < new Date() ? (
+          <View style={seatStyles.errorContainer}>
+            <Text style={seatStyles.textbox}>
+              You cannot select a date in the past.
+            </Text>
+          </View>
+        ) : selectedSeats.length > 0 ? (
           <Button
             key={'listeventbtn'}
             btnText="List event"
