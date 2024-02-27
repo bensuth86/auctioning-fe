@@ -109,6 +109,7 @@ function BusinessListing({ navigation }) {
             <DateTimePicker
               value={date}
               mode={mode}
+              display={"spinner"}
               is24HOUR={true}
               onChange={onChange}
             />
