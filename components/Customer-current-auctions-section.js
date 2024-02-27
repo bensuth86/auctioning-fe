@@ -45,7 +45,14 @@ export function CurrentAuction({ navigation }) {
 
   if (errorMessage !== '') {
     return (
-      <View style={{height: 100, justifyContent: 'center', alignItems: 'center', padding: 20}}>
+      <View
+        style={{
+          height: 100,
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 20,
+        }}
+      >
         <Text style={styles.error}>{errorMessage}</Text>
       </View>
     )
@@ -90,7 +97,8 @@ export function CurrentAuction({ navigation }) {
               >
                 <View key={i} style={currentAuctions.container}>
                   <Text style={currentAuctions.textBold}>
-                    {auction.film_title}, {auction.business_name}
+                    {auction.film_title}, {'\n'}
+                    {auction.business_name}
                   </Text>
                   {/* <Text style={currentAuctions.text}>{auction.business_name}, {auction.postcode}</Text> */}
                   {/* <Text>{auction.postcode}</Text> */}
@@ -99,14 +107,16 @@ export function CurrentAuction({ navigation }) {
                     <Text style={currentAuctions.textBold}>
                       {auction.seat_selection.join(', ')}
                     </Text>{' '}
+                    {'\n'}
                     at{' '}
                     <Text style={currentAuctions.textBold}>
                       £{Number(auction.current_price).toFixed(2)}
-                    </Text>
+                    </Text>{' '}
+                    per seat
                   </Text>
                   {/* <Text style={currentAuctions.text}>Screening date: {convertTime(auction.start_time)}</Text> */}
                   <Text style={currentAuctions.text}>
-                    Auction ends in:{' '}
+                    Ends in:{'\n'}
                     <Text style={currentAuctions.textBold}>
                       {convertTime(auction.time_ending)}
                     </Text>
@@ -114,24 +124,29 @@ export function CurrentAuction({ navigation }) {
                   {/* <Text style={currentAuctions.text}>
               Current bid: £{Number(auction.current_price).toFixed(2)}
             </Text> */}
-                  <Text style={currentAuctions.text}>
-                    <Text style={currentAuctions.textBold}>
-                      {auction.users_involved.length}
-                    </Text>{' '}
-                    bidders involved
-                  </Text>
-                  {auction.current_highest_bidder ===
-                  currentCustomer.user_id ? (
+                  <View>
+                    <View>
+                      
+                    </View>
                     <Text style={currentAuctions.text}>
-                      You are{' '}
-                      <Text style={currentAuctions.textBold}>winning!</Text>
+                      <Text style={currentAuctions.textBold}>
+                        {auction.users_involved.length}
+                      </Text>{' '}
+                      bidders involved...{'\n'}
+                      {auction.current_highest_bidder ===
+                      currentCustomer.user_id ? (
+                        <Text style={currentAuctions.text}>
+                          You are{' '}
+                          <Text style={currentAuctions.textBold}>winning!</Text>
+                        </Text>
+                      ) : (
+                        <Text style={currentAuctions.text}>
+                          You are{' '}
+                          <Text style={currentAuctions.textBold}>loosing!</Text>
+                        </Text>
+                      )}
                     </Text>
-                  ) : (
-                    <Text style={currentAuctions.text}>
-                      You are{' '}
-                      <Text style={currentAuctions.textBold}>loosing!</Text>
-                    </Text>
-                  )}
+                  </View>
                   <Text style={{ textAlign: 'left' }}>
                     <MaterialCommunityIcons
                       name="cursor-default-click"
