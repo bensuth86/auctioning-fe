@@ -20,11 +20,25 @@ export function PreviousOrders() {
   const [isLoading, setIsLoading] = useState(true)
   const [showQRCode, setShowQRCode] = useState(false)
   const [QRCodeStr, setQRCodeStr] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
   useEffect(() => {
     getWonAuctionsByUser(currentCustomer.user_id).then((response) => {
       setAllOrders(response.data.auctions)
       setIsLoading(false)
+    })
+    .catch((err) => {
+      setIsLoading(false)
+      if (err.response.data.msg === 'User not found.') {
+        setErrorMessage(
+          'Sorry - your user ID does not exist.\nCannot fetch your previous orders.'
+        )
+      }
+      if (err.response.data.msg === 'Bad request') {
+        setErrorMessage(
+          'Sorry - your user ID is invalid.\nCannot fetch your previous orders.'
+        )
+      }
     })
   }, [currentCustomer.user_id])
 
@@ -120,6 +134,13 @@ export function PreviousOrders() {
           {/* <Button btnText={'Log out'} onPress={() => logUserOut()} /> */}
         </View>
         <Text style={orderHistory.pageHeader}>PREVIOUS ORDERS</Text>
+        {errorMessage !== '' && (
+                <View style={{height: 300, justifyContent: 'center', alignItems: 'center', padding: 20}}>
+                <Text style={styles.error}>{errorMessage}</Text>
+              </View>
+        )}
+        {errorMessage === '' && (
+          <>
         <Text
           style={{
             color: '#f5f5f5',
@@ -204,6 +225,8 @@ export function PreviousOrders() {
               </>
             ))}
           </View>
+        )}
+          </>
         )}
       </View>
     </ScrollView>
