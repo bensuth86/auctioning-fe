@@ -34,7 +34,9 @@
     "react-native-svg": "^15.0.0",
     "react-native-web": "~0.19.6",
     "react-router-dom": "^6.22.1",
-    "socket.io-client": "^4.7.4"
+    "socket.io-client": "^4.7.4",
+    "expo-notifications": "~0.27.6",
+    "expo-constants": "~15.4.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

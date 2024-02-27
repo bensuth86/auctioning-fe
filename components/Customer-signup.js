@@ -23,6 +23,7 @@ function CustomerSignUp({ navigation }) {
     'Comfortaa-SemiBold': require('../assets/Fonts/Comfortaa-SemiBold.ttf'),
   })
 
+
   useEffect(() => {
     setErrors({})
     validateForm()

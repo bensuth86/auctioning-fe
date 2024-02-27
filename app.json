@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Auctioning-fe",
-    "slug": "Auctioning-fe",
+    "slug": "auctioning-fe",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -28,6 +28,12 @@
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "2f46654d-ef5a-4079-9f98-cc376b8e7312"
+      }
+    },
+    "owner": "solifernn914"
   }
 }
