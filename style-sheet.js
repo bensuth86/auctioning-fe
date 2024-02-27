@@ -6,7 +6,7 @@ import { useFonts } from 'expo-font'
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f5f5f5',
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: '100%',
@@ -62,7 +62,8 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
     height: 40,
     fontWeight: 'normal',
-    fontFamily: 'Comfortaa-Light'
+    fontFamily: 'Comfortaa-Light',
+    
   },
   dropdownContainer: {
     // flexDirection: 'row',

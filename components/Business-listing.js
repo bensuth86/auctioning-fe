@@ -110,6 +110,7 @@ function BusinessListing({ navigation }) {
               }
               keyboardType="numeric"
               style={homeStyles.numberDial}
+              selectionColor={'rgba(43, 29, 65, 0.1)'}
             />
             <Button btnText={'+'} onPress={increasePrice} />
           </View>

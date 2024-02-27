@@ -107,12 +107,14 @@ function BusinessSignUp({ navigation }) {
         placeholder="Business Name"
         value={businessName}
         onChangeText={(businessName) => setBusinessName(businessName)}
+        selectionColor={'rgba(43, 29, 65, 0.1)'}
       />
       <TextInput
         style={styles.textboxLight}
         placeholder="Postcode"
         value={postcode}
         onChangeText={(postcode) => setPostcode(postcode)}
+        selectionColor={'rgba(43, 29, 65, 0.1)'}
       />
       <Text style={{
           color: '#f5f5f5',

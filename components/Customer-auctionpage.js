@@ -315,6 +315,7 @@ function CustomerAuctionPage({ navigation, route }) {
                     onChangeText={(value) => setUserBid(value)}
                     value={userBid}
                     keyboardType="numeric"
+                    selectionColor={'rgba(43, 29, 65, 0.1)'}
                   />
                   <View>
                     <Button

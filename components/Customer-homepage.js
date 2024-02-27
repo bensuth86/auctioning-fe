@@ -85,7 +85,7 @@ function CustomerHomepage({ navigation }) {
   return (
     <>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View style={styles.container}>
+        <View style={styles.darkContainer}>
           <View style={homeStyles.navigation}>
             <View style={homeStyles.topNavigation}>
               <Pressable style={styles.backButton}>
