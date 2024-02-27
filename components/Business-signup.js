@@ -20,6 +20,7 @@ function BusinessSignUp({ navigation }) {
   const [success, setSuccess] = useState(false)
 
   useEffect(() => {
+    setErrors({})
     validateForm()
   }, [businessName, , postcode])
   const validateForm = () => {
@@ -32,6 +33,10 @@ function BusinessSignUp({ navigation }) {
       errors.postcode = 'Postcode is required'
     } else if (postcode.length < 5) {
       errors.postcode = 'Postcode must be at least 5 characters'
+    } else if (
+      !postcode.match(/^([A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}|GIR ?0A{2})$/gim)
+    ) {
+      errors.postcode = 'Postcode invalid'
     }
     setErrors(errors)
     setIsFormValid(Object.keys(errors).length === 0)
@@ -39,11 +44,12 @@ function BusinessSignUp({ navigation }) {
 
   const handleSubmit = () => {
     if (isFormValid) {
+      const formattedPostcode = postcode.replace(/\s/g, '').toUpperCase()
       const seatGrid = generateSeatGrid(
         parseInt(selectedRow),
         parseInt(selectedColumn)
       )
-      postBusiness({ business_name: businessName }, postcode, seatGrid)
+      postBusiness({ business_name: businessName }, formattedPostcode, seatGrid)
         .then(() => {
           navigation.navigate('Login', { usertype: 'Business' })
           console.log('Form submitted successfully!')
@@ -88,98 +94,104 @@ function BusinessSignUp({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <View style={styles.darkContainer}>
+        <Text
+          style={{
+            color: '#f5f5f5',
+            fontFamily: 'Comfortaa-Regular',
+            paddingRight: 20,
+            paddingLeft: 20,
+            textAlign: 'center',
+          }}
+        >
+          Become an **APP NAME** seller
+        </Text>
 
-    <View style={styles.darkContainer}>
-      <Text
-        style={{
-          color: '#f5f5f5',
-          fontFamily: 'Comfortaa-Regular',
-          paddingRight: 20,
-          paddingLeft: 20,
-          textAlign: 'center',
-        }}
-      >
-        Become an **APP NAME** seller
-      </Text>
-
-      <TextInput
-        style={styles.textboxLight}
-        placeholder="Business Name"
-        value={businessName}
-        onChangeText={(businessName) => setBusinessName(businessName)}
-        selectionColor={'rgba(43, 29, 65, 0.1)'}
-      />
-      <TextInput
-        style={styles.textboxLight}
-        placeholder="Postcode"
-        value={postcode}
-        onChangeText={(postcode) => setPostcode(postcode)}
-        selectionColor={'rgba(43, 29, 65, 0.1)'}
-      />
-      <Text style={{
-          color: '#f5f5f5',
-          fontFamily: 'Comfortaa-Regular',
-          paddingRight: 20,
-          paddingLeft: 20,
-          textAlign: 'center',
-          marginTop: 40,
-          marginBottom: 10
-        }}>Select Seating Layout</Text>
-      <View style={{flexDirection: 'row'}}>
-        <View style={styles.dropdownContainer}>
-          <SelectList
-            setSelected={(val) => setSelectedRow(val)}
-            data={data}
-            save="value"
-            style={styles.dropdown}
-            search={false}
-            placeholder="Rows"
-            boxStyles={{borderRadius:20, backgroundColor: '#f5f5f5'}}
-            dropdownStyles={{backgroundColor: '#f5f5f5', fontSize: 12}}
-            fontFamily='Comfortaa-Light'
-          />
+        <TextInput
+          style={styles.textboxLight}
+          placeholder="Business Name"
+          value={businessName}
+          onChangeText={(businessName) => setBusinessName(businessName)}
+          selectionColor={'rgba(43, 29, 65, 0.1)'}
+        />
+        <TextInput
+          style={styles.textboxLight}
+          placeholder="Postcode"
+          value={postcode}
+          onChangeText={(postcode) => setPostcode(postcode)}
+          selectionColor={'rgba(43, 29, 65, 0.1)'}
+        />
+        <Text
+          style={{
+            color: '#f5f5f5',
+            fontFamily: 'Comfortaa-Regular',
+            paddingRight: 20,
+            paddingLeft: 20,
+            textAlign: 'center',
+            marginTop: 40,
+            marginBottom: 10,
+          }}
+        >
+          Select Seating Layout
+        </Text>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={styles.dropdownContainer}>
+            <SelectList
+              setSelected={(val) => setSelectedRow(val)}
+              data={data}
+              save="value"
+              style={styles.dropdown}
+              search={false}
+              placeholder="Rows"
+              boxStyles={{ borderRadius: 20, backgroundColor: '#f5f5f5' }}
+              dropdownStyles={{ backgroundColor: '#f5f5f5', fontSize: 12 }}
+              fontFamily="Comfortaa-Light"
+            />
+          </View>
+          <View style={styles.dropdownContainer}>
+            <SelectList
+              setSelected={(val) => setSelectedColumn(val)}
+              data={data2}
+              save="value"
+              style={styles.dropdown}
+              search={false}
+              placeholder="Columns"
+              boxStyles={{ borderRadius: 20, backgroundColor: '#f5f5f5' }}
+              dropdownStyles={{ backgroundColor: '#f5f5f5' }}
+              fontFamily="Comfortaa-Light"
+            />
+          </View>
         </View>
-        <View style={styles.dropdownContainer}>
-          <SelectList
-            setSelected={(val) => setSelectedColumn(val)}
-            data={data2}
-            save="value"
-            style={styles.dropdown}
-            search={false}
-            placeholder="Columns"
-            boxStyles={{borderRadius:20, backgroundColor: '#f5f5f5'}}
-            dropdownStyles={{backgroundColor: '#f5f5f5'}}
-            fontFamily='Comfortaa-Light'
-          />
-        </View>
-      </View>
-      <Button btnText="SUBMIT" onPress={handleSubmit} disabled={!isFormValid} />
-      {/* <TouchableOpacity
+        <Button
+          btnText="SUBMIT"
+          onPress={handleSubmit}
+          disabled={!isFormValid}
+        />
+        {/* <TouchableOpacity
         style={[styles.button, { opacity: isFormValid ? 1 : 0.5 }]}
         disabled={!isFormValid}
         onPress={handleSubmit}
       >
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity> */}
-      {Object.values(errors).map((error, index) => (
-        <Text key={index} style={styles.error}>
-          {error}
-        </Text>
-      ))}
-      <Snackbar
-        visible={visible}
-        onDismiss={() => setVisible(false)}
-        action={{
-          label: 'Dismiss',
-          onPress: () => setVisible(false),
-        }}
-      >
-        {snackbarMessage}
-      </Snackbar>
-    </View>
-  </ScrollView>
+        {Object.values(errors).map((error, index) => (
+          <Text key={index} style={styles.error}>
+            {error}
+          </Text>
+        ))}
+        <Snackbar
+          visible={visible}
+          onDismiss={() => setVisible(false)}
+          action={{
+            label: 'Dismiss',
+            onPress: () => setVisible(false),
+          }}
+        >
+          {snackbarMessage}
+        </Snackbar>
+      </View>
+    </ScrollView>
   )
-
 }
 
 export default BusinessSignUp
