@@ -42,7 +42,6 @@ function BusinessListing({ navigation }) {
 
   function onChange(e, selectedDate) {
     setDate(selectedDate)
-    setShow(false)
   }
 
   function increasePrice() {
@@ -56,8 +55,8 @@ function BusinessListing({ navigation }) {
   }
 
   function showMode(modeToShow) {
-    setShow(true)
     setMode(modeToShow)
+    setShow(true)
   }
 
   const new_event = {
@@ -97,19 +96,27 @@ function BusinessListing({ navigation }) {
           <Text>Listing for {title}</Text>
         </View>
         <View style={{ marginTop: 20, marginBottom: 20 }}>
-          <Button
-            btnText={'Choose Date'}
-            onPress={() => showMode('date')}
-          ></Button>
-          <Button
-            btnText={'Choose Time'}
-            onPress={() => showMode('time')}
-          ></Button>
+          {show === false ? (
+            <Button
+              btnText="Choose Date"
+              onPress={() => showMode('date')}
+            ></Button>
+          ) : null}
+
+          {show === false ? (
+            <Button
+              btnText="Choose Time"
+              onPress={() => showMode('time')}
+            ></Button>
+          ) : (
+            <Button btnText="Close" onPress={() => setShow(false)}></Button>
+          )}
+
           {show && (
             <DateTimePicker
               value={date}
               mode={mode}
-              display={"spinner"}
+              display={'spinner'}
               is24HOUR={true}
               onChange={onChange}
             />
@@ -209,11 +216,7 @@ function BusinessListing({ navigation }) {
             </Text>
           </View>
         ) : selectedSeats.length > 0 ? (
-          <Button
-            key={'listeventbtn'}
-            btnText="List event"
-            onPress={handleListing}
-          />
+          <Button btnText={'List event'} onPress={handleListing} />
         ) : (
           <View style={seatStyles.errorContainer}>
             <Text style={seatStyles.textbox}>
