@@ -7,7 +7,9 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  Keyboard,
 } from 'react-native'
+import { Snackbar } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { styles } from '../style-sheet'
 import { useRoute } from '@react-navigation/native'
@@ -26,21 +28,23 @@ function BusinessCreateScreening({ navigation }) {
   const [poster, setPoster] = useState('')
   const [runtime, setRuntime] = useState('100')
   const [certificate, setCertificate] = useState('12')
+  const [snackbarMessage, setSnackbarMessage] = useState('')
+  const [visible, setVisible] = useState(false)
+  const movieEndpoint = `https://api.themoviedb.org/3/search/movie?api_key=2ff74c9759be7b397da331e5c4e692ee&query=${searchQuerySlug}&include_adult=false&language=en-US&page=1`
 
   useEffect(() => {
     setIsLoading(true)
+    setErr(null)
+    setVisible(false)
     fetchData(movieEndpoint)
   }, [searchQuery])
 
   useEffect(() => {
+    setErr(null)
+    setVisible(false)
     fetchRuntime(idNo)
-  }, [idNo])
-
-  useEffect(() => {
     fetchCertificate(idNo)
   }, [idNo])
-
-  const movieEndpoint = `https://api.themoviedb.org/3/search/movie?api_key=2ff74c9759be7b397da331e5c4e692ee&query=${searchQuerySlug}&include_adult=false&language=en-US&page=1`
 
   const fetchRuntime = async (filmid) => {
     try {
@@ -53,8 +57,11 @@ function BusinessCreateScreening({ navigation }) {
         ? setRuntime('100')
         : setRuntime(json.runtime.toString())
     } catch (error) {
-      setErr(error)
-      console.log(error)
+      if (searchQuery !== '') {
+        setErr(true)
+        setVisible(true)
+        setSnackbarMessage('Error fetching data. Please try again...')
+      }
     }
   }
 
@@ -81,8 +88,11 @@ function BusinessCreateScreening({ navigation }) {
       })
       setIsLoading(false)
     } catch (error) {
-      setErr(error)
-      console.log(error)
+      if (searchQuery !== '') {
+        setErr(true)
+        setVisible(true)
+        setSnackbarMessage('Error fetching data. Please try again...')
+      }
     }
   }
 
@@ -99,13 +109,18 @@ function BusinessCreateScreening({ navigation }) {
 
   const fetchData = async (url) => {
     try {
-      const response = await fetch(url)
-      const json = await response.json()
-      setData(json.results)
-      setIsLoading(false)
+      if (searchQuerySlug !== undefined) {
+        const response = await fetch(url)
+        const json = await response.json()
+        setData(json.results)
+        setIsLoading(false)
+      }
     } catch (error) {
-      setErr(error)
-      console.log(error)
+      if (searchQuery !== '') {
+        setErr(true)
+        setVisible(true)
+        setSnackbarMessage('Error fetching data. Please try again...')
+      }
     }
   }
 
@@ -113,6 +128,7 @@ function BusinessCreateScreening({ navigation }) {
     setTitle(item.title)
     setPoster(`https://image.tmdb.org/t/p/w500${item.poster_path}`)
     setIdNo(item.id)
+    Keyboard.dismiss()
   }
 
   function handleSearch(query) {
@@ -120,18 +136,11 @@ function BusinessCreateScreening({ navigation }) {
     setSearchQuery(query)
   }
 
-  // if (err) {
-  //   return (
-  //     <View style={styles.container}>
-  //       <Text>Error fetching data</Text>
-  //     </View>
-  //   )
-  // }
-
   return (
-    <SafeAreaView style={{ flex: 1, marginHorizontal: 2 }}>
+    <SafeAreaView style={{ flex: 1, marginHorizontal: 2, marginTop: 50 }}>
+      <Text>What film do you want to list?</Text>
       <TextInput
-        placeholder="search"
+        placeholder="Search for your film title..."
         clearButtonMode="always"
         autoCapitalize="none"
         autoCorrect={false}
@@ -177,20 +186,40 @@ function BusinessCreateScreening({ navigation }) {
           ></FlatList>
         </View>
       )}
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          navigation.navigate('BusinessListingPage', {
-            business_id,
-            title: title,
-            poster: poster,
-            runtime: runtime,
-            certificate: certificate,
-          })
+      {title.length ? (
+        <>
+          <Text style={{ marginTop: 30 }}>
+            You've selected {title}, certificate: {certificate}
+          </Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              navigation.navigate('BusinessListingPage', {
+                business_id,
+                title: title,
+                poster: poster,
+                runtime: runtime,
+                certificate: certificate,
+              })
+            }}
+          >
+            <Text style={styles.buttonText}>Continue</Text>
+          </TouchableOpacity>
+        </>
+      ) : (
+        <Text> Please select a film to continue</Text>
+      )}
+
+      <Snackbar
+        visible={visible}
+        onDismiss={() => setVisible(false)}
+        action={{
+          label: 'Dismiss',
+          onPress: () => setVisible(false),
         }}
       >
-        <Text style={styles.buttonText}>Continue</Text>
-      </TouchableOpacity>
+        {snackbarMessage}
+      </Snackbar>
     </SafeAreaView>
   )
 }
