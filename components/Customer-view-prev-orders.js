@@ -10,13 +10,17 @@ import { Image } from 'react-native'
 import { convertTime } from '../helpers'
 import { ActivityIndicator } from 'react-native-paper'
 import { homeStyles } from '../style-sheet-customer-home'
-import { Pressable } from 'react-native'
+import { Pressable, Modal } from 'react-native'
+import QRCode from 'react-native-qrcode-svg'
+import { Button } from '../helpers'
 
 export function PreviousOrders() {
   const { currentCustomer, setCurrentCustomer } = useContext(CustomerContext)
   const [allOrders, setAllOrders] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  
+  const [showQRCode, setShowQRCode] = useState(false)
+  const [QRCodeStr, setQRCodeStr] = useState('')
+
   useEffect(() => {
     getWonAuctionsByUser(currentCustomer.user_id).then((response) => {
       setAllOrders(response.data.auctions)
@@ -34,11 +38,83 @@ export function PreviousOrders() {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.darkContainer}>
+        <Modal animationType="slide" transparent={true} visible={showQRCode}>
+          <View
+            style={{
+              height: '45%',
+              width: '100%',
+              borderTopRightRadius: 18,
+              borderTopLeftRadius: 18,
+              position: 'absolute',
+              bottom: 0,
+            }}
+          >
+            <View
+              style={{
+                height: '16%',
+                backgroundColor: '#413454',
+                borderTopRightRadius: 10,
+                borderTopLeftRadius: 10,
+                paddingHorizontal: 20,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Text style={orderHistory.cardHeaderBold}>Your QR Code</Text>
+              <Pressable
+                onPress={() => {
+                  setShowQRCode(false)
+                  setQRCodeStr('')
+                }}
+              >
+                <Text
+                  style={{
+                    color: '#f5f5f5',
+                    fontFamily: 'Comfortaa-Light',
+                    fontSize: 12,
+                  }}
+                >
+                  Close
+                </Text>
+              </Pressable>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: 'white',
+                paddingHorizontal: 20,
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <QRCode value={QRCodeStr} size={200} />
+              <Text
+                style={{
+                  fontFamily: 'Comfortaa-Light',
+                  fontSize: 14,
+                  marginTop: 5,
+                }}
+              >
+                {QRCodeStr}
+              </Text>
+              <Text
+                style={{
+                  fontFamily: 'Comfortaa-Light',
+                  fontSize: 14,
+                  marginTop: 5,
+                }}
+              >
+                Simply show this code when picking up your tickets.
+              </Text>
+              <Text>{QRCode}</Text>
+            </View>
+          </View>
+        </Modal>
         <View style={orderHistory.topNav}>
           <Pressable style={styles.backButton}>
-            <Text style={styles.backButtonText}>
-              ← HOME
-            </Text>
+            <Text style={styles.backButtonText}>← HOME</Text>
           </Pressable>
           {/* <Text>HELLO {currentCustomer.username}</Text> */}
           {/* <Button btnText={'Log out'} onPress={() => logUserOut()} /> */}
@@ -51,10 +127,11 @@ export function PreviousOrders() {
             fontSize: 12,
             textAlign: 'center',
             width: '90%',
-            marginBottom: 80
+            marginBottom: 80,
           }}
         >
-          Please present the collection code at the venue to collect and pay for tickets.
+          Please present the QR code at the venue to collect and pay for
+          tickets.
         </Text>
         {allOrders.length === 0 ? (
           <Text style={styles.error}>Looks like you have no orders!</Text>
@@ -94,8 +171,8 @@ export function PreviousOrders() {
                       </Text>
                     </Text>
                     <Text style={orderHistory.sideInfoHeaders}>
-                      Collection code:{'\n'}
-                      <Text style={orderHistory.info}>
+                      QR Code:{'\n'}
+                      {/* <Text style={orderHistory.info}>
                         {order.event_id}
                         {order.auction_id}
                         {currentCustomer.username[0].toUpperCase()}
@@ -106,7 +183,21 @@ export function PreviousOrders() {
                         {order.time_ending.substring(
                           order.time_ending.length - 4
                         )}
-                      </Text>
+                      </Text> */}
+                      <Button
+                        key={`button-${order.auction_id}`}
+                        btnText={'VIEW'}
+                        onPress={() => {
+                          setQRCodeStr(
+                            `${order.event_id}${order.auction_id}${currentCustomer.username[0].toUpperCase()}${currentCustomer.username[
+                              currentCustomer.username.length - 1
+                            ].toUpperCase()}${currentCustomer.user_id}${order.time_ending.substring(
+                              order.time_ending.length - 4
+                            )}`
+                          )
+                          setShowQRCode(true)
+                        }}
+                      ></Button>
                     </Text>
                   </View>
                 </View>
