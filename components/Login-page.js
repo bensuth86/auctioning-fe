@@ -179,11 +179,11 @@ function Login({ navigation, route }) {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.darkContainer}>
-        <View style={homeStyles.topNavigation}>
+        {/* <View style={homeStyles.topNavigation}>
           <Pressable style={styles.backButton}>
             <Text style={styles.backButtonText}>WELCOME PAGE</Text>
           </Pressable>
-        </View>
+        </View> */}
         <Text
           style={{
             fontFamily: 'Comfortaa-Regular',

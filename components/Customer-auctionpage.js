@@ -280,11 +280,11 @@ function CustomerAuctionPage({ navigation, route }) {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.darkContainer}>
-        <View style={styles.topNavStrip}>
+        {/* <View style={styles.topNavStrip}>
           <Pressable style={styles.backButton}>
             <Text style={styles.backButtonText}>← SEATING</Text>
           </Pressable>
-        </View>
+        </View> */}
         {countdown && (
           <View style={auctionStyles.timerContainer}>
             <Text style={auctionStyles.text}>TIME LEFT: </Text>

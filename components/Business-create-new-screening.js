@@ -151,7 +151,7 @@ function BusinessCreateScreening({ navigation }) {
           minHeight: 150,
         }}
       >
-        <View
+        {/* <View
           style={{
             flexDirection: 'row',
             justifyContent: 'flex-start',
@@ -163,7 +163,7 @@ function BusinessCreateScreening({ navigation }) {
           <Pressable style={[styles.backButton, { marginLeft: 20 }]}>
             <Text style={styles.backButtonText}>HOME</Text>
           </Pressable>
-        </View>
+        </View> */}
         {/* <View style={[styles.backButton, { marginLeft: 20 }]}> */}
         <Text
           style={{
