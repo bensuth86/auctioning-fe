@@ -153,6 +153,7 @@ function BusinessListing({ navigation }) {
                 display={'spinner'}
                 is24HOUR={true}
                 onChange={onChange}
+                textColor="white"
               />
             )}
           </View>
@@ -201,7 +202,7 @@ function BusinessListing({ navigation }) {
                 alignItems: 'center',
                 flexDirection: 'row',
                 marginBottom: 20,
-                marginTop: 10
+                marginTop: 10,
               }}
             >
               <TouchableOpacity
@@ -214,7 +215,13 @@ function BusinessListing({ navigation }) {
                 value={`£${price.toString()}`}
                 onChangeText={(text) => setPrice(parseInt(text) || 1)}
                 keyboardType="numeric"
-                style={{backgroundColor: '#f5f5f5', borderRadius: 20, height: 40, width: 80, textAlign: 'center'}}
+                style={{
+                  backgroundColor: '#f5f5f5',
+                  borderRadius: 20,
+                  height: 40,
+                  width: 80,
+                  textAlign: 'center',
+                }}
                 selectionColor={'rgba(43, 29, 65, 0.1)'}
               />
               <TouchableOpacity
@@ -334,14 +341,16 @@ function BusinessListing({ navigation }) {
               <Button btnText={'LIST EVENT'} onPress={handleListing} />
             ) : (
               <View>
-                <Text style={[
+                <Text
+                  style={[
                     styles.error,
                     {
                       fontFamily: 'Comfortaa-Light',
                       textAlign: 'center',
                       margin: 20,
                     },
-                  ]}>
+                  ]}
+                >
                   You must select at least one seat.
                 </Text>
               </View>
