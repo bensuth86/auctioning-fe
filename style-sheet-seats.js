@@ -5,15 +5,15 @@ export const seatStyles = StyleSheet.create({
     backgroundColor: '#2b1d41',
     width: '100%',
     alignItems: 'center',
-    
+
     borderBottomEndRadius: 50,
     borderBottomLeftRadius: 50,
     paddingBottom: 25,
     // paddingTop: 25
   },
   seatHeader: {
-    textAlign: 'center', 
-    marginBottom: 20 ,
+    textAlign: 'center',
+    marginBottom: 20,
     fontSize: 15,
     fontFamily: 'Comfortaa-Bold',
   },
@@ -26,14 +26,14 @@ export const seatStyles = StyleSheet.create({
     paddingRight: 15,
     paddingBottom: 5,
     borderRadius: 20,
-    marginBottom: 20
+    marginBottom: 20,
   },
   screenText: {
     color: 'white',
     textAlign: 'center',
     fontFamily: 'Comfortaa-Light',
     fontSize: 12,
-    color: '#f5f5f5'
+    color: '#f5f5f5',
   },
   seatsContainer: {
     // marginBottom: 100,
@@ -64,40 +64,45 @@ export const seatStyles = StyleSheet.create({
     margin: 5,
     padding: 5,
     backgroundColor: '#7bc47f',
-    width: '60px',
-    height: '50px',
+    width: '57px',
+    height: '47px',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+    borderColor: '#7bc47f',
+    borderWidth: 3,
   },
   auctionSeatButton: {
     margin: 5,
     padding: 5,
     backgroundColor: '#FFBF00',
-    width: '60px',
-    height: '50px',
+    width: '57px',
+    height: '47px',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+    borderColor: '#FFBF00',
+    borderWidth: 3,
   },
   unavailableSeatButton: {
     margin: 5,
     padding: 5,
     backgroundColor: 'grey',
-    width: '60px',
-    height: '50px',
+    width: '57px',
+    height: '47px',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+    borderColor: 'grey',
+    borderWidth: 3,
   },
   selectedSeatButton: {
     margin: 5,
     padding: 5,
     backgroundColor: '#7bc47f',
-    width: '60px',
-    height: '50px',
+    width: '57px',
+    height: '47px',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderColor: 'red',
     borderWidth: 3,
-    
   },
   selectedAuctionSeatButton: {
     margin: 5,
@@ -139,23 +144,23 @@ export const seatStyles = StyleSheet.create({
     // backgroundColor: 'pink'
   },
   bigKeyContainer: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   text: {
     fontFamily: 'Comfortaa-Light',
-    fontSize: 12
+    fontSize: 12,
   },
   textBigger: {
     fontFamily: 'Comfortaa-Light',
-    fontSize: 16
+    fontSize: 16,
   },
   textBiggerBold: {
     fontFamily: 'Comfortaa-Bold',
-    fontSize: 16
+    fontSize: 16,
   },
   textBiggerError: {
     fontFamily: 'Comfortaa-Bold',
     fontSize: 16,
-    color: 'red'
-  }
+    color: 'red',
+  },
 })
