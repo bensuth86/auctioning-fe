@@ -97,6 +97,7 @@ export const seatStyles = StyleSheet.create({
     borderTopRightRadius: 10,
     borderColor: 'red',
     borderWidth: 3,
+    
   },
   selectedAuctionSeatButton: {
     margin: 5,
