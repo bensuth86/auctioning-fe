@@ -16,6 +16,7 @@ import { orderHistory } from '../style-sheet-previous-orders'
 function BusinessHomepage({ navigation, route }) {
   const { business_id } = route.params
   const [events, setEvents] = useState([])
+  const [errorMessage, setErrorMessage] = useState('')
   const [businessInfo, setBusinessInfo] = useState({
     business_name: null,
     postcode: null,
@@ -35,9 +36,12 @@ function BusinessHomepage({ navigation, route }) {
           })
           setIsLoading(false)
         })
-      })
-      .catch((error) => {
-        console.error('Error fetching events:', error)
+      })//add error to jsx
+      .catch((err) => {
+        setIsLoading(false)
+        if (err.response.data.msg === 'Bad request') {
+          setErrorMessage('Sorry - your business ID is invalid.\nCannot fetch your listings.')
+        }
       })
   }, [business_id])
 
@@ -62,6 +66,13 @@ function BusinessHomepage({ navigation, route }) {
             </Text>
           </Pressable>
         </View>
+        {errorMessage !== '' && (
+                <View style={{height: 300, justifyContent: 'center', alignItems: 'center', padding: 20}}>
+                <Text style={styles.error}>{errorMessage}</Text>
+              </View>
+        )}
+        {errorMessage === '' && (
+          <>
         <Text
           style={{
             fontFamily: 'Comfortaa-Regular',
@@ -157,6 +168,8 @@ function BusinessHomepage({ navigation, route }) {
             </>
           ))}
         </View>
+          </>
+        )}
       </View>
     </ScrollView>
   )
