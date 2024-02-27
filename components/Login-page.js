@@ -1,6 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { useState, useRef } from 'react'
-import { Text, TextInput, View, ScrollView } from 'react-native'
+import { Text, TextInput, View, ScrollView, Platform } from 'react-native'
 import { styles } from '../style-sheet'
 import { Button } from '../helpers'
 import { getAllUsers, getAllBusinesses } from '../utils'
@@ -44,7 +44,6 @@ function Login({ navigation, route }) {
   });
 
   async function sendPushNotification(expoPushToken) {
-    console.log(expoPushToken, "line 47");
     const message = {
       to: expoPushToken,
       title: 'Welcome Back!',
@@ -62,24 +61,39 @@ function Login({ navigation, route }) {
     });
   }
 
-  async function registerForPushNotificationsAsync() {
-    let token;
 
+// CODE FROM EXPO DOCS
+async function registerForPushNotificationsAsync() {
+  let token;
+
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+
+  if (Device.isDevice) {
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
-
     if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
     }
     if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
-        return;
+      alert('Failed to get push token for push notification!');
+      return;
     }
-    token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
+    token = await Notifications.getExpoPushTokenAsync({
+      projectId: Constants.expoConfig.extra.eas.projectId,
+    });
+  } else {
+    alert('Must use physical device for Push Notifications');
+  }
 
-    return token;
+  return token.data;
 }
 
 
@@ -107,6 +121,7 @@ function Login({ navigation, route }) {
           let foundMatch = false
           response.data.users.forEach((user) => {
             if (loginName === user.username) {
+              sendPushNotification(expoPushToken)
               setCurrentCustomer({
                 username: user.username,
                 user_id: user.user_id,
