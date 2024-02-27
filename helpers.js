@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import { styles } from './style-sheet'
 import { seatStyles } from './style-sheet-seats'
 
-
 // TouchableOpacity.defaultProps = { activeOpacity: 0.8 }
 
 export function Button({ btnText, onPress }) {
@@ -36,7 +35,7 @@ export function DisabledSeatButton({ btnText, seatStyle }) {
 
 export function DisabledButton({ btnText }) {
   return (
-    <View style={styles.button}>
+    <View style={styles.disabledButton}>
       <Text style={styles.buttontext}>{btnText}</Text>
     </View>
   )
@@ -58,21 +57,21 @@ export function generateSeatGrid(rows, columns) {
   return seatGrid
 }
 
-
 export function convertTime(timeString) {
-  const dateConversion = new Date(timeString);
+  const dateConversion = new Date(timeString)
 
   const options = {
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric', 
-    hour: 'numeric', 
-    minute: 'numeric', 
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
     timeZoneName: 'short',
-    hour12: true
-  };
+    hour12: true,
+  }
 
-  const formattedDate = dateConversion.toLocaleString("en-GB", dateConversion).slice(0, -3);
-  return formattedDate;
+  const formattedDate = dateConversion
+    .toLocaleString('en-GB', dateConversion)
+    .slice(0, -3)
+  return formattedDate
 }
-
