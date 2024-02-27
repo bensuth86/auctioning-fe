@@ -141,11 +141,11 @@ function CustomerSeating({ navigation, route }) {
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.darkContainer}>
         <View style={seatStyles.topContainer}>
-          <View style={[styles.topNavStrip, { marginTop: 10 }]}>
+          {/* <View style={[styles.topNavStrip, { marginTop: 10 }]}>
             <Pressable style={styles.backButton}>
               <Text style={styles.backButtonText}>← SCREENINGS</Text>
             </Pressable>
-          </View>
+          </View> */}
           <SelectedEvent event_id={event_id} />
         </View>
         <View

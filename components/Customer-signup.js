@@ -63,11 +63,11 @@ function CustomerSignUp({ navigation }) {
 
   return (
     <View style={styles.darkContainer}>
-      <View style={homeStyles.topNavigation}>
+      {/* <View style={homeStyles.topNavigation}>
         <Pressable style={styles.backButton}>
           <Text style={styles.backButtonText}>WELCOME PAGE</Text>
         </Pressable>
-      </View>
+      </View> */}
       <Text
         style={{
           color: '#f5f5f5',

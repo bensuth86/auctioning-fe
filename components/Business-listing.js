@@ -104,11 +104,11 @@ function BusinessListing({ navigation }) {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.darkContainer}>
-        <View style={homeStyles.topNavigation}>
+        {/* <View style={homeStyles.topNavigation}>
           <Pressable style={styles.backButton}>
             <Text style={styles.backButtonText}>FILMS</Text>
           </Pressable>
-        </View>
+        </View> */}
         <View style={{ maxWidth: 300 }}>
           <Text
             style={{

@@ -95,22 +95,58 @@ function App() {
           <Stack.Screen
             name="CustomerHomepage"
             component={CustomerHomepage}
-            options={{ title: 'Customer Home' }}
+            options={{ title: '',
+            headerStyle: {
+              backgroundColor: '#2b1d41',
+            },
+            headerTintColor: '#f5f5f5',
+            headerTitleStyle: {
+              fontFamily: 'Comfortaa-Regular',
+            },
+          
+          }}
           />
           <Stack.Screen
             name="BusinessHomepage"
             component={BusinessHomepage}
-            options={{ title: 'Business Home' }}
+            options={{ title: '',
+            headerStyle: {
+              backgroundColor: '#2b1d41',
+            },
+            headerTintColor: '#f5f5f5',
+            headerTitleStyle: {
+              fontFamily: 'Comfortaa-Regular',
+            },
+          
+          }}
           />
           <Stack.Screen
             name="SeatingPage"
             component={CustomerSeating}
-            options={{ title: 'Seating Selection' }}
+            options={{ title: '',
+            headerStyle: {
+              backgroundColor: '#2b1d41',
+            },
+            headerTintColor: '#f5f5f5',
+            headerTitleStyle: {
+              fontFamily: 'Comfortaa-Regular',
+            },
+          
+          }}
           />
           <Stack.Screen
             name="AuctionPage"
             component={CustomerAuctionPage}
-            options={{ title: 'Auction' }}
+            options={{ title: '',
+            headerStyle: {
+              backgroundColor: '#2b1d41',
+            },
+            headerTintColor: '#f5f5f5',
+            headerTitleStyle: {
+              fontFamily: 'Comfortaa-Regular',
+            },
+          
+          }}
           />
           <Stack.Screen
             name="CustomerSignUpPage"
@@ -129,22 +165,58 @@ function App() {
           <Stack.Screen
             name="BusinessSignupPage"
             component={BusinessSignup}
-            options={{ title: 'Business Sign Up' }}
+            options={{ title: '',
+            headerStyle: {
+              backgroundColor: '#2b1d41',
+            },
+            headerTintColor: '#f5f5f5',
+            headerTitleStyle: {
+              fontFamily: 'Comfortaa-Regular',
+            },
+          
+          }}
           />
           <Stack.Screen
             name="BusinessCreateScreening"
             component={BusinessCreateScreening}
-            options={{ title: 'Business Create Screening' }}
+            options={{ title: '',
+            headerStyle: {
+              backgroundColor: '#2b1d41',
+            },
+            headerTintColor: '#f5f5f5',
+            headerTitleStyle: {
+              fontFamily: 'Comfortaa-Regular',
+            },
+          
+          }}
           />
           <Stack.Screen
             name="BusinessListingPage"
             component={BusinessListing}
-            options={{ title: 'Business Listing Page' }}
+            options={{ title: '',
+            headerStyle: {
+              backgroundColor: '#2b1d41',
+            },
+            headerTintColor: '#f5f5f5',
+            headerTitleStyle: {
+              fontFamily: 'Comfortaa-Regular',
+            },
+          
+          }}
           />
           <Stack.Screen
             name="PreviousOrders"
             component={PreviousOrders}
-            options={{ title: 'Previous orders' }}
+            options={{ title: '',
+            headerStyle: {
+              backgroundColor: '#2b1d41',
+            },
+            headerTintColor: '#f5f5f5',
+            headerTitleStyle: {
+              fontFamily: 'Comfortaa-Regular',
+            },
+          
+          }}
           />
         </Stack.Navigator>
       </NavigationContainer>
