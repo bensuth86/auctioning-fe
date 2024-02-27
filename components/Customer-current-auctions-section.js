@@ -10,7 +10,7 @@ import { convertTime } from '../helpers'
 import { currentAuctions } from '../style-sheet-current-auctions'
 import { ActivityIndicator } from 'react-native-paper'
 import { useIsFocused } from '@react-navigation/native'
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 export function CurrentAuction({ navigation }) {
   const { currentCustomer, setCurrentCustomer } = useContext(CustomerContext)
@@ -27,13 +27,13 @@ export function CurrentAuction({ navigation }) {
       setLoading(true)
     })
   }, [isFocused])
-  // removed dependencies, not sure if needed
-  if (!loading)
-    return (
-      <View style={styles.darkContainer}>
-        <ActivityIndicator color="red" />
-      </View>
-    )
+
+  // if (!loading)
+  //   return (
+  //     <View style={styles.darkContainer}>
+  //       <ActivityIndicator color="red" />
+  //     </View>
+  //   )
 
   return (
     userActiveAuctions.length > 0 && (
@@ -48,9 +48,13 @@ export function CurrentAuction({ navigation }) {
         >
           YOUR LIVE AUCTIONS:{' '}
         </Text>
-
-        {userActiveAuctions.map((auction, i) => {
-          return (
+        {!loading && (
+          <View style={{ padding: 20 }}>
+            <ActivityIndicator color="red" />
+          </View>
+        )}
+        {loading &&
+          userActiveAuctions.map((auction, i) => (
             <TouchableOpacity
               key={`auction-${i}`}
               onPress={() =>
@@ -91,8 +95,8 @@ export function CurrentAuction({ navigation }) {
                   </Text>
                 </Text>
                 {/* <Text style={currentAuctions.text}>
-                Current bid: £{Number(auction.current_price).toFixed(2)}
-              </Text> */}
+              Current bid: £{Number(auction.current_price).toFixed(2)}
+            </Text> */}
                 <Text style={currentAuctions.text}>
                   <Text style={currentAuctions.textBold}>
                     {auction.users_involved.length}
@@ -110,11 +114,16 @@ export function CurrentAuction({ navigation }) {
                     <Text style={currentAuctions.textBold}>loosing!</Text>
                   </Text>
                 )}
-                <Text style={{textAlign: 'left'}}><MaterialCommunityIcons name="cursor-default-click" size={20} color="#f5f5f5" /></Text>
+                <Text style={{ textAlign: 'left' }}>
+                  <MaterialCommunityIcons
+                    name="cursor-default-click"
+                    size={20}
+                    color="#f5f5f5"
+                  />
+                </Text>
               </View>
             </TouchableOpacity>
-          )
-        })}
+          ))}
       </View>
     )
   )

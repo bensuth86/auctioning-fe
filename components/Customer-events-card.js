@@ -21,11 +21,11 @@ export function EventsCard({ event }) {
       </Text>
       <View style={eventStyles.mainContent}>
         <Image
-          style={{ width: 130, height: 180.5 }}
+          style={{ width: 160, height: 230.5 }}
           source={{ uri: event.poster }}
         />
         <View style={eventStyles.rightSide}>
-          <Text>
+          <Text style={eventStyles.cardText}>
             {event.business_name}, {event.postcode}
           </Text>
           <Text style={eventStyles.cardText}>
@@ -52,11 +52,15 @@ export function EventsCard({ event }) {
 
 export function UnavailableEventsCard({ event }) {
   return (
-    <View style={eventStyles.unavailableeventcard}>
-      <Text style={eventStyles.cardHeader}>SOLD OUT</Text>
+    <View style={eventStyles.eventcard}>
+      <Text style={eventStyles.cardHeader}>
+        {event.film_title},{' '}
+        <Text style={{ fontWeight: 'normal' }}>{event.certificate}</Text>
+      </Text>
+      {/* <Text style={{marginTop: 20}}>SOLD OUT</Text> */}
       <View style={eventStyles.mainContent}>
         <Image
-          style={{ width: 130, height: 180.5, opacity: 0.3 }}
+          style={{ width: 160, height: 230.5, opacity: 0.3 }}
           source={{ uri: event.poster }}
         />
 
@@ -82,6 +86,7 @@ export function UnavailableEventsCard({ event }) {
           </Text>
         </View>
       </View>
+      <Text>SOLD OUT</Text>
     </View>
   )
 }

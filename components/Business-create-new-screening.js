@@ -13,6 +13,8 @@ import { styles } from '../style-sheet'
 import { useRoute } from '@react-navigation/native'
 import { useEffect } from 'react'
 import { ScrollView } from 'react-native'
+import { Pressable } from 'react-native'
+import { Button } from '../helpers'
 
 function BusinessCreateScreening({ navigation }) {
   const route = useRoute()
@@ -129,10 +131,45 @@ function BusinessCreateScreening({ navigation }) {
   //   )
   // }
 
+  // topNavigation: {
+  //   flexDirection: 'row',
+  //   justifyContent: 'flex-start',
+  //   alignItems: 'center',
+  //   // backgroundColor: 'red',
+  //   padding: 10,
+  //   width: '100%',
+  // },
+
   return (
-    <SafeAreaView style={{ flex: 1, marginHorizontal: 2, backgroundColor: 'black' }}>
-      <View style={[styles.container, { borderWidth: 0 }]}>
-        <Text>Search for a film to list: </Text>
+    <SafeAreaView
+      style={{ flex: 1, marginHorizontal: 0, backgroundColor: '#2b1d41', margin: 0, height: '100%' }}
+    >
+      <View style={{backgroundColor: '#2b1d41', height: '25%', justifyContent: 'space-evenly', alignItems: 'center', minHeight: 150}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            padding: '10',
+            width: '100%',
+          }}
+        >
+          <Pressable style={[styles.backButton, { marginLeft: 20 }]}>
+            <Text style={styles.backButtonText}>HOME</Text>
+          </Pressable>
+        </View>
+        {/* <View style={[styles.backButton, { marginLeft: 20 }]}> */}
+        <Text
+          style={{
+            fontFamily: 'Comfortaa-Regular',
+            fontSize: 20,
+            textAlign: 'center',
+            color: '#f5f5f5',
+            marginTop: 10
+          }}
+        >
+          Search for a film to list:{' '}
+        </Text>
         <TextInput
           placeholder="search"
           clearButtonMode="always"
@@ -140,61 +177,106 @@ function BusinessCreateScreening({ navigation }) {
           autoCorrect={false}
           value={searchQuery}
           onChangeText={(query) => handleSearch(query)}
+          selectionColor={'rgba(43, 29, 65, 0.1)'}
           style={{
             paddingHorizontal: 20,
             paddingVertical: 10,
-            borderColor: '#ccc',
-            borderWidth: 1,
-            borderRadius: 8,
+            // borderColor: '#ccc',
+            // borderWidth: 1,
+            borderRadius: 20,
+            backgroundColor: '#f5f5f5',
+            height: 40,
+            marginLeft: 20,
+            marginRight: 20,
+            marginBottom: 20,
+            width: '80%',
+            fontWeight: 'normal',
+            fontFamily: 'Comfortaa-Light'
           }}
         />
-        {loading === true ? (
-          <View style={styles.container}>
-            <ActivityIndicator />
-          </View>
-        ) : (
-          <View style={{ height: 400 }}>
-            <FlatList
-              data={data}
-              renderItem={({ item }) => {
-                return (
-                  <View>
-                    <TouchableOpacity
-                      onPress={() => {
-                        handlePress(item)
+      </View>
+      {loading === true ? (
+        <View style={styles.container}>
+          <ActivityIndicator color="red" />
+        </View>
+      ) : (
+        <View style={{ height: '55%', backgroundColor: '#f5f5f5', paddingTop: 10 }}>
+          <FlatList
+            data={data}
+            renderItem={({ item }) => {
+              return (
+                <View
+                  style={{ justifyContent: 'center', alignItems: 'center' }}
+                >
+                  <TouchableOpacity
+                    onPress={() => {
+                      handlePress(item)
+                    }}
+                  >
+                    <View
+                      style={{
+                        width: 280,
+                        marginBottom: 40,
+                        justifyContent: 'center',
+                        alignItems: 'center',
                       }}
                     >
+                      <View>
+                        <Text
+                          style={{
+                            textAlign: 'center',
+                            width: 280,
+                            fontFamily: 'Comfortaa-Regular',
+                            fontSize: 12,
+                          }}
+                        >
+                          {item.title}
+                        </Text>
+                      </View>
                       <Image
                         source={{
                           uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`,
                         }}
-                        style={{ width: 80, height: 100 }}
+                        style={{ width: 130, height: 180.5 }}
                       />
-                      <View>
-                        <Text>{item.title}</Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                )
-              }}
-            ></FlatList>
-          </View>
-        )}
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              )
+            }}
+          ></FlatList>
+        </View>
+      )}
+      <View style={{backgroundColor: '#f5f5f5', height: '20%', justifyContent: 'center', alignItems: 'center'}}>
+      {/* <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          navigation.navigate('BusinessListingPage', {
+            business_id,
+            title: title,
+            poster: poster,
+            runtime: runtime,
+            certificate: certificate,
+          })
+        }}
+      >
+        <Text style={styles.buttonText}>Continue</Text>
+      </TouchableOpacity> */}
+      <Text style={{fontFamily: 'Comfortaa-Regular', fontSize: 12, marginRight: 20, marginLeft: 20, textAlign: 'center'}}>Selected film: {'\n'}<Text style={{fontFamily: 'Comfortaa-Bold', fontSize: 16}}>{title}</Text></Text>
+      <Button
+          btnText={'CREATE SCREENING'}
+          onPress={() =>
             navigation.navigate('BusinessListingPage', {
               business_id,
               title: title,
-              poster: poster,
-              runtime: runtime,
-              certificate: certificate,
+            poster: poster,
+            runtime: runtime,
+            certificate: certificate,
             })
-          }}
-        >
-          <Text style={styles.buttonText}>Continue</Text>
-        </TouchableOpacity>
+          }
+        />
       </View>
+      {/* </View> */}
     </SafeAreaView>
   )
 }

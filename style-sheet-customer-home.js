@@ -9,8 +9,8 @@ export const homeStyles = StyleSheet.create({
     paddingBottom: 30,
     backgroundColor: '#2b1d41',
 
-    borderBottomEndRadius: 50,
-    borderBottomLeftRadius: 50,
+    // borderBottomEndRadius: 50,
+    // borderBottomLeftRadius: 50,
   },
   radiusSelection: {
     flexDirection: 'row',
@@ -27,8 +27,8 @@ export const homeStyles = StyleSheet.create({
   },
   numberDial: {
     height: 30,
-    borderWidth: 0, // Remove borderWidth
-    borderColor: 'transparent', // Set borderColor to transparent
+    borderWidth: 0,
+    borderColor: 'transparent', 
     backgroundColor: 'white',
     padding: 10,
     width: 80,
@@ -73,9 +73,9 @@ export const homeStyles = StyleSheet.create({
     color: 'red',
   },
   contrastContainer: {
-    // backgroundColor: '#f5f5f5',
+    backgroundColor: '#f5f5f5',
     marginTop: 20,
-    marginBottom: 20,
+    // marginBottom: 20,
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
