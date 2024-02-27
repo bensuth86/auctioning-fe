@@ -23,10 +23,8 @@ import { homeStyles } from '../style-sheet-customer-home'
 import { TextInput } from 'react-native-paper'
 import { userLocation } from '../utils'
 import { CurrentAuction } from './Customer-current-auctions-section'
-import { useFonts } from 'expo-font'
 import { Pressable } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
-// import { TouchableOpacity } from 'react-native-web'
 
 function CustomerHomepage({ navigation }) {
   const { currentCustomer, setCurrentCustomer } = useContext(CustomerContext)
@@ -35,13 +33,6 @@ function CustomerHomepage({ navigation }) {
   const [isLoading, setIsLoading] = useState(true)
   const [radius, setRadius] = useState(8)
   const [expandRadius, setExpandRadius] = useState(null)
-  const [fontsLoaded] = useFonts({
-    'Comfortaa-Bold': require('../assets/Fonts/Comfortaa-Bold.ttf'),
-    'Comfortaa-Light': require('../assets/Fonts/Comfortaa-Light.ttf'),
-    'Comfortaa-Medium': require('../assets/Fonts/Comfortaa-Medium.ttf'),
-    'Comfortaa-Regular': require('../assets/Fonts/Comfortaa-Regular.ttf'),
-    'Comfortaa-SemiBold': require('../assets/Fonts/Comfortaa-SemiBold.ttf'),
-  })
 
   useEffect(() => {
     getEventsByUserId(currentCustomer.user_id, expandRadius).then(
@@ -80,10 +71,6 @@ function CustomerHomepage({ navigation }) {
   function submitRadius() {
     setExpandRadius(radius)
   }
-
-  // if (!fontsLoaded) {
-  //   return undefined
-  // }
 
   if (isLoading)
     return (

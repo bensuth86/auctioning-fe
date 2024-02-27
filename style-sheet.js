@@ -17,6 +17,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     minHeight: '100%',
     flexDirection: 'column',
+    height: '100%'
   },
   button: {
     margin: 10,
