@@ -15,19 +15,29 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.pazarniks1230.auctioningfe"
     },
     "android": {
       "adaptiveIcon": {
+        "googleServicesFile": "./google-services.json",
+        "package": "com.blost.auctioning",
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.pazarniks1230.auctioningfe"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "2f46654d-ef5a-4079-9f98-cc376b8e7312"
+      }
+    },
+    "owner": "solifernn914"
   }
 }
