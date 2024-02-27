@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Auctioning-fe",
-    "slug": "auctioning-fe",
+    "slug": "fe-auctioning",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,17 +15,13 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.pazarniks1230.auctioningfe"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "googleServicesFile": "./google-services.json",
-        "package": "com.blost.auctioning",
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "package": "com.pazarniks1230.auctioningfe"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -35,7 +31,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "2f46654d-ef5a-4079-9f98-cc376b8e7312"
+        "projectId": "19f72e1c-2cb6-46d4-b809-1f233acb12a4"
       }
     },
     "owner": "solifernn914"
