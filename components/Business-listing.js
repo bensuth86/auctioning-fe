@@ -16,6 +16,7 @@ import { useRoute } from '@react-navigation/native'
 import { getBusinessById } from '../utils.js'
 import { useEffect } from 'react'
 import { postNewEvent } from '../utils.js'
+import { Snackbar } from 'react-native-paper'
 
 function BusinessListing({ navigation }) {
   const route = useRoute()
@@ -28,6 +29,8 @@ function BusinessListing({ navigation }) {
   const [err, setErr] = useState(null)
   const [show, setShow] = useState(false)
   const [mode, setMode] = useState('date')
+  const [snackbarMessage, setSnackbarMessage] = useState('')
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
     getBusinessById(business_id)
@@ -36,12 +39,14 @@ function BusinessListing({ navigation }) {
       })
       .catch((err) => {
         console.error(err)
+        setVisible(true)
         setSnackbarMessage('Failed to get seating plan. Please try again.')
       })
   }, [business_id])
 
   function onChange(e, selectedDate) {
     setDate(selectedDate)
+    setShow(false)
   }
 
   function increasePrice() {
@@ -73,11 +78,13 @@ function BusinessListing({ navigation }) {
   function handleListing() {
     postNewEvent(new_event)
       .then(() => {
-        console.log('Success!')
+        setVisible(false)
+        setSnackbarMessage("Success! You've listed a new event.")
         navigation.navigate('BusinessHomepage', { business_id })
       })
       .catch((err) => {
-        setErr(err)
+        setVisible(true)
+        setSnackbarMessage('Error posting a new listing... please try again.')
         console.log(err)
       })
   }
@@ -225,6 +232,16 @@ function BusinessListing({ navigation }) {
           </View>
         )}
       </View>
+      <Snackbar
+        visible={visible}
+        onDismiss={() => setVisible(false)}
+        action={{
+          label: 'Dismiss',
+          onPress: () => setVisible(false),
+        }}
+      >
+        {snackbarMessage}
+      </Snackbar>
     </ScrollView>
   )
 }
