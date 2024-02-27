@@ -31,6 +31,7 @@ function BusinessListing({ navigation }) {
   const [mode, setMode] = useState('date')
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const [visible, setVisible] = useState(false)
+  const today = new Date()
 
   useEffect(() => {
     getBusinessById(business_id)
@@ -42,11 +43,11 @@ function BusinessListing({ navigation }) {
         setVisible(true)
         setSnackbarMessage('Failed to get seating plan. Please try again.')
       })
-  }, [business_id])
+  }, [])
 
   function onChange(e, selectedDate) {
-    setDate(selectedDate)
     setShow(false)
+    setDate(selectedDate)
   }
 
   function increasePrice() {
@@ -78,7 +79,7 @@ function BusinessListing({ navigation }) {
   function handleListing() {
     postNewEvent(new_event)
       .then(() => {
-        setVisible(false)
+        setVisible(true)
         setSnackbarMessage("Success! You've listed a new event.")
         navigation.navigate('BusinessHomepage', { business_id })
       })
@@ -128,12 +129,17 @@ function BusinessListing({ navigation }) {
               onChange={onChange}
             />
           )}
-          {date < new Date() ? (
-            <Text>Please select a date</Text>
-          ) : (
-            <Text>You have chosen date: {date.toLocaleString()}</Text>
-          )}
 
+          <Text>
+            You have chosen date:{' '}
+            {date.toLocaleString([], {
+              year: 'numeric',
+              month: 'numeric',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
+          </Text>
           <View style={homeStyles.radiusSelection}>
             <Text>Please select your starting price:</Text>
             <Button btnText={'-'} onPress={decreasePrice} />
@@ -216,10 +222,10 @@ function BusinessListing({ navigation }) {
         >
           <Text>?</Text>
         </TouchableOpacity>
-        {date < new Date() ? (
+        {date < today.setMinutes(today.getMinutes() + 59) ? (
           <View style={seatStyles.errorContainer}>
             <Text style={seatStyles.textbox}>
-              You cannot select a date in the past.
+              You must set a date more than 1 hour in the future.
             </Text>
           </View>
         ) : selectedSeats.length > 0 ? (
