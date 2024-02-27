@@ -23,6 +23,7 @@ function SelectedEvent({ event_id }) {
   const [selectedEvent, setSelectedEvent] = useState({})
   const [selectedBusiness, setSelectedBusiness] = useState({})
   const [isLoading, setIsLoading] = useState(true)
+  const [errorMessage, setErrorMessage] = useState('')
   const [fontsLoaded] = useFonts({
     'Comfortaa-Bold': require('../assets/Fonts/Comfortaa-Bold.ttf'),
     'Comfortaa-Light': require('../assets/Fonts/Comfortaa-Light.ttf'),
@@ -38,6 +39,17 @@ function SelectedEvent({ event_id }) {
         setSelectedBusiness(response)
         setIsLoading(false)
       })
+    }).catch((err) => {
+      setIsLoading(false)
+      console.log(err.response.data.msg)
+      if (err.response.data.msg === 'ID not found') {
+        setErrorMessage('Sorry - the event ID does not exist.\nCannot fetch event information.')
+      }
+      
+      if (err.response.data.msg === 'Bad request') {
+        setErrorMessage('Sorry - the event ID is invalid.\nCannot fetch event information.')
+      }
+
     })
   }, [event_id])
 
@@ -49,6 +61,14 @@ function SelectedEvent({ event_id }) {
       </View>
       </>
     )
+
+    if (errorMessage !== '') {
+      return (
+        <View style={{height: 100, justifyContent: 'center', alignItems: 'center', padding: 20}}>
+          <Text style={styles.error}>{errorMessage}</Text>
+        </View>
+      )
+    }
   return (
     <View style={{ width: '80%' }}>
       <View style={selectedMovieStyle.eventContainer}>

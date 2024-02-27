@@ -39,12 +39,14 @@ function CustomerSeating({ navigation, route }) {
   const [selectedSeats, setSelectedSeats] = useState([])
   const [auctionSeats, setAuctionSeats] = useState([])
   const auctionSeatArray = []
+  const [errorMessage, setErrorMessage] = useState('')
   const [seatingPlan, setSeatingPlan] = useState([])
   const auctionSelection = []
   const availableSelection = []
   const [startingPrice, setStartingPrice] = useState([])
   const [loading, setIsLoading] = useState('true')
   const [err, setErr] = useState('false')
+  const [auctionError, setAuctionError] = useState('')
   const [rowErr, setRowErr] = useState(false)
   const auctionInfoArray = []
   let auctionSeatInfo = {}
@@ -68,7 +70,16 @@ function CustomerSeating({ navigation, route }) {
         setIsLoading(false)
         setSeatingPlan(response.seating_layout)
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log('>>>', err.response.data.msg)
+        if (err.response.data.msg === 'ID not found') {
+          setIsLoading(false)
+          setErrorMessage('Sorry - the business ID does not exist.\nCannot fetch the seating selection.')
+        }
+        if (err.response.data.msg === 'Bad request') {
+          setIsLoading(false)
+          setErrorMessage('Sorry - the business ID is invalid.\nCannot fetch the seating selection.')
+        }
         setErr('true')
       })
   }, [business_id, isFocused])
@@ -97,7 +108,15 @@ function CustomerSeating({ navigation, route }) {
         setAuctionInfo(auctionInfoArray)
         setEventAuctions(response)
       })
-      .catch(() => {
+      .catch((err) => {
+        if (err.response.data.msg === 'Event not found.') {
+          setIsLoading(false)
+          setAuctionError('Sorry - the event does not exist.\nBidding is not available.')
+        }
+        if (err.response.data.msg === 'Bad request') {
+          setIsLoading(false)
+          setAuctionError('Sorry - Bad request 400.\nBidding is not available.')
+        }
         setErr('true')
       })
   }, [isFocused])
@@ -127,6 +146,13 @@ function CustomerSeating({ navigation, route }) {
             alignItems: 'center',
           }}
         >
+          {errorMessage !== '' && (
+             <View style={{height: '70%', justifyContent: 'center', alignItems: 'center', padding: 20}}>
+             <Text style={styles.error}>{errorMessage}</Text>
+           </View>
+          )}
+          {errorMessage === '' && (
+            <>
           <View>
             <Text style={seatStyles.seatHeader}>SELECT YOUR SEATING</Text>
           </View>
@@ -230,10 +256,6 @@ function CustomerSeating({ navigation, route }) {
               </View>
             )
           })}
-        </View>
-        {/* <View style={seatStyles.screen}>
-          <Text style={seatStyles.screenText}>SCREEN</Text>
-        </View> */}
         <View style={seatStyles.bigKeyContainer}>
           <View style={[seatStyles.halfContainer, { marginRight: 20 }]}>
             <View style={seatStyles.keyContainer}>
@@ -285,6 +307,13 @@ function CustomerSeating({ navigation, route }) {
             ? auctionSelection.push(selectedSeat)
             : availableSelection.push(selectedSeat)
         })} */}
+        {auctionError !== '' && (
+                <View style={{height: 150, justifyContent: 'center', alignItems: 'center', padding: 20}}>
+                <Text style={styles.error}>{auctionError}</Text>
+              </View>
+        )}
+        {auctionError === '' && (
+          <>
         {selectedSeats.length ? (
           <Text style={seatStyles.textBigger}>
             Selected seats:{' '}
@@ -380,6 +409,11 @@ function CustomerSeating({ navigation, route }) {
             }
           />
         ) : null}
+          </>
+        )}
+            </>
+          )}
+        </View>
       </View>
     </ScrollView>
   )
