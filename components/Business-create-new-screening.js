@@ -7,12 +7,13 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  Keyboard,
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { Snackbar } from 'react-native-paper'
 import { styles } from '../style-sheet'
 import { useRoute } from '@react-navigation/native'
 import { useEffect } from 'react'
-import { ScrollView } from 'react-native'
 import { Pressable } from 'react-native'
 import { Button } from '../helpers'
 
@@ -29,21 +30,21 @@ function BusinessCreateScreening({ navigation }) {
   const [poster, setPoster] = useState('')
   const [runtime, setRuntime] = useState('100')
   const [certificate, setCertificate] = useState('12')
+  const [snackbarMessage, setSnackbarMessage] = useState('')
+  const [visible, setVisible] = useState(false)
+  const movieEndpoint = `https://api.themoviedb.org/3/search/movie?api_key=2ff74c9759be7b397da331e5c4e692ee&query=${searchQuerySlug}&include_adult=false&language=en-US&page=1`
 
   useEffect(() => {
     setIsLoading(true)
+    setVisible(false)
     fetchData(movieEndpoint)
   }, [searchQuery])
 
   useEffect(() => {
+    setVisible(false)
     fetchRuntime(idNo)
-  }, [idNo])
-
-  useEffect(() => {
     fetchCertificate(idNo)
   }, [idNo])
-
-  const movieEndpoint = `https://api.themoviedb.org/3/search/movie?api_key=2ff74c9759be7b397da331e5c4e692ee&query=${searchQuerySlug}&include_adult=false&language=en-US&page=1`
 
   const fetchRuntime = async (filmid) => {
     try {
@@ -56,8 +57,10 @@ function BusinessCreateScreening({ navigation }) {
         ? setRuntime('100')
         : setRuntime(json.runtime.toString())
     } catch (error) {
-      setErr(error)
-      console.log(error)
+      if (searchQuery !== '') {
+        setVisible(true)
+        setSnackbarMessage('Error fetching data. Please try again...')
+      }
     }
   }
 
@@ -84,8 +87,10 @@ function BusinessCreateScreening({ navigation }) {
       })
       setIsLoading(false)
     } catch (error) {
-      setErr(error)
-      console.log(error)
+      if (searchQuery !== '') {
+        setVisible(true)
+        setSnackbarMessage('Error fetching data. Please try again...')
+      }
     }
   }
 
@@ -107,8 +112,11 @@ function BusinessCreateScreening({ navigation }) {
       setData(json.results)
       setIsLoading(false)
     } catch (error) {
-      setErr(error)
-      console.log(error)
+      if (searchQuery !== '') {
+        setErr(true)
+        setVisible(true)
+        setSnackbarMessage('Error fetching data. Please try again...')
+      }
     }
   }
 
@@ -116,6 +124,7 @@ function BusinessCreateScreening({ navigation }) {
     setTitle(item.title)
     setPoster(`https://image.tmdb.org/t/p/w500${item.poster_path}`)
     setIdNo(item.id)
+    Keyboard.dismiss()
   }
 
   function handleSearch(query) {
@@ -123,28 +132,25 @@ function BusinessCreateScreening({ navigation }) {
     setSearchQuery(query)
   }
 
-  // if (err) {
-  //   return (
-  //     <View style={styles.container}>
-  //       <Text>Error fetching data</Text>
-  //     </View>
-  //   )
-  // }
-
-  // topNavigation: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'flex-start',
-  //   alignItems: 'center',
-  //   // backgroundColor: 'red',
-  //   padding: 10,
-  //   width: '100%',
-  // },
-
   return (
     <SafeAreaView
-      style={{ flex: 1, marginHorizontal: 0, backgroundColor: '#2b1d41', margin: 0, height: '100%' }}
+      style={{
+        flex: 1,
+        marginHorizontal: 0,
+        backgroundColor: '#2b1d41',
+        margin: 0,
+        height: '100%',
+      }}
     >
-      <View style={{backgroundColor: '#2b1d41', height: '25%', justifyContent: 'space-evenly', alignItems: 'center', minHeight: 150}}>
+      <View
+        style={{
+          backgroundColor: '#2b1d41',
+          height: '25%',
+          justifyContent: 'space-evenly',
+          alignItems: 'center',
+          minHeight: 150,
+        }}
+      >
         <View
           style={{
             flexDirection: 'row',
@@ -165,10 +171,10 @@ function BusinessCreateScreening({ navigation }) {
             fontSize: 20,
             textAlign: 'center',
             color: '#f5f5f5',
-            marginTop: 10
+            marginTop: 10,
           }}
         >
-          Search for a film to list:{' '}
+          Search for a film to list:
         </Text>
         <TextInput
           placeholder="search"
@@ -181,8 +187,6 @@ function BusinessCreateScreening({ navigation }) {
           style={{
             paddingHorizontal: 20,
             paddingVertical: 10,
-            // borderColor: '#ccc',
-            // borderWidth: 1,
             borderRadius: 20,
             backgroundColor: '#f5f5f5',
             height: 40,
@@ -191,7 +195,7 @@ function BusinessCreateScreening({ navigation }) {
             marginBottom: 20,
             width: '80%',
             fontWeight: 'normal',
-            fontFamily: 'Comfortaa-Light'
+            fontFamily: 'Comfortaa-Light',
           }}
         />
       </View>
@@ -200,7 +204,9 @@ function BusinessCreateScreening({ navigation }) {
           <ActivityIndicator color="red" />
         </View>
       ) : (
-        <View style={{ height: '55%', backgroundColor: '#f5f5f5', paddingTop: 10 }}>
+        <View
+          style={{ height: '55%', backgroundColor: '#f5f5f5', paddingTop: 10 }}
+        >
           <FlatList
             data={data}
             renderItem={({ item }) => {
@@ -247,36 +253,54 @@ function BusinessCreateScreening({ navigation }) {
           ></FlatList>
         </View>
       )}
-      <View style={{backgroundColor: '#f5f5f5', height: '20%', justifyContent: 'center', alignItems: 'center'}}>
-      {/* <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          navigation.navigate('BusinessListingPage', {
-            business_id,
-            title: title,
-            poster: poster,
-            runtime: runtime,
-            certificate: certificate,
-          })
+      <View
+        style={{
+          backgroundColor: '#f5f5f5',
+          height: '20%',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
-        <Text style={styles.buttonText}>Continue</Text>
-      </TouchableOpacity> */}
-      <Text style={{fontFamily: 'Comfortaa-Regular', fontSize: 12, marginRight: 20, marginLeft: 20, textAlign: 'center'}}>Selected film: {'\n'}<Text style={{fontFamily: 'Comfortaa-Bold', fontSize: 16}}>{title}</Text></Text>
-      <Button
-          btnText={'CREATE SCREENING'}
-          onPress={() =>
-            navigation.navigate('BusinessListingPage', {
-              business_id,
-              title: title,
-            poster: poster,
-            runtime: runtime,
-            certificate: certificate,
-            })
-          }
-        />
+        <Text
+          style={{
+            fontFamily: 'Comfortaa-Regular',
+            fontSize: 12,
+            marginRight: 20,
+            marginLeft: 20,
+            textAlign: 'center',
+          }}
+        >
+          Selected film: {'\n'}
+          <Text style={{ fontFamily: 'Comfortaa-Bold', fontSize: 16 }}>
+            {title}
+          </Text>
+        </Text>
+        {snackbarMessage ? null : (
+          <Button
+            btnText={'CREATE SCREENING'}
+            onPress={() =>
+              navigation.navigate('BusinessListingPage', {
+                business_id,
+                title: title,
+                poster: poster,
+                runtime: runtime,
+                certificate: certificate,
+              })
+            }
+          />
+        )}
       </View>
       {/* </View> */}
+      <Snackbar
+        visible={visible}
+        onDismiss={() => setVisible(false)}
+        action={{
+          label: 'Dismiss',
+          onPress: () => setVisible(false),
+        }}
+      >
+        {snackbarMessage}
+      </Snackbar>
     </SafeAreaView>
   )
 }

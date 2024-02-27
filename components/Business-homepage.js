@@ -43,7 +43,7 @@ function BusinessHomepage({ navigation, route }) {
           setErrorMessage('Sorry - your business ID is invalid.\nCannot fetch your listings.')
         }
       })
-  }, [business_id])
+  }, [events, business_id])
 
   function logUserOut() {
     navigation.navigate('Welcome_page')
@@ -98,7 +98,7 @@ function BusinessHomepage({ navigation, route }) {
             fontSize: 16,
             textAlign: 'center',
             marginTop: 40,
-            marginBottom: 40
+            marginBottom: 40,
           }}
         >
           Here are your events{'\n'}at location {businessInfo.postcode}:
