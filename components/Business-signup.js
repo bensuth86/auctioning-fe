@@ -112,7 +112,7 @@ function BusinessSignUp({ navigation }) {
             textAlign: 'center',
           }}
         >
-          Become an TicketDash seller
+          Become a TicketDash seller
         </Text>
         <TextInput
           style={styles.textboxLight}
@@ -139,7 +139,7 @@ function BusinessSignUp({ navigation }) {
             marginBottom: 10,
           }}
         >
-          Select Seating Layout
+          Your venue's seating layout:
         </Text>
         <View style={{ flexDirection: 'row' }}>
           <View style={styles.dropdownContainer}>

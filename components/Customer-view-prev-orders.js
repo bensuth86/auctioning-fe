@@ -25,6 +25,7 @@ export function PreviousOrders({ navigation }) {
   useEffect(() => {
     getWonAuctionsByUser(currentCustomer.user_id)
       .then((response) => {
+        console.log(response.data.auctions)
         setAllOrders(response.data.auctions)
         setIsLoading(false)
       })
@@ -166,6 +167,15 @@ export function PreviousOrders({ navigation }) {
             {allOrders.length === 0 ? (
               <Text style={styles.error}>Looks like you have no orders!</Text>
             ) : (
+              <>
+              <Text style={{
+                color: 'rgba(255, 255, 255, 0.4)',
+                fontFamily: 'Comfortaa-Light',
+                fontSize: 12,
+                textAlign: 'center',
+                width: '90%',
+                marginBottom: 20,
+              }}>Sorted by most recent screening date:</Text>
               <View style={orderHistory.container}>
                 {allOrders.map((order, i) => (
                   <View key={order.auction_id}>
@@ -235,6 +245,7 @@ export function PreviousOrders({ navigation }) {
                   </View>
                 ))}
               </View>
+              </>
             )}
           </>
         )}
