@@ -13,11 +13,8 @@ import { updateBid } from '../utils'
 import { convertTime } from '../helpers'
 import { socket } from '../socket'
 import { selectedMovieStyle } from '../style-sheet-selected-movie'
-import { Pressable } from 'react-native'
-import { useFonts } from 'expo-font'
 import { Fontisto } from '@expo/vector-icons'
 import { FontAwesome5 } from '@expo/vector-icons'
-import { AntDesign } from '@expo/vector-icons'
 import { ActivityIndicator } from 'react-native-paper'
 
 function CustomerAuctionPage({ navigation, route }) {
@@ -46,14 +43,6 @@ function CustomerAuctionPage({ navigation, route }) {
   const [apiErr, setApiErr] = useState(null)
   const [selectedBusiness, setSelectedBusiness] = useState({})
   const [successBidMessage, setSuccessBidMessage] = useState(false)
-  // const [fontsLoaded] = useFonts({
-  //   'Comfortaa-Bold': require('../assets/Fonts/Comfortaa-Bold.ttf'),
-  //   'Comfortaa-Light': require('../assets/Fonts/Comfortaa-Light.ttf'),
-  //   'Comfortaa-Medium': require('../assets/Fonts/Comfortaa-Medium.ttf'),
-  //   'Comfortaa-Regular': require('../assets/Fonts/Comfortaa-Regular.ttf'),
-  //   'Comfortaa-SemiBold': require('../assets/Fonts/Comfortaa-SemiBold.ttf'),
-  //   'KodeMono-Regular': require('../assets/Fonts/KodeMono-Regular.ttf'),
-  // })
   const createAlert = (msg) =>
     Alert.alert('A new bid!', msg, [
       { text: 'OK', onPress: () => console.log('OK Pressed') },
@@ -284,7 +273,7 @@ function CustomerAuctionPage({ navigation, route }) {
   if (isLoading) {
     return (
       <View style={styles.darkContainer}>
-        <ActivityIndicator color="red" />
+        <ActivityIndicator color="red" size={'large'}/>
       </View>
     )
   }

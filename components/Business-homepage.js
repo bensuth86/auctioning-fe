@@ -71,7 +71,7 @@ function BusinessHomepage({ navigation, route }) {
   if (isLoading)
     return (
       <View style={styles.darkContainer}>
-        <ActivityIndicator color="red" />
+        <ActivityIndicator color="red" size={'large'}/>
       </View>
     )
 
@@ -167,7 +167,7 @@ function BusinessHomepage({ navigation, route }) {
             </Text>
             {eventLoading ? (
               <View style={{ flex: 1 }}>
-                <ActivityIndicator color="red" />
+                <ActivityIndicator color="red" size={'large'}/>
               </View>
             ) : (
               <View style={eventStyles.eventcard}>

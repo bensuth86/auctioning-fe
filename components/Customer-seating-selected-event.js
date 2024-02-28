@@ -2,8 +2,8 @@ import React from 'react'
 import {
   View,
   Text,
-  TouchableOpacity,
-  StyleSheet,
+  // TouchableOpacity,
+  // StyleSheet,
   ActivityIndicator,
 } from 'react-native'
 import { styles } from '../style-sheet'
@@ -14,7 +14,7 @@ import { Image } from 'react-native'
 import { selectedMovieStyle } from '../style-sheet-selected-movie'
 import { getBusinessById } from '../utils'
 import { convertTime } from '../helpers'
-import { useFonts } from 'expo-font'
+// import { useFonts } from 'expo-font'
 import { Fontisto } from '@expo/vector-icons'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
@@ -24,13 +24,13 @@ function SelectedEvent({ event_id }) {
   const [selectedBusiness, setSelectedBusiness] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
-  const [fontsLoaded] = useFonts({
-    'Comfortaa-Bold': require('../assets/Fonts/Comfortaa-Bold.ttf'),
-    'Comfortaa-Light': require('../assets/Fonts/Comfortaa-Light.ttf'),
-    'Comfortaa-Medium': require('../assets/Fonts/Comfortaa-Medium.ttf'),
-    'Comfortaa-Regular': require('../assets/Fonts/Comfortaa-Regular.ttf'),
-    'Comfortaa-SemiBold': require('../assets/Fonts/Comfortaa-SemiBold.ttf'),
-  })
+  // const [fontsLoaded] = useFonts({
+  //   'Comfortaa-Bold': require('../assets/Fonts/Comfortaa-Bold.ttf'),
+  //   'Comfortaa-Light': require('../assets/Fonts/Comfortaa-Light.ttf'),
+  //   'Comfortaa-Medium': require('../assets/Fonts/Comfortaa-Medium.ttf'),
+  //   'Comfortaa-Regular': require('../assets/Fonts/Comfortaa-Regular.ttf'),
+  //   'Comfortaa-SemiBold': require('../assets/Fonts/Comfortaa-SemiBold.ttf'),
+  // })
 
   useEffect(() => {
     getEventByEventId(event_id).then((response) => {
