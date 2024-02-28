@@ -89,6 +89,8 @@ export const auctionStyles = StyleSheet.create({
     paddingRight: 15,
     paddingLeft: 15,
     borderRadius: 20,
+    fontFamily: 'Comfortaa-Regular',
+    fontSize: 12
   },
   biddingForm: {
     flexDirection: 'row',
@@ -98,7 +100,7 @@ export const auctionStyles = StyleSheet.create({
   },
   statusContainer: {
     width: '100%',
-    marginBottom: 30,
+    marginBottom: 20,
   },
   timerContainer: {
     width: '100%',

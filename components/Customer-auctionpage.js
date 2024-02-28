@@ -48,6 +48,7 @@ function CustomerAuctionPage({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(true)
   const [apiErr, setApiErr] = useState(null)
   const [selectedBusiness, setSelectedBusiness] = useState({})
+  const [successBidMessage, setSuccessBidMessage] = useState(false)
   const [fontsLoaded] = useFonts({
     'Comfortaa-Bold': require('../assets/Fonts/Comfortaa-Bold.ttf'),
     'Comfortaa-Light': require('../assets/Fonts/Comfortaa-Light.ttf'),
@@ -184,24 +185,27 @@ function CustomerAuctionPage({ navigation, route }) {
   }
 
   function handleNewBid() {
+    setSuccessBidMessage(false) //////
     const currentInfo = {
       user: tempUser,
       bid: displayAuction.current_price,
       count: displayAuction.bid_counter,
     }
-    setSubmitted(true)
     if (!submitBid(userBid)) return
+    setSubmitted(true)
     setDisplayAuction({
       ...displayAuction,
       current_price: userBid,
       bid_counter: displayAuction.bid_counter + 1,
     })
+    setSuccessBidMessage(true) //////
     setTempUser(currentCustomer.username)
     updateBid(auctionID, {
       current_bid: Number(userBid),
       user_id: currentCustomer.user_id,
     })
       .then((response) => {
+        // setSuccessBidMessage(true)////
         setDisplayAuction(response.data.auction)
         setTempUser(currentCustomer.username)
         socket.emit('new bid', {
@@ -223,6 +227,7 @@ function CustomerAuctionPage({ navigation, route }) {
           bid_counter: currentInfo.count,
         })
         setApiErr(err.message)
+        setSuccessBidMessage(false) ////////
       })
   }
 
@@ -353,6 +358,20 @@ function CustomerAuctionPage({ navigation, route }) {
               </View> */}
           </>
         )}
+        {successBidMessage && !countdownStructure.ended && (
+          <View style={auctionStyles.statusContainer}>
+            <Text
+              style={{
+                color: '#7bc47f',
+                fontFamily: 'Comfortaa-Light',
+                fontSize: 12,
+                textAlign: 'center'
+              }}
+            >
+              successfully submitted
+            </Text>
+          </View>
+        )}
         {apiErr ? (
           <View style={auctionStyles.statusContainer}>
             <Text style={auctionStyles.errors}>
@@ -400,22 +419,28 @@ function CustomerAuctionPage({ navigation, route }) {
           {countdownStructure.ended &&
             displayAuction.current_highest_bidder ===
               currentCustomer.user_id && (
-              <Button
-                btnText="VIEW YOUR ORDER"
-                onPress={() => {
-                  navigation.navigate('PreviousOrders')
-                }}
-              />
+                <View>
+                  <Text style={{fontFamily: 'Comfortaa-Regular', fontSize: 16, color: '#f5f5f5'}}>Congratulations, you won!</Text>
+                  <Button
+                    btnText="VIEW YOUR ORDER"
+                    onPress={() => {
+                      navigation.navigate('PreviousOrders')
+                    }}
+                  />
+                </View>
             )}
           {countdownStructure.ended &&
             displayAuction.current_highest_bidder !==
               currentCustomer.user_id && (
-              <Button
-                btnText="BACK TO SCREENINGS"
-                onPress={() => {
-                  navigation.navigate('CustomerHomepage')
-                }}
-              />
+                <View>
+                  <Text style={{fontFamily: 'Comfortaa-Regular', fontSize: 16, color: '#f5f5f5'}}>Oh no, you lost!</Text>
+                  <Button
+                    btnText="BACK TO SCREENINGS"
+                    onPress={() => {
+                      navigation.navigate('CustomerHomepage')
+                    }}
+                  />
+                </View>
             )}
         </View>
         <View style={auctionStyles.container}>
@@ -509,19 +534,34 @@ function CustomerAuctionPage({ navigation, route }) {
                 {film_title.film_title}, {certificate.certificate}
               </Text>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <FontAwesome5 name="map-marker-alt" size={12} color="#f5f5f5" accessibilityLabel="map icon"/>
+                <FontAwesome5
+                  name="map-marker-alt"
+                  size={12}
+                  color="#f5f5f5"
+                  accessibilityLabel="map icon"
+                />
                 <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
                   {selectedBusiness.business_name}, {selectedBusiness.postcode}{' '}
                 </Text>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <AntDesign name="clockcircleo" size={12} color="#f5f5f5" accessibilityLabel="clock icon"/>
+                <AntDesign
+                  name="clockcircleo"
+                  size={12}
+                  color="#f5f5f5"
+                  accessibilityLabel="clock icon"
+                />
                 <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
                   {run_time.run_time} minutes
                 </Text>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Fontisto name="date" size={12} color="#f5f5f5" accessibilityLabel="calendar icon"/>
+                <Fontisto
+                  name="date"
+                  size={12}
+                  color="#f5f5f5"
+                  accessibilityLabel="calendar icon"
+                />
                 <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
                   {convertTime(start_time.start_time)}
                 </Text>
