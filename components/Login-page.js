@@ -106,9 +106,10 @@ function Login({ navigation, route }) {
             color: '#f5f5f5',
             fontSize: 12,
             textAlign: 'center',
+            lineHeight: 19
           }}
         >
-          Already have an account? {`\n`} Enter {usertype.toLowerCase()}{' '}
+          Already have an account? {`\n`} Enter your {usertype.toLowerCase()}{' '}
           username:
         </Text>
         <TextInput
