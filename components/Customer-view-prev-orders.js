@@ -124,7 +124,7 @@ export function PreviousOrders({ navigation }) {
               >
                 Simply show this code when picking up your tickets.
               </Text>
-              <Text>{QRCode}</Text>
+              <Text>{QRCodeStr}</Text>
             </View>
           </View>
         </Modal>
