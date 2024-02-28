@@ -240,7 +240,7 @@ function CustomerAuctionPage({ navigation, route }) {
           bid_counter: currentInfo.count,
         })
         setApiErr(err.message)
-        setSuccessBidMessage(false) ////////
+        setSuccessBidMessage(false)
       })
   }
 
@@ -521,9 +521,6 @@ function CustomerAuctionPage({ navigation, route }) {
                   ).toFixed(2)}{' '}
                   total)
                 </Text>
-                {/* <Text style={auctionStyles.auctionHeaders}>BIDS:</Text>
-                  <Text style={auctionStyles.auctionData}>{displayAuction.bid_counter}
-                </Text> */}
               </View>
               <View style={auctionStyles.otherBidInfoContainer}>
                 <View
@@ -573,35 +570,6 @@ function CustomerAuctionPage({ navigation, route }) {
               </Text>
             </View>
           )}
-          {/* <View style={[selectedMovieStyle.eventContainer, { padding: 20 }]}>
-            <View style={selectedMovieStyle.eventInfo}>
-              <Text style={selectedMovieStyle.eventHeader}>
-                {film_title.film_title}, {certificate.certificate}
-              </Text>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <FontAwesome5
-                  name="map-marker-alt"
-                  size={12}
-                  color="#f5f5f5"
-                  accessibilityLabel="map icon"
-                />
-                <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
-                  {selectedBusiness.business_name}, {selectedBusiness.postcode}{' '}
-                </Text>
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Fontisto
-                  name="date"
-                  size={12}
-                  color="#f5f5f5"
-                  accessibilityLabel="calendar icon"
-                />
-                <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
-                  {convertTime(start_time.start_time)}
-                </Text>
-              </View>
-            </View>
-          </View> */}
         </View>
       </View>
     </ScrollView>
