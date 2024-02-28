@@ -156,10 +156,10 @@ function BusinessCreateScreening({ navigation }) {
       <View
         style={{
           backgroundColor: '#2b1d41',
-          height: '25%',
+          height: '30%',
           justifyContent: 'space-evenly',
           alignItems: 'center',
-          minHeight: 150,
+          minHeight: 180,
         }}
       >
         {/* <View
@@ -182,7 +182,7 @@ function BusinessCreateScreening({ navigation }) {
             fontSize: 20,
             textAlign: 'center',
             color: '#f5f5f5',
-            marginTop: 10,
+            // marginTop: 10,
           }}
         >
           Search for a film to list:
@@ -203,12 +203,66 @@ function BusinessCreateScreening({ navigation }) {
             height: 40,
             marginLeft: 20,
             marginRight: 20,
-            marginBottom: 20,
+            marginBottom: 10,
             width: '80%',
             fontWeight: 'normal',
             fontFamily: 'Comfortaa-Light',
           }}
         />
+                  {year === currentYear ? (
+            data.length ? (
+              <Button
+                btnText={`SHOW ALL RELEASES`}
+                onPress={() => setYear(null)}
+              ></Button>
+            ) : (
+              <>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    width: 280,
+                    fontFamily: 'Comfortaa-Regular',
+                    fontSize: 12,
+                    // margin: 10,
+                    color: 'red'
+                  }}
+                >
+                  {resultMsg}
+                </Text>
+                <Button
+                  btnText={`SHOW ALL RELEASES`}
+                  onPress={() => setYear(null)}
+                ></Button>
+              </>
+            )
+          ) : null}
+          {year !== currentYear ? (
+            data.length ? (
+              <Button
+                btnText={`SHOW ${currentYear} RELEASES`}
+                onPress={() => setYear(currentYear)}
+              ></Button>
+            ) : (
+              <>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    width: 280,
+                    fontFamily: 'Comfortaa-Regular',
+                    fontSize: 12,
+                    margin: 10,
+                    color: 'red'
+                  }}
+                >
+                  {resultMsg}
+                </Text>
+                <Button
+                  btnText={`SHOW ${currentYear} RELEASES`}
+                  onPress={() => setYear(currentYear)}
+                ></Button>
+              </>
+            )
+          ) : null}
       </View>
 
       {loading === true ? (
@@ -217,9 +271,9 @@ function BusinessCreateScreening({ navigation }) {
         </View>
       ) : (
         <View
-          style={{ height: '55%', backgroundColor: '#f5f5f5', paddingTop: 10 }}
+          style={{ height: '50%', backgroundColor: '#f5f5f5'}}
         >
-          {year === currentYear ? (
+          {/* {year === currentYear ? (
             data.length ? (
               <Button
                 btnText={`Search for all releases`}
@@ -270,7 +324,7 @@ function BusinessCreateScreening({ navigation }) {
                 ></Button>
               </>
             )
-          ) : null}
+          ) : null} */}
 
           <FlatList
             data={data}
@@ -327,6 +381,7 @@ function BusinessCreateScreening({ navigation }) {
           alignItems: 'center',
         }}
       >
+        {title && (
         <Text
           style={{
             fontFamily: 'Comfortaa-Regular',
@@ -341,7 +396,9 @@ function BusinessCreateScreening({ navigation }) {
             {title}
           </Text>
         </Text>
-        {snackbarMessage ? null : (
+
+        )}
+        {title && (
           <Button
             btnText={'CREATE SCREENING'}
             onPress={() =>
