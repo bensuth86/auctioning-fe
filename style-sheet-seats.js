@@ -10,7 +10,7 @@ export const seatStyles = StyleSheet.create({
     // borderBottomEndRadius: 50,
     // borderBottomLeftRadius: 50,
     paddingBottom: 20,
-    paddingTop: 20
+    paddingTop: 20,
   },
   seatHeader: {
     textAlign: 'center',
@@ -109,8 +109,8 @@ export const seatStyles = StyleSheet.create({
     margin: 5,
     padding: 5,
     backgroundColor: '#FFBF00',
-    width: '60px',
-    height: '50px',
+    width: '57px',
+    height: '47px',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderColor: 'red',

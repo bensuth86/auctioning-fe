@@ -32,13 +32,17 @@ function BusinessCreateScreening({ navigation }) {
   const [certificate, setCertificate] = useState('12')
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const [visible, setVisible] = useState(false)
-  const movieEndpoint = `https://api.themoviedb.org/3/search/movie?api_key=2ff74c9759be7b397da331e5c4e692ee&query=${searchQuerySlug}&include_adult=false&language=en-US&page=1`
+  const [resultMsg, setResultMsg] = useState('')
+  const currentYear = new Date().getFullYear()
+  const [year, setYear] = useState(null)
+
+  const movieEndpoint = `https://api.themoviedb.org/3/search/movie?api_key=2ff74c9759be7b397da331e5c4e692ee&query=${searchQuerySlug}&include_adult=false&language=en-US&region=gb&sort_by=popularity.desc&primary_release_year=${year}&page=1`
 
   useEffect(() => {
     setIsLoading(true)
     setVisible(false)
     fetchData(movieEndpoint)
-  }, [searchQuery])
+  }, [searchQuery, year])
 
   useEffect(() => {
     setVisible(false)
@@ -59,7 +63,9 @@ function BusinessCreateScreening({ navigation }) {
     } catch (error) {
       if (searchQuery !== '') {
         setVisible(true)
-        setSnackbarMessage('Error fetching data. Please try again...')
+        setSnackbarMessage(
+          'Error fetching data. Please check your network connection...'
+        )
       }
     }
   }
@@ -89,7 +95,9 @@ function BusinessCreateScreening({ navigation }) {
     } catch (error) {
       if (searchQuery !== '') {
         setVisible(true)
-        setSnackbarMessage('Error fetching data. Please try again...')
+        setSnackbarMessage(
+          'Error fetching data. Please check your network connection...'
+        )
       }
     }
   }
@@ -109,13 +117,16 @@ function BusinessCreateScreening({ navigation }) {
     try {
       const response = await fetch(url)
       const json = await response.json()
-      setData(json.results)
+      setData(json.results.slice(0, 8))
+      !data.length && setResultMsg('No films for that search.')
       setIsLoading(false)
     } catch (error) {
       if (searchQuery !== '') {
         setErr(true)
         setVisible(true)
-        setSnackbarMessage('Error fetching data. Please try again...')
+        setSnackbarMessage(
+          'Error fetching data. Please check your network connection...'
+        )
       }
     }
   }
@@ -199,6 +210,7 @@ function BusinessCreateScreening({ navigation }) {
           }}
         />
       </View>
+
       {loading === true ? (
         <View style={styles.container}>
           <ActivityIndicator color="red" />
@@ -207,6 +219,59 @@ function BusinessCreateScreening({ navigation }) {
         <View
           style={{ height: '55%', backgroundColor: '#f5f5f5', paddingTop: 10 }}
         >
+          {year === currentYear ? (
+            data.length ? (
+              <Button
+                btnText={`Search for all releases`}
+                onPress={() => setYear(null)}
+              ></Button>
+            ) : (
+              <>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    width: 280,
+                    fontFamily: 'Comfortaa-Regular',
+                    fontSize: 12,
+                    margin: 10,
+                  }}
+                >
+                  {resultMsg}
+                </Text>
+                <Button
+                  btnText={`Search for all releases`}
+                  onPress={() => setYear(null)}
+                ></Button>
+              </>
+            )
+          ) : null}
+          {year !== currentYear ? (
+            data.length ? (
+              <Button
+                btnText={`Search for ${currentYear} releases only`}
+                onPress={() => setYear(currentYear)}
+              ></Button>
+            ) : (
+              <>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    width: 280,
+                    fontFamily: 'Comfortaa-Regular',
+                    fontSize: 12,
+                    margin: 10,
+                  }}
+                >
+                  {resultMsg}
+                </Text>
+                <Button
+                  btnText={`Search for ${currentYear} releases only`}
+                  onPress={() => setYear(currentYear)}
+                ></Button>
+              </>
+            )
+          ) : null}
+
           <FlatList
             data={data}
             renderItem={({ item }) => {
