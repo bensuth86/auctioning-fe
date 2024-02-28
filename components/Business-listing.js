@@ -85,7 +85,7 @@ function BusinessListing({ navigation }) {
       .then(() => {
         setVisible(true)
         setSnackbarMessage("Success! You've listed a new event.")
-        navigation.navigate('BusinessHomepage', { business_id })
+        navigation.navigate('BusinessHomepage', { business_id, success: true })
       })
       .catch((err) => {
         setVisible(true)
