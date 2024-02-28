@@ -45,6 +45,7 @@ export const auctionStyles = StyleSheet.create({
     padding: 20,
     justifyContent: 'center',
     borderRadius: 20,
+    alignItems: 'center'
   },
   highestBidInfoContainer: {
     flex: 1,
