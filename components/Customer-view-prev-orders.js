@@ -183,6 +183,8 @@ export function PreviousOrders({ navigation }) {
                       <Image
                         source={{ uri: order.poster }}
                         style={{ width: 150.5, height: 230 }}
+                        accessibilityLabel={`${order.film_title} poster`}
+
                       />
                       <View style={orderHistory.rightSideContainer}>
                         <Text style={orderHistory.sideInfoHeaders}>

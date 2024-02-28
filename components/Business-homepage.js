@@ -195,6 +195,7 @@ function BusinessHomepage({ navigation, route }) {
                     <Image
                       source={{ uri: event.poster }}
                       style={{ width: 150.5, height: 230 }}
+                      accessibilityLabel={`${event.film_title} poster`}
                     />
                     <View style={eventStyles.rightSide}>
                       {event.available_seats.length === 0 ? (
@@ -217,6 +218,7 @@ function BusinessHomepage({ navigation, route }) {
                             name="clockcircleo"
                             size={12}
                             color="#f5f5f5"
+                            accessibilityLabel="clock icon"
                           />{' '}
                           {event.run_time} minutes
                         </Text>
@@ -229,6 +231,7 @@ function BusinessHomepage({ navigation, route }) {
                               name="money-bill-wave"
                               size={12}
                               color="#f5f5f5"
+                              accessibilityLabel="cash note icon"
                             />
                           }{' '}
                           £{Number(event.start_price).toFixed(2)}
@@ -237,7 +240,7 @@ function BusinessHomepage({ navigation, route }) {
                       <Text style={orderHistory.sideInfoHeaders}>
                         Screening date:{'\n'}
                         <Text style={orderHistory.info}>
-                          <Fontisto name="date" size={12} color="#f5f5f5" />{' '}
+                          <Fontisto name="date" size={12} color="#f5f5f5" accessibilityLabel="calendar icon"/>{' '}
                           {convertTime(event.start_time)}
                         </Text>
                       </Text>

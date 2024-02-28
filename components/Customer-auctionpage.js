@@ -501,6 +501,7 @@ function CustomerAuctionPage({ navigation, route }) {
               <Image
                 source={{ uri: poster.poster }}
                 style={{ width: 112.5, height: 166.5 }}
+                accessibilityLabel={`${film_title.film_title} poster`}
               />
             </View>
             <View style={selectedMovieStyle.eventInfo}>
@@ -508,19 +509,19 @@ function CustomerAuctionPage({ navigation, route }) {
                 {film_title.film_title}, {certificate.certificate}
               </Text>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <FontAwesome5 name="map-marker-alt" size={12} color="#f5f5f5" />
+                <FontAwesome5 name="map-marker-alt" size={12} color="#f5f5f5" accessibilityLabel="map icon"/>
                 <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
                   {selectedBusiness.business_name}, {selectedBusiness.postcode}{' '}
                 </Text>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <AntDesign name="clockcircleo" size={12} color="#f5f5f5" />
+                <AntDesign name="clockcircleo" size={12} color="#f5f5f5" accessibilityLabel="clock icon"/>
                 <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
                   {run_time.run_time} minutes
                 </Text>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Fontisto name="date" size={12} color="#f5f5f5" />
+                <Fontisto name="date" size={12} color="#f5f5f5" accessibilityLabel="calendar icon"/>
                 <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
                   {convertTime(start_time.start_time)}
                 </Text>

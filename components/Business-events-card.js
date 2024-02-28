@@ -23,25 +23,26 @@ export function EventsCard({ event }) {
           <Image
             style={{ width: 130, height: 180.5 }}
             source={{ uri: event.poster }}
-          />
+            accessibilityLabel={`${event.film_title} poster`}
+            />
           <View style={eventStyles.rightSide}>
             <Text>
               {event.business_name}, {event.postcode}
             </Text>
             <Text style={eventStyles.cardText}>
-              {<FontAwesome5 name="map-marker-alt" size={16} color="black" />}{' '}
+              {<FontAwesome5 name="map-marker-alt" size={16} color="black" accessibilityLabel="map marker icon"/>}{' '}
               {event.distance_in_miles.toFixed(2)} miles
             </Text>
             <Text style={eventStyles.cardText}>
-              <AntDesign name="clockcircleo" size={16} color="black" />{' '}
+              <AntDesign name="clockcircleo" size={16} color="black" accessibilityLabel="clock icon"/>{' '}
               {event.run_time} minutes
             </Text>
             <Text style={eventStyles.cardText}>
-              {<FontAwesome5 name="money-bill-wave" size={16} color="black" />}{' '}
+              {<FontAwesome5 name="money-bill-wave" size={16} color="black" accessibilityLabel="cash note icon"/>}{' '}
               Starting from £{Number(event.start_price).toFixed(2)}
             </Text>
             <Text style={eventStyles.cardText}>
-              {<Fontisto name="date" size={16} color="black" />}{' '}
+              {<Fontisto name="date" size={16} color="black" accessibilityLabel="calendar icon"/>}{' '}
               {convertTime(event.start_time)}
             </Text>
           </View>
