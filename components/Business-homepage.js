@@ -14,7 +14,7 @@ import { Pressable } from 'react-native'
 import { orderHistory } from '../style-sheet-previous-orders'
 
 function BusinessHomepage({ navigation, route }) {
-  const { business_id } = route.params
+  const { business_id, success } = route.params
   const [events, setEvents] = useState([])
   const [errorMessage, setErrorMessage] = useState('')
   const [businessInfo, setBusinessInfo] = useState({
@@ -122,6 +122,22 @@ function BusinessHomepage({ navigation, route }) {
                 onPress={handlePressActive}
               ></Button>
             )}
+            {success === true ? (
+              <Text
+                style={{
+                  fontFamily: 'Comfortaa-Regular',
+                  color: '#f5f5f5',
+                  fontSize: 16,
+                  textAlign: 'center',
+                  marginTop: 40,
+                  marginBottom: 40,
+                }}
+              >
+                Thanks {businessInfo.business_name}, we've created a new listing
+                for you.
+              </Text>
+            ) : null}
+
             <Text
               style={{
                 fontFamily: 'Comfortaa-Regular',
@@ -156,9 +172,16 @@ function BusinessHomepage({ navigation, route }) {
                       {event.film_title}, {event.certificate}
                     </Text>
                   </Text>
-                  <View key={event.event_id} style={eventStyles.eventcard}>
-                    <View style={eventStyles.mainContent}>
+                  <View
+                    key={`${event.event_id}25`}
+                    style={eventStyles.eventcard}
+                  >
+                    <View
+                      key={`${event.event_id}26`}
+                      style={eventStyles.mainContent}
+                    >
                       <Image
+                        key={`${event.event_id}27`}
                         source={{ uri: event.poster }}
                         style={{ width: 150.5, height: 230 }}
                       />

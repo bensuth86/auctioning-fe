@@ -141,6 +141,7 @@ function Login({ navigation, route }) {
             // setCurrentCustomer({ business: business.business_name });
             navigation.navigate('BusinessHomepage', {
               business_id: business.business_id,
+              success: null,
             })
             // setMatch(true);
             foundMatch = true
