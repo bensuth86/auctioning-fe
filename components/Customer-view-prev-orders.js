@@ -171,7 +171,7 @@ export function PreviousOrders({ navigation }) {
             ) : (
               <View style={orderHistory.container}>
                 {allOrders.map((order, i) => (
-                  <>
+                  <View key={order.auction_id}>
                     <Text style={orderHistory.cardHeader}>
                       <Text style={orderHistory.cardHeaderBold}>
                         {order.film_title},
@@ -236,7 +236,7 @@ export function PreviousOrders({ navigation }) {
                         </Text>
                       </View>
                     </View>
-                  </>
+                  </View>
                 ))}
               </View>
             )}
