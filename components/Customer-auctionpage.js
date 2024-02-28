@@ -287,6 +287,9 @@ function CustomerAuctionPage({ navigation, route }) {
   //   )
   // }
 
+  console.log(start_time)
+  console.log(start_price)
+
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.darkContainer}>

@@ -23,8 +23,8 @@ import {
   getAuctionsByEventId,
 } from '../utils.js'
 import { useIsFocused } from '@react-navigation/native'
-import { useFonts } from 'expo-font'
-import { Pressable } from 'react-native'
+// import { useFonts } from 'expo-font'
+// import { Pressable } from 'react-native'
 
 function CustomerSeating({ navigation, route }) {
   const {
@@ -59,14 +59,16 @@ function CustomerSeating({ navigation, route }) {
   // temp auction id
   const [eventAuctions, setEventAuctions] = useState([])
   const [selectedAuction, setSelectedAuction] = useState({})
-  const [fontsLoaded] = useFonts({
-    'Comfortaa-Bold': require('../assets/Fonts/Comfortaa-Bold.ttf'),
-    'Comfortaa-Light': require('../assets/Fonts/Comfortaa-Light.ttf'),
-    'Comfortaa-Medium': require('../assets/Fonts/Comfortaa-Medium.ttf'),
-    'Comfortaa-Regular': require('../assets/Fonts/Comfortaa-Regular.ttf'),
-    'Comfortaa-SemiBold': require('../assets/Fonts/Comfortaa-SemiBold.ttf'),
-  })
+  // const [fontsLoaded] = useFonts({
+  //   'Comfortaa-Bold': require('../assets/Fonts/Comfortaa-Bold.ttf'),
+  //   'Comfortaa-Light': require('../assets/Fonts/Comfortaa-Light.ttf'),
+  //   'Comfortaa-Medium': require('../assets/Fonts/Comfortaa-Medium.ttf'),
+  //   'Comfortaa-Regular': require('../assets/Fonts/Comfortaa-Regular.ttf'),
+  //   'Comfortaa-SemiBold': require('../assets/Fonts/Comfortaa-SemiBold.ttf'),
+  // })
 
+  // console.log(start_price)
+  // console.log(start_time)
   const isFocused = useIsFocused()
 
   useEffect(() => {
@@ -416,7 +418,7 @@ function CustomerSeating({ navigation, route }) {
                           certificate: { certificate },
                           run_time: { run_time },
                           start_time: { start_time },
-                          start_price: { startingPrice },
+                          start_price: { start_price },
                         })
                       }
                     />
@@ -435,7 +437,7 @@ function CustomerSeating({ navigation, route }) {
                           certificate: { certificate },
                           run_time: { run_time },
                           start_time: { start_time },
-                          start_price: { startingPrice },
+                          start_price: { start_price },
                           selectedAuction: selectedAuction.auction_id,
                         })
                       }
