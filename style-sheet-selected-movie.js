@@ -13,7 +13,7 @@ export const selectedMovieStyle = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '100%',
+        width: '90%',
         height: 'auto',
         marginTop: 20,
         marginBottom: 20
