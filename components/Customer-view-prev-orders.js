@@ -46,7 +46,7 @@ export function PreviousOrders({ navigation }) {
   if (isLoading)
     return (
       <View style={styles.darkContainer}>
-        <ActivityIndicator color="red" />
+        <ActivityIndicator color="red" size={'large'}/>
       </View>
     )
 

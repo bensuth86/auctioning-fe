@@ -267,7 +267,7 @@ function BusinessCreateScreening({ navigation }) {
 
       {loading === true ? (
         <View style={styles.container}>
-          <ActivityIndicator color="red" />
+          <ActivityIndicator color="red" size={'large'}/>
         </View>
       ) : (
         <View

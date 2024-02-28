@@ -75,7 +75,7 @@ export function CurrentAuction({ navigation }) {
           </Text>
           {!loading && (
             <View style={{ padding: 20 }}>
-              <ActivityIndicator color="red" />
+              <ActivityIndicator color="red" size={'large'}/>
             </View>
           )}
           {loading &&

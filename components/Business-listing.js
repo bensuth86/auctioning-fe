@@ -98,12 +98,12 @@ function BusinessListing({ navigation }) {
       })
   }
 
-  if (loading)
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator />
-      </View>
-    )
+  // if (loading)
+  //   return (
+  //     <View style={styles.container}>
+  //       <ActivityIndicator />
+  //     </View>
+  //   )
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>

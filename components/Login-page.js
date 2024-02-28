@@ -114,7 +114,7 @@ function Login({ navigation, route }) {
         </Text>
         <TextInput
           style={styles.textboxLight}
-          placeholder="..."
+          placeholder="Username"
           onChangeText={(textEntry) => setLoginName(textEntry)}
           value={loginName}
         />
@@ -205,11 +205,6 @@ function Login({ navigation, route }) {
             </Text>
           </TouchableOpacity>
         )}
-        {/* {loading && (
-          <View>
-            <ActivityIndicator color="red" />
-          </View>
-        )} */}
       </View>
     </ScrollView>
   )

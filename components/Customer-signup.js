@@ -67,12 +67,6 @@ function CustomerSignUp({ navigation }) {
 
   return (
     <View style={styles.darkContainer}>
-      {/* {loading && (
-        <View>
-          <ActivityIndicator color="red" size={'large'} />
-        </View>
-      )} */}
-
       <Text
         style={{
           color: '#f5f5f5',
@@ -96,13 +90,6 @@ function CustomerSignUp({ navigation }) {
         value={postcode}
         onChangeText={(postcode) => setPostcode(postcode)}
       />
-      {/* <TouchableOpacity
-        style={[styles.button, { opacity: isFormValid ? 1 : 0.5 }]}
-        disabled={!isFormValid}
-        onPress={handleSubmit}
-      >
-        <Text style={styles.buttonText}>Submit</Text>
-      </TouchableOpacity> */}
       {loading ? (
         <View>
           <ActivityIndicator color="red" size={'large'} />
