@@ -133,7 +133,13 @@ function CustomerAuctionPage({ navigation, route }) {
         `You need to place a bid greater than £${displayAuction.current_price}.`
       )
       return false
+    } else if (Number(userBid) >= 100) {
+      setErrorMessage(
+        `You cannot bid £100 or over, find another seat to bid on...`
+      )
+      return false
     }
+
     setErrorMessage('')
     setUserBid('')
     return true
@@ -365,7 +371,7 @@ function CustomerAuctionPage({ navigation, route }) {
                 color: '#7bc47f',
                 fontFamily: 'Comfortaa-Light',
                 fontSize: 12,
-                textAlign: 'center'
+                textAlign: 'center',
               }}
             >
               successfully submitted
@@ -419,28 +425,44 @@ function CustomerAuctionPage({ navigation, route }) {
           {countdownStructure.ended &&
             displayAuction.current_highest_bidder ===
               currentCustomer.user_id && (
-                <View>
-                  <Text style={{fontFamily: 'Comfortaa-Regular', fontSize: 16, color: '#f5f5f5'}}>Congratulations, you won!</Text>
-                  <Button
-                    btnText="VIEW YOUR ORDER"
-                    onPress={() => {
-                      navigation.navigate('PreviousOrders')
-                    }}
-                  />
-                </View>
+              <View>
+                <Text
+                  style={{
+                    fontFamily: 'Comfortaa-Regular',
+                    fontSize: 16,
+                    color: '#f5f5f5',
+                  }}
+                >
+                  Congratulations, you won!
+                </Text>
+                <Button
+                  btnText="VIEW YOUR ORDER"
+                  onPress={() => {
+                    navigation.navigate('PreviousOrders')
+                  }}
+                />
+              </View>
             )}
           {countdownStructure.ended &&
             displayAuction.current_highest_bidder !==
               currentCustomer.user_id && (
-                <View>
-                  <Text style={{fontFamily: 'Comfortaa-Regular', fontSize: 16, color: '#f5f5f5'}}>Oh no, you lost!</Text>
-                  <Button
-                    btnText="BACK TO SCREENINGS"
-                    onPress={() => {
-                      navigation.navigate('CustomerHomepage')
-                    }}
-                  />
-                </View>
+              <View>
+                <Text
+                  style={{
+                    fontFamily: 'Comfortaa-Regular',
+                    fontSize: 16,
+                    color: '#f5f5f5',
+                  }}
+                >
+                  Oh no, you lost!
+                </Text>
+                <Button
+                  btnText="BACK TO SCREENINGS"
+                  onPress={() => {
+                    navigation.navigate('CustomerHomepage')
+                  }}
+                />
+              </View>
             )}
         </View>
         <View style={auctionStyles.container}>
