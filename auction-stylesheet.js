@@ -5,7 +5,6 @@ export const auctionStyles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    // margin: 20,
     width: '90%',
     marginTop: -40,
   },
@@ -28,12 +27,10 @@ export const auctionStyles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: 220,
-    // borderRadius: 20
   },
   singleInfoContainer: {
     flexDirection: 'row',
     width: '100%',
-    // backgroundColor: '#e4e5eb',
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     padding: 20,
     marginBottom: 10,
@@ -51,7 +48,6 @@ export const auctionStyles = StyleSheet.create({
   },
   highestBidInfoContainer: {
     flex: 1,
-    // backgroundColor: '#e4e5eb',
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     padding: 20,
     marginRight: 10,
@@ -63,10 +59,8 @@ export const auctionStyles = StyleSheet.create({
     flex: 2,
     flexDirection: 'column',
     height: 'auto',
-    // borderRadius: 20
   },
   smallerBidInfoContainer: {
-    // backgroundColor: '#e4e5eb',
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     flex: 1,
     padding: 20,
@@ -80,10 +74,8 @@ export const auctionStyles = StyleSheet.create({
   },
   bidInput: {
     height: 40,
-    // borderWidth: 1,
     width: 140,
     backgroundColor: '#f5f5f5',
-    // padding: 5,
     paddingBottom: 5,
     paddingTop: 5,
     paddingRight: 15,
@@ -96,7 +88,6 @@ export const auctionStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    // marginTop: 10,
   },
   statusContainer: {
     width: '100%',
@@ -109,13 +100,11 @@ export const auctionStyles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     marginTop: 20,
-    // backgroundColor: '#838383',
   },
   auctionResultButton: {
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'yellow',
     marginBottom: 10,
     marginTop: 10,
     padding: 20,
@@ -134,15 +123,16 @@ export const auctionStyles = StyleSheet.create({
   },
   countdownFont: {
     fontFamily: 'KodeMono-Regular',
-    fontSize: 40,
+    fontSize: 32,
     color: '#f5f5f5',
+    textAlign: 'center',
+    padding: 5
   },
   text: {
     fontFamily: 'Comfortaa-Light',
     fontSize: 12,
     color: '#f5f5f5',
   },
-  BidInfoContainer: {},
   errors: {
     textAlign: 'center',
     color: 'red',

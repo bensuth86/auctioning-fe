@@ -37,7 +37,6 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   buttontext: {
-    // letterSpacing: 0.25,
     color: 'white',
     textAlign: 'center',
     fontFamily: 'Comfortaa-Light',
