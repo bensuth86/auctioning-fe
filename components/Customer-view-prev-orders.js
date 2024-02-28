@@ -124,13 +124,10 @@ export function PreviousOrders({ navigation }) {
               >
                 Simply show this code when picking up your tickets.
               </Text>
-              <Text>{QRCode}</Text>
             </View>
           </View>
         </Modal>
-        <View style={{margin: 20}}
-
-        >
+        <View style={{ margin: 20 }}>
           <Pressable
             style={styles.backButton}
             onPress={() => navigation.navigate('CustomerHomepage')}
@@ -184,7 +181,6 @@ export function PreviousOrders({ navigation }) {
                         source={{ uri: order.poster }}
                         style={{ width: 150.5, height: 230 }}
                         accessibilityLabel={`${order.film_title} poster`}
-
                       />
                       <View style={orderHistory.rightSideContainer}>
                         <Text style={orderHistory.sideInfoHeaders}>
