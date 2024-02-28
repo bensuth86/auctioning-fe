@@ -12,6 +12,7 @@ import { Button } from '../helpers'
 import { ActivityIndicator } from 'react-native-paper'
 import { Pressable } from 'react-native'
 import { orderHistory } from '../style-sheet-previous-orders'
+import { useIsFocused } from '@react-navigation/native'
 
 function BusinessHomepage({ navigation, route }) {
   const { business_id, success } = route.params
@@ -21,6 +22,7 @@ function BusinessHomepage({ navigation, route }) {
   const [businessInfo, setBusinessInfo] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const [active, setActive] = useState(true)
+  const isFocused = useIsFocused()
 
   useEffect(() => {
     getBusinessById(business_id)
@@ -51,7 +53,7 @@ function BusinessHomepage({ navigation, route }) {
           )
         }
       })
-  }, [active])
+  }, [active, isFocused])
 
   function logUserOut() {
     navigation.navigate('Welcome_page')
