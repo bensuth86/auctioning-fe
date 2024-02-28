@@ -87,11 +87,13 @@ function getAllBusinesses() {
     return response
   })
 }
+////
 function getAllEventsByBusinessId(business_id, active) {
   return prjApi.get(`/events/business/${business_id}`, {params: {active: active}}).then((response) => {
     return response
   })
 }
+//////
 function getWonAuctionsByUser(id) {
   return prjApi.get(`/auctions/won/${id}`).then((response) => {
     return response

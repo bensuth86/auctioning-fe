@@ -39,10 +39,15 @@ function BusinessHomepage({ navigation, route }) {
         })
       })
       .catch((err) => {
-        setEventLoading(false)
-        if (err.msg === 'Bad request') {
+        setIsLoading(false)
+        if (err.response.data.msg === 'Invalid business ID') {
           setErrorMessage(
             'Sorry - Something went wrong fetching your listings.'
+          )
+        }
+        if (err.response.data.msg === 'Business not found.') {
+          setErrorMessage(
+            'Sorry - your business ID does not exist.\nCannot fetch your listings.'
           )
         }
       })
@@ -71,13 +76,6 @@ function BusinessHomepage({ navigation, route }) {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.darkContainer}>
-        <View style={{ margin: 20 }}>
-          <Pressable style={styles.backButton}>
-            <Text style={styles.backButtonText} onPress={() => logUserOut()}>
-              SIGN OUT
-            </Text>
-          </Pressable>
-        </View>
         {errorMessage !== '' && (
           <View
             style={{
@@ -92,6 +90,16 @@ function BusinessHomepage({ navigation, route }) {
         )}
         {errorMessage === '' && (
           <>
+            <View style={{ margin: 20 }}>
+              <Pressable style={styles.backButton}>
+                <Text
+                  style={styles.backButtonText}
+                  onPress={() => logUserOut()}
+                >
+                  SIGN OUT
+                </Text>
+              </Pressable>
+            </View>
             <Text
               style={{
                 fontFamily: 'Comfortaa-Regular',
