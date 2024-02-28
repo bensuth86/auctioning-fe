@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { View, Text, Image } from 'react-native'
 import { styles } from '../style-sheet'
 import { getAllEventsByBusinessId, getBusinessById } from '../utils'
 import { eventStyles } from '../style-sheet-events'
@@ -17,33 +17,32 @@ function BusinessHomepage({ navigation, route }) {
   const { business_id, success } = route.params
   const [events, setEvents] = useState([])
   const [errorMessage, setErrorMessage] = useState('')
-  const [businessInfo, setBusinessInfo] = useState({
-    business_name: null,
-    postcode: null,
-  })
+  const [eventLoading, setEventLoading] = useState(true)
+  const [businessInfo, setBusinessInfo] = useState({})
   const [isLoading, setIsLoading] = useState(true)
-  const [seatingPlan, setSeatingPlan] = useState([])
   const [active, setActive] = useState(true)
 
   useEffect(() => {
-    getAllEventsByBusinessId(business_id, active)
+    getBusinessById(business_id)
       .then((response) => {
-        
-        setEvents(response.data.events)
-        setSeatingPlan(response.available_seats)
-        getBusinessById(business_id).then((response) => {
-          setBusinessInfo({
-            business_name: response.business_name,
-            postcode: response.postcode,
-          })
-          setIsLoading(false)
+        setBusinessInfo({
+          business_name: response.business_name,
+          postcode: response.postcode,
+        })
+        setIsLoading(false)
+      })
+      .then(() => {
+        getAllEventsByBusinessId(business_id, active).then((response) => {
+          setErrorMessage('')
+          setEvents(response.data.events)
+          setEventLoading(false)
         })
       })
       .catch((err) => {
         setIsLoading(false)
         if (err.response.data.msg === 'Invalid business ID') {
           setErrorMessage(
-            'Sorry - your business ID is invalid.\nCannot fetch your listings.'
+            'Sorry - Something went wrong fetching your listings.'
           )
         }
         if (err.response.data.msg === 'Business not found.') {
@@ -52,7 +51,7 @@ function BusinessHomepage({ navigation, route }) {
           )
         }
       })
-  }, [events, business_id])
+  }, [active])
 
   function logUserOut() {
     navigation.navigate('Welcome_page')
@@ -60,11 +59,11 @@ function BusinessHomepage({ navigation, route }) {
 
   function handlePressPast() {
     setActive(false)
-    setIsLoading(true)
+    setEventLoading(true)
   }
   function handlePressActive() {
     setActive(true)
-    setIsLoading(true)
+    setEventLoading(true)
   }
 
   if (isLoading)
@@ -91,9 +90,12 @@ function BusinessHomepage({ navigation, route }) {
         )}
         {errorMessage === '' && (
           <>
-            <View style={{margin: 20}}>
+            <View style={{ margin: 20 }}>
               <Pressable style={styles.backButton}>
-                <Text style={styles.backButtonText} onPress={() => logUserOut()}>
+                <Text
+                  style={styles.backButtonText}
+                  onPress={() => logUserOut()}
+                >
                   SIGN OUT
                 </Text>
               </Pressable>
@@ -108,27 +110,26 @@ function BusinessHomepage({ navigation, route }) {
             >
               HELLO {businessInfo.business_name}!
             </Text>
-            <View style={{marginTop: 30}}>
-            <Button
-              btnText={'CREATE SCREENING'}
-              onPress={() =>
-                navigation.navigate('BusinessCreateScreening', {
-                  business_id,
-                })
-              }
-            />
-            {active ? (
+            <View style={{ marginTop: 30 }}>
               <Button
-                btnText={'SEE PAST SCREENINGS'}
-                onPress={handlePressPast}
-              ></Button>
-            ) : (
-              <Button
-                btnText={'SEE ACTIVE SCREENINGS'}
-                onPress={handlePressActive}
-              ></Button>
-            )}
-
+                btnText={'CREATE SCREENING'}
+                onPress={() =>
+                  navigation.navigate('BusinessCreateScreening', {
+                    business_id,
+                  })
+                }
+              />
+              {active ? (
+                <Button
+                  btnText={'SEE PAST SCREENINGS'}
+                  onPress={handlePressPast}
+                ></Button>
+              ) : (
+                <Button
+                  btnText={'SEE ACTIVE SCREENINGS'}
+                  onPress={handlePressActive}
+                ></Button>
+              )}
             </View>
             {success === true ? (
               <Text
@@ -145,7 +146,7 @@ function BusinessHomepage({ navigation, route }) {
                 for you.
               </Text>
             ) : null}
-            {active ? (
+
             <Text
               style={{
                 fontFamily: 'Comfortaa-Light',
@@ -156,104 +157,104 @@ function BusinessHomepage({ navigation, route }) {
                 marginBottom: 40,
               }}
             >
-              Here are your active events{'\n'}at location <Text style={{fontFamily: 'Comfortaa-Bold'}}>{businessInfo.postcode}</Text>:
+              Here are your {active ? 'active' : 'past'} events{'\n'}at location{' '}
+              <Text style={{ fontFamily: 'Comfortaa-Bold' }}>
+                {businessInfo.postcode}
+              </Text>
+              :
             </Text>
-
-            ):(
-              <Text
-              style={{
-                fontFamily: 'Comfortaa-Light',
-                color: '#f5f5f5',
-                fontSize: 16,
-                textAlign: 'center',
-                marginTop: 40,
-                marginBottom: 40,
-              }}
-            >
-              Here are your past events{'\n'}at location <Text style={{fontFamily: 'Comfortaa-Bold'}}>{businessInfo.postcode}</Text>:
-            </Text>
-            )}
-            <View style={eventStyles.eventcard}>
-              {!events.length && (
-                <Text
-                  style={{
-                    fontFamily: 'Comfortaa-Regular',
-                    color: '#f5f5f5',
-                    fontSize: 12,
-                    textAlign: 'center',
-                    marginTop: 40,
-                    marginBottom: 40,
-                    color: 'red'
-                  }}
-                >
-                  Sorry, no events to show!
-                </Text>
-              )}
-              {events.map((event) => (
-                <View key={event.event_id} style={eventStyles.eventcard}>
-                  <Text style={orderHistory.cardHeader}>
-                    <Text style={orderHistory.cardHeaderBold}>
-                      {event.film_title}, {event.certificate}
-                    </Text>
+            {eventLoading ? (
+              <View style={{ flex: 1 }}>
+                <ActivityIndicator color="red" />
+              </View>
+            ) : (
+              <View style={eventStyles.eventcard}>
+                {!events.length && (
+                  <Text
+                    style={{
+                      fontFamily: 'Comfortaa-Regular',
+                      color: '#f5f5f5',
+                      fontSize: 12,
+                      textAlign: 'center',
+                      marginTop: 40,
+                      marginBottom: 40,
+                      color: 'red',
+                    }}
+                  >
+                    Sorry, no events to show!
                   </Text>
-                  <View style={eventStyles.mainContent}>
-                    <Image
-                      source={{ uri: event.poster }}
-                      style={{ width: 150.5, height: 230 }}
-                      accessibilityLabel={`${event.film_title} poster`}
-                    />
-                    <View style={eventStyles.rightSide}>
-                      {event.available_seats.length === 0 ? (
-                        <Text style={orderHistory.sideInfoHeaders}>
-                          Seats left:{'\n'}
-                          <Text style={orderHistory.info}>sold out!</Text>
-                        </Text>
-                      ) : (
-                        <Text style={orderHistory.sideInfoHeaders}>
-                          Seats left:{'\n'}
-                          <Text style={orderHistory.info}>
-                            {event.available_seats.length}
-                          </Text>
-                        </Text>
-                      )}
-                      <Text style={orderHistory.sideInfoHeaders}>
-                        Run time:{'\n'}
-                        <Text style={orderHistory.info}>
-                          <AntDesign
-                            name="clockcircleo"
-                            size={12}
-                            color="#f5f5f5"
-                            accessibilityLabel="clock icon"
-                          />{' '}
-                          {event.run_time} minutes
-                        </Text>
+                )}
+                {events.map((event) => (
+                  <View key={event.event_id} style={eventStyles.eventcard}>
+                    <Text style={orderHistory.cardHeader}>
+                      <Text style={orderHistory.cardHeaderBold}>
+                        {event.film_title}, {event.certificate}
                       </Text>
-                      <Text style={orderHistory.sideInfoHeaders}>
-                        Starting price:{'\n'}
-                        <Text style={orderHistory.info}>
-                          {
-                            <FontAwesome5
-                              name="money-bill-wave"
+                    </Text>
+                    <View style={eventStyles.mainContent}>
+                      <Image
+                        source={{ uri: event.poster }}
+                        style={{ width: 150.5, height: 230 }}
+                        accessibilityLabel={`${event.film_title} poster`}
+                      />
+                      <View style={eventStyles.rightSide}>
+                        {event.available_seats.length === 0 ? (
+                          <Text style={orderHistory.sideInfoHeaders}>
+                            Seats left:{'\n'}
+                            <Text style={orderHistory.info}>sold out!</Text>
+                          </Text>
+                        ) : (
+                          <Text style={orderHistory.sideInfoHeaders}>
+                            Seats left:{'\n'}
+                            <Text style={orderHistory.info}>
+                              {event.available_seats.length}
+                            </Text>
+                          </Text>
+                        )}
+                        <Text style={orderHistory.sideInfoHeaders}>
+                          Run time:{'\n'}
+                          <Text style={orderHistory.info}>
+                            <AntDesign
+                              name="clockcircleo"
                               size={12}
                               color="#f5f5f5"
-                              accessibilityLabel="cash note icon"
-                            />
-                          }{' '}
-                          £{Number(event.start_price).toFixed(2)}
+                              accessibilityLabel="clock icon"
+                            />{' '}
+                            {event.run_time} minutes
+                          </Text>
                         </Text>
-                      </Text>
-                      <Text style={orderHistory.sideInfoHeaders}>
-                        Screening date:{'\n'}
-                        <Text style={orderHistory.info}>
-                          <Fontisto name="date" size={12} color="#f5f5f5" accessibilityLabel="calendar icon"/>{' '}
-                          {convertTime(event.start_time)}
+                        <Text style={orderHistory.sideInfoHeaders}>
+                          Starting price:{'\n'}
+                          <Text style={orderHistory.info}>
+                            {
+                              <FontAwesome5
+                                name="money-bill-wave"
+                                size={12}
+                                color="#f5f5f5"
+                                accessibilityLabel="cash note icon"
+                              />
+                            }{' '}
+                            £{Number(event.start_price).toFixed(2)}
+                          </Text>
                         </Text>
-                      </Text>
+                        <Text style={orderHistory.sideInfoHeaders}>
+                          Screening date:{'\n'}
+                          <Text style={orderHistory.info}>
+                            <Fontisto
+                              name="date"
+                              size={12}
+                              color="#f5f5f5"
+                              accessibilityLabel="calendar icon"
+                            />{' '}
+                            {convertTime(event.start_time)}
+                          </Text>
+                        </Text>
+                      </View>
                     </View>
                   </View>
-                </View>
-              ))}
-            </View>
+                ))}
+              </View>
+            )}
           </>
         )}
       </View>
