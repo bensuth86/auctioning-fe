@@ -18,15 +18,8 @@ export const homeStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    // backgroundColor: 'red',
     padding: 10,
     width: '100%',
-    // position: 'absolute',
-    // top: 10,
-    // left: 10,
-    // right: 0,
-    // padding: 10,
-    // zIndex: 1,
   },
   numberDial: {
     height: 30,
@@ -71,7 +64,6 @@ export const homeStyles = StyleSheet.create({
   noResultsText: {
     textAlign: 'center',
     maxWidth: '100%',
-    // marginVertical: 5,
     fontFamily: 'Comfortaa-Regular',
     color: 'red',
   },
@@ -82,5 +74,6 @@ export const homeStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
+    minHeight: 700
   },
 })
