@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native'
-import { useFonts } from 'expo-font'
 
 export const styles = StyleSheet.create({
   container: {
@@ -48,7 +47,6 @@ export const styles = StyleSheet.create({
     padding: 2,
   },
   textbox: {
-    // for text entry
     borderWidth: 1,
     borderColor: '#777',
     padding: 8,
@@ -72,26 +70,9 @@ export const styles = StyleSheet.create({
     fontFamily: 'Comfortaa-Light',
   },
   dropdownContainer: {
-    // flexDirection: 'row',
-    // alignItems: 'center',
-    // marginHorizontal: 10,
-    // backgroundColor: '#f5f5f5',
-    // borderRadius: 20,
-    // borderWidth: 0,
-    // height: 40
     marginLeft: 10,
     marginRight: 10,
   },
-  // dropdown: {
-  //   minWidth: 50,
-  //   maxWidth: 50,
-  //   borderRadius: 20,
-  //   width: 50,
-  //   marginHorizontal: 10,
-  //   borderWidth: 0,
-  //   backgroundColor: '#f5f5f5',
-  //   height: 40
-  // },
   backButton: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     padding: 10,
@@ -102,6 +83,7 @@ export const styles = StyleSheet.create({
     fontFamily: 'Comfortaa-Light',
     fontSize: 12,
     color: '#f5f5f5',
+    textAlign: 'center'
   },
   topNavStrip: {
     width: '100%',

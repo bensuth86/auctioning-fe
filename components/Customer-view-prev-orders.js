@@ -23,23 +23,24 @@ export function PreviousOrders({ navigation }) {
   const [errorMessage, setErrorMessage] = useState('')
 
   useEffect(() => {
-    getWonAuctionsByUser(currentCustomer.user_id).then((response) => {
-      setAllOrders(response.data.auctions)
-      setIsLoading(false)
-    })
-    .catch((err) => {
-      setIsLoading(false)
-      if (err.response.data.msg === 'User not found.') {
-        setErrorMessage(
-          'Sorry - your user ID does not exist.\nCannot fetch your previous orders.'
-        )
-      }
-      if (err.response.data.msg === 'Bad request') {
-        setErrorMessage(
-          'Sorry - your user ID is invalid.\nCannot fetch your previous orders.'
-        )
-      }
-    })
+    getWonAuctionsByUser(currentCustomer.user_id)
+      .then((response) => {
+        setAllOrders(response.data.auctions)
+        setIsLoading(false)
+      })
+      .catch((err) => {
+        setIsLoading(false)
+        if (err.response.data.msg === 'User not found.') {
+          setErrorMessage(
+            'Sorry - your user ID does not exist.\nCannot fetch your previous orders.'
+          )
+        }
+        if (err.response.data.msg === 'Bad request') {
+          setErrorMessage(
+            'Sorry - your user ID is invalid.\nCannot fetch your previous orders.'
+          )
+        }
+      })
   }, [currentCustomer.user_id])
 
   if (isLoading)
@@ -118,7 +119,7 @@ export function PreviousOrders({ navigation }) {
                   fontFamily: 'Comfortaa-Light',
                   fontSize: 14,
                   marginTop: 10,
-                  textAlign: 'center'
+                  textAlign: 'center',
                 }}
               >
                 Simply show this code when picking up your tickets.
@@ -127,74 +128,84 @@ export function PreviousOrders({ navigation }) {
             </View>
           </View>
         </Modal>
-        <View style={orderHistory.topNav}>
-          <Pressable style={styles.backButton} onPress={() => navigation.navigate('CustomerHomepage')}>
-            <Text style={styles.backButtonText}>← HOME</Text>
+        <View style={{margin: 20}}
+
+        >
+          <Pressable
+            style={styles.backButton}
+            onPress={() => navigation.navigate('CustomerHomepage')}
+          >
+            <Text style={styles.backButtonText}>HOME</Text>
           </Pressable>
-          {/* <Text>HELLO {currentCustomer.username}</Text> */}
-          {/* <Button btnText={'Log out'} onPress={() => logUserOut()} /> */}
         </View>
         <Text style={orderHistory.pageHeader}>PREVIOUS ORDERS</Text>
         {errorMessage !== '' && (
-                <View style={{height: 300, justifyContent: 'center', alignItems: 'center', padding: 20}}>
-                <Text style={styles.error}>{errorMessage}</Text>
-              </View>
+          <View
+            style={{
+              height: 300,
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: 20,
+            }}
+          >
+            <Text style={styles.error}>{errorMessage}</Text>
+          </View>
         )}
         {errorMessage === '' && (
           <>
-        <Text
-          style={{
-            color: '#f5f5f5',
-            fontFamily: 'Comfortaa-Light',
-            fontSize: 12,
-            textAlign: 'center',
-            width: '90%',
-            marginBottom: 80,
-          }}
-        >
-          Please present the QR code at the venue to collect and pay for
-          tickets.
-        </Text>
-        {allOrders.length === 0 ? (
-          <Text style={styles.error}>Looks like you have no orders!</Text>
-        ) : (
-          <View style={orderHistory.container}>
-            {allOrders.map((order, i) => (
-              <>
-                <Text style={orderHistory.cardHeader}>
-                  <Text style={orderHistory.cardHeaderBold}>
-                    {order.film_title},
-                  </Text>{' '}
-                  {'\n'}
-                  {order.business_name}
-                </Text>
-                <View key={i} style={orderHistory.individualContainer}>
-                  <Image
-                    source={{ uri: order.poster }}
-                    style={{ width: 150.5, height: 230 }}
-                  />
-                  <View style={orderHistory.rightSideContainer}>
-                    <Text style={orderHistory.sideInfoHeaders}>
-                      Screening date:{'\n'}
-                      <Text style={orderHistory.info}>
-                        {convertTime(order.start_time)}
-                      </Text>
+            <Text
+              style={{
+                color: '#f5f5f5',
+                fontFamily: 'Comfortaa-Light',
+                fontSize: 12,
+                textAlign: 'center',
+                width: '90%',
+                marginBottom: 80,
+              }}
+            >
+              Please present the QR code at the venue to collect and pay for
+              tickets.
+            </Text>
+            {allOrders.length === 0 ? (
+              <Text style={styles.error}>Looks like you have no orders!</Text>
+            ) : (
+              <View style={orderHistory.container}>
+                {allOrders.map((order, i) => (
+                  <>
+                    <Text style={orderHistory.cardHeader}>
+                      <Text style={orderHistory.cardHeaderBold}>
+                        {order.film_title},
+                      </Text>{' '}
+                      {'\n'}
+                      {order.business_name}
                     </Text>
-                    <Text style={orderHistory.sideInfoHeaders}>
-                      Total price:{'\n'}
-                      <Text style={orderHistory.info}>
-                        £
-                        {(
-                          Number(order.current_price) *
-                          order.seat_selection.length
-                        ).toFixed(2)}{' '}
-                        ({order.seat_selection.length} x £
-                        {Number(order.current_price).toFixed(2)})
-                      </Text>
-                    </Text>
-                    <Text style={orderHistory.sideInfoHeaders}>
-                      QR Code:{'\n'}
-                      {/* <Text style={orderHistory.info}>
+                    <View key={i} style={orderHistory.individualContainer}>
+                      <Image
+                        source={{ uri: order.poster }}
+                        style={{ width: 150.5, height: 230 }}
+                      />
+                      <View style={orderHistory.rightSideContainer}>
+                        <Text style={orderHistory.sideInfoHeaders}>
+                          Screening date:{'\n'}
+                          <Text style={orderHistory.info}>
+                            {convertTime(order.start_time)}
+                          </Text>
+                        </Text>
+                        <Text style={orderHistory.sideInfoHeaders}>
+                          Total price:{'\n'}
+                          <Text style={orderHistory.info}>
+                            £
+                            {(
+                              Number(order.current_price) *
+                              order.seat_selection.length
+                            ).toFixed(2)}{' '}
+                            ({order.seat_selection.length} x £
+                            {Number(order.current_price).toFixed(2)})
+                          </Text>
+                        </Text>
+                        <Text style={orderHistory.sideInfoHeaders}>
+                          QR Code:{'\n'}
+                          {/* <Text style={orderHistory.info}>
                         {order.event_id}
                         {order.auction_id}
                         {currentCustomer.username[0].toUpperCase()}
@@ -206,27 +217,27 @@ export function PreviousOrders({ navigation }) {
                           order.time_ending.length - 4
                         )}
                       </Text> */}
-                      <Button
-                        key={`button-${order.auction_id}`}
-                        btnText={'VIEW'}
-                        onPress={() => {
-                          setQRCodeStr(
-                            `${order.event_id}${order.auction_id}${currentCustomer.username[0].toUpperCase()}${currentCustomer.username[
-                              currentCustomer.username.length - 1
-                            ].toUpperCase()}${currentCustomer.user_id}${order.time_ending.substring(
-                              order.time_ending.length - 4
-                            )}`
-                          )
-                          setShowQRCode(true)
-                        }}
-                      ></Button>
-                    </Text>
-                  </View>
-                </View>
-              </>
-            ))}
-          </View>
-        )}
+                          <Button
+                            key={`button-${order.auction_id}`}
+                            btnText={'VIEW'}
+                            onPress={() => {
+                              setQRCodeStr(
+                                `${order.event_id}${order.auction_id}${currentCustomer.username[0].toUpperCase()}${currentCustomer.username[
+                                  currentCustomer.username.length - 1
+                                ].toUpperCase()}${currentCustomer.user_id}${order.time_ending.substring(
+                                  order.time_ending.length - 4
+                                )}`
+                              )
+                              setShowQRCode(true)
+                            }}
+                          ></Button>
+                        </Text>
+                      </View>
+                    </View>
+                  </>
+                ))}
+              </View>
+            )}
           </>
         )}
       </View>

@@ -28,6 +28,7 @@ function BusinessHomepage({ navigation, route }) {
   useEffect(() => {
     getAllEventsByBusinessId(business_id, active)
       .then((response) => {
+        
         setEvents(response.data.events)
         setSeatingPlan(response.available_seats)
         getBusinessById(business_id).then((response) => {
@@ -71,7 +72,7 @@ function BusinessHomepage({ navigation, route }) {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.darkContainer}>
-        <View style={eventStyles.topNavigation}>
+        <View style={{margin: 20}}>
           <Pressable style={styles.backButton}>
             <Text style={styles.backButtonText} onPress={() => logUserOut()}>
               SIGN OUT
@@ -102,7 +103,7 @@ function BusinessHomepage({ navigation, route }) {
             >
               HELLO {businessInfo.business_name}!
             </Text>
-
+            <View style={{marginTop: 30}}>
             <Button
               btnText={'CREATE SCREENING'}
               onPress={() =>
@@ -122,6 +123,8 @@ function BusinessHomepage({ navigation, route }) {
                 onPress={handlePressActive}
               ></Button>
             )}
+
+            </View>
             {success === true ? (
               <Text
                 style={{
@@ -137,10 +140,10 @@ function BusinessHomepage({ navigation, route }) {
                 for you.
               </Text>
             ) : null}
-
+            {active ? (
             <Text
               style={{
-                fontFamily: 'Comfortaa-Regular',
+                fontFamily: 'Comfortaa-Light',
                 color: '#f5f5f5',
                 fontSize: 16,
                 textAlign: 'center',
@@ -148,18 +151,34 @@ function BusinessHomepage({ navigation, route }) {
                 marginBottom: 40,
               }}
             >
-              Here are your events{'\n'}at location {businessInfo.postcode}:
+              Here are your active events{'\n'}at location <Text style={{fontFamily: 'Comfortaa-Bold'}}>{businessInfo.postcode}</Text>:
             </Text>
+
+            ):(
+              <Text
+              style={{
+                fontFamily: 'Comfortaa-Light',
+                color: '#f5f5f5',
+                fontSize: 16,
+                textAlign: 'center',
+                marginTop: 40,
+                marginBottom: 40,
+              }}
+            >
+              Here are your past events{'\n'}at location <Text style={{fontFamily: 'Comfortaa-Bold'}}>{businessInfo.postcode}</Text>:
+            </Text>
+            )}
             <View style={eventStyles.eventcard}>
               {!events.length && (
                 <Text
                   style={{
                     fontFamily: 'Comfortaa-Regular',
                     color: '#f5f5f5',
-                    fontSize: 16,
+                    fontSize: 12,
                     textAlign: 'center',
                     marginTop: 40,
                     marginBottom: 40,
+                    color: 'red'
                   }}
                 >
                   Sorry, no events to show!
