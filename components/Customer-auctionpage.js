@@ -30,11 +30,8 @@ function CustomerAuctionPage({ navigation, route }) {
     certificate,
     run_time,
     start_time,
-    available_seats,
-    active,
     start_price,
     seat_selection,
-    auction_info,
     selectedAuction,
   } = route.params
   const [userBid, setUserBid] = useState('')
@@ -90,9 +87,10 @@ function CustomerAuctionPage({ navigation, route }) {
         }
       })
   }, [])
-
+  //console.log(displayAuction)
   useEffect(() => {
     function onBidEvent(bidData) {
+      console.log(displayAuction, 'inside')
       if (
         seat_selection.selectedSeats.some((seat) =>
           bidData.seats.includes(seat)
@@ -105,6 +103,7 @@ function CustomerAuctionPage({ navigation, route }) {
         auctionID === bidData.auction_id &&
         currentCustomer.username !== bidData.username
       ) {
+        const newCount = Number(displayAuction.bid_counter) + 1
         setDisplayAuction({
           ...displayAuction,
           current_price: bidData.newBid,
@@ -122,7 +121,7 @@ function CustomerAuctionPage({ navigation, route }) {
     return () => {
       socket.off('new bid', onBidEvent)
     }
-  }, [auctionID])
+  }, [auctionID, displayAuction])
 
   function submitBid() {
     if (isNaN(userBid)) {
@@ -131,11 +130,6 @@ function CustomerAuctionPage({ navigation, route }) {
     } else if (Number(userBid) <= Number(displayAuction.current_price)) {
       setErrorMessage(
         `You need to place a bid greater than £${displayAuction.current_price}.`
-      )
-      return false
-    } else if (Number(userBid) < Number(start_price.start_price)) {
-      setErrorMessage(
-        `You need to place a minimum bid of £${Number(start_price.start_price) + 1}.`
       )
       return false
     }
@@ -174,7 +168,6 @@ function CustomerAuctionPage({ navigation, route }) {
         //getCountdown(auction.time_ending)
       })
       .catch((err) => {
-        console.log(err)
         setApiErr(err.message)
         setDisplayAuction({})
         setTempUser(null)
@@ -210,6 +203,13 @@ function CustomerAuctionPage({ navigation, route }) {
           username: currentCustomer.username,
           seats: seat_selection.selectedSeats,
         })
+        console.log(
+          userBid,
+          auctionID,
+          seat_selection.selectedSeats,
+          currentCustomer.username,
+          'bid sent'
+        )
         setUserBid('')
         setSubmitted(false)
       })
@@ -477,12 +477,10 @@ function CustomerAuctionPage({ navigation, route }) {
             </View>
           ) : (
             <View style={auctionStyles.priceInfoContainer}>
-              <Text style={auctionStyles.auctionHeaders}>
-                STARTING PRICE:{' '}
-                <Text style={auctionStyles.auctionData}>
-                  £{Number(start_price.start_price).toFixed(2)}{' '}
-                  {`/ £${Number(start_price.start_price * seat_selection.selectedSeats.length).toFixed(2)} total`}
-                </Text>
+              <Text style={auctionStyles.auctionHeaders}>STARTING PRICE: </Text>
+              <Text style={auctionStyles.auctionData}>
+                £{Number(start_price.start_price).toFixed(2)}{' '}
+                {`/ £${Number(start_price.start_price * seat_selection.selectedSeats.length).toFixed(2)} total`}
               </Text>
             </View>
           )}
@@ -509,19 +507,34 @@ function CustomerAuctionPage({ navigation, route }) {
                 {film_title.film_title}, {certificate.certificate}
               </Text>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <FontAwesome5 name="map-marker-alt" size={12} color="#f5f5f5" accessibilityLabel="map icon"/>
+                <FontAwesome5
+                  name="map-marker-alt"
+                  size={12}
+                  color="#f5f5f5"
+                  accessibilityLabel="map icon"
+                />
                 <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
                   {selectedBusiness.business_name}, {selectedBusiness.postcode}{' '}
                 </Text>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <AntDesign name="clockcircleo" size={12} color="#f5f5f5" accessibilityLabel="clock icon"/>
+                <AntDesign
+                  name="clockcircleo"
+                  size={12}
+                  color="#f5f5f5"
+                  accessibilityLabel="clock icon"
+                />
                 <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
                   {run_time.run_time} minutes
                 </Text>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Fontisto name="date" size={12} color="#f5f5f5" accessibilityLabel="calendar icon"/>
+                <Fontisto
+                  name="date"
+                  size={12}
+                  color="#f5f5f5"
+                  accessibilityLabel="calendar icon"
+                />
                 <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
                   {convertTime(start_time.start_time)}
                 </Text>
