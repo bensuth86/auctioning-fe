@@ -7,8 +7,6 @@ export const seatStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 'auto',
-    // borderBottomEndRadius: 50,
-    // borderBottomLeftRadius: 50,
     paddingBottom: 20,
     paddingTop: 20,
   },
@@ -37,11 +35,8 @@ export const seatStyles = StyleSheet.create({
     color: '#f5f5f5',
   },
   seatsContainer: {
-    // marginBottom: 100,
     width: 'auto',
-    // backgroundColor: 'yellow'
-    // borderColor: 'grey',
-    // borderWidth: 1,
+
   },
   rowContainer: {
     flexDirection: 'row',
@@ -50,71 +45,92 @@ export const seatStyles = StyleSheet.create({
     justifyContent: 'center',
     width: 'auto',
     gap: 0,
-    // borderWidth: 1 ////////////
   },
   numberedSeatButton: {
-    margin: 5,
-    padding: 5,
+    margin: 2,
+    padding: 2,
     backgroundColor: '#626262',
-    width: '60px',
-    height: '50px',
+    // width: '60px',
+    // height: '50px',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+    minWidth: 47, //////
+    minHeight: 35
+
+
   },
   availableSeatButton: {
-    margin: 5,
-    padding: 5,
+    margin: 2,
+    padding: 2,
     backgroundColor: '#7bc47f',
-    width: '57px',
-    height: '47px',
+    // width: '57px',
+    // height: '47px',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderColor: '#7bc47f',
     borderWidth: 3,
+    minWidth: 47, //////
+    minHeight: 35
+
+
   },
   auctionSeatButton: {
-    margin: 5,
-    padding: 5,
+    margin: 2,
+    padding: 2,
     backgroundColor: '#FFBF00',
-    width: '57px',
-    height: '47px',
+    // width: '57px',
+    // height: '47px',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderColor: '#FFBF00',
     borderWidth: 3,
+    minWidth: 47, //////
+    minHeight: 35
+
   },
   unavailableSeatButton: {
-    margin: 5,
-    padding: 5,
+    margin: 2,
+    padding: 2,
     backgroundColor: 'grey',
-    width: '57px',
-    height: '47px',
+    // width: '57px',
+    // height: '47px',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderColor: 'grey',
     borderWidth: 3,
+    minWidth: 47, //////
+    minHeight: 35
+
+
   },
   selectedSeatButton: {
-    margin: 5,
-    padding: 5,
+    margin: 2,
+    padding: 2,
     backgroundColor: '#7bc47f',
-    width: '57px',
-    height: '47px',
+    // width: '57px',
+    // height: '47px',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderColor: 'red',
     borderWidth: 3,
+    minWidth: 47, //////
+    minHeight: 35
+
+
   },
   selectedAuctionSeatButton: {
-    margin: 5,
-    padding: 5,
+    margin: 2,
+    padding: 2,
     backgroundColor: '#FFBF00',
-    width: '57px',
-    height: '47px',
+    // width: '57px',
+    // height: '47px',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderColor: 'red',
     borderWidth: 3,
+    minWidth: 47,
+    minHeight: 35
+    
   },
   buttontext: {
     fontSize: 10,
@@ -122,6 +138,8 @@ export const seatStyles = StyleSheet.create({
     lineHeight: 21,
     letterSpacing: 0.25,
     color: 'white',
+    textAlign: 'center'
+
   },
   textbox: {
     padding: 8,
