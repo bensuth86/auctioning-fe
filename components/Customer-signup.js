@@ -7,6 +7,7 @@ import CustomerContext from '../Contexts/LoggedInCustomerContext'
 import { Button } from '../helpers'
 import { homeStyles } from '../style-sheet-customer-home'
 import { Pressable } from 'react-native'
+import { ActivityIndicator } from 'react-native-paper'
 
 function CustomerSignUp({ navigation }) {
   const [username, setUserName] = useState('')
@@ -16,6 +17,7 @@ function CustomerSignUp({ navigation }) {
   const [visible, setVisible] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const { setCurrentCustomer } = useContext(CustomerContext)
+  const [loading, isLoading] = useState(false)
 
   useEffect(() => {
     setErrors({})
@@ -43,10 +45,12 @@ function CustomerSignUp({ navigation }) {
 
   const handleSubmit = () => {
     if (isFormValid) {
+      isLoading(true)
       const formattedPostcode = postcode.replace(/\s/g, '').toUpperCase()
       postUser({ username: username, postcode: formattedPostcode })
         .then(({ user }) => {
           setCurrentCustomer(user)
+          isLoading(false)
           navigation.navigate('CustomerHomepage')
           setSnackbarMessage('Form submitted successfully!')
           setVisible(true)
@@ -63,11 +67,12 @@ function CustomerSignUp({ navigation }) {
 
   return (
     <View style={styles.darkContainer}>
-      {/* <View style={homeStyles.topNavigation}>
-        <Pressable style={styles.backButton}>
-          <Text style={styles.backButtonText}>WELCOME PAGE</Text>
-        </Pressable>
-      </View> */}
+      {/* {loading && (
+        <View>
+          <ActivityIndicator color="red" size={'large'} />
+        </View>
+      )} */}
+
       <Text
         style={{
           color: '#f5f5f5',
@@ -98,7 +103,14 @@ function CustomerSignUp({ navigation }) {
       >
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity> */}
-      <Button btnText="SUBMIT" onPress={handleSubmit} disabled={!isFormValid} />
+      {loading ? (
+        <View>
+          <ActivityIndicator color="red" size={'large'} />
+        </View>
+      ):(
+        <Button btnText="SUBMIT" onPress={handleSubmit} disabled={!isFormValid} />
+        
+      )}
       {Object.values(errors).map((error, index) => (
         <Text key={index} style={styles.error}>
           {error}
