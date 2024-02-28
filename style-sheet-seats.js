@@ -146,22 +146,30 @@ export const seatStyles = StyleSheet.create({
   },
   bigKeyContainer: {
     flexDirection: 'row',
+    marginTop: 5
   },
   text: {
     fontFamily: 'Comfortaa-Light',
     fontSize: 12,
+    textAlign: 'center'
+
   },
   textBigger: {
     fontFamily: 'Comfortaa-Light',
     fontSize: 16,
+    textAlign: 'center'
+
   },
   textBiggerBold: {
     fontFamily: 'Comfortaa-Bold',
     fontSize: 16,
+    textAlign: 'center'
   },
   textBiggerError: {
-    fontFamily: 'Comfortaa-Bold',
-    fontSize: 16,
+    fontFamily: 'Comfortaa-Regular',
+    fontSize: 12,
     color: 'red',
+    textAlign: 'center'
+
   },
 })

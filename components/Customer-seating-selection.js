@@ -170,7 +170,7 @@ function CustomerSeating({ navigation, route }) {
                 minHeight: 700,
               }}
             >
-              <View style={{ marginTop: 10 }}>
+              <View style={{ marginTop: 10}}>
                 <Text style={seatStyles.seatHeader}>SELECT YOUR SEATING</Text>
               </View>
               <View style={seatStyles.screen}>
@@ -244,7 +244,6 @@ function CustomerSeating({ navigation, route }) {
                                 }
                                 key={seat}
                                 btnText={`£${auctionPrice}`}
-                                //btnText="test"
                                 onPress={() => {
                                   if (isSelected) {
                                     setSelectedSeats([])
@@ -254,7 +253,6 @@ function CustomerSeating({ navigation, route }) {
                                       if (auction.seat_selection.includes(seat))
                                         setSelectedSeats(auction.seat_selection)
                                     })
-                                    // setSelectedSeats([...selectedSeats, seat])
                                     eventAuctions.forEach((auction) => {
                                       if (auction.seat_selection.includes(seat))
                                         setSelectedAuction(auction)
@@ -319,7 +317,7 @@ function CustomerSeating({ navigation, route }) {
                   </View>
                 </View>
               </View>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => {
                   Alert.alert(
                     'Selection instructions',
@@ -329,14 +327,7 @@ function CustomerSeating({ navigation, route }) {
                 title="?"
               >
                 <Text></Text>
-              </TouchableOpacity>
-              {/* {selectedSeats.map((selectedSeat) => {
-          const isAuctioning = auctionSeats.includes(selectedSeat)
-
-          isAuctioning
-            ? auctionSelection.push(selectedSeat)
-            : availableSelection.push(selectedSeat)
-        })} */}
+              </TouchableOpacity> */}
               {auctionError !== '' && (
                 <View
                   style={{
@@ -350,7 +341,7 @@ function CustomerSeating({ navigation, route }) {
                 </View>
               )}
               {auctionError === '' && (
-                <View style={{ width: 'auto', height: 125 }}>
+                <View style={{ width: 'auto', height: 130, marginTop: 40}}>
                   {selectedSeats.length ? (
                     <Text style={seatStyles.textBigger}>
                       Selected seats:{' '}
