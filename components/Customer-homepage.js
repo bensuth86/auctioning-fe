@@ -187,8 +187,7 @@ function CustomerHomepage({ navigation }) {
               {eventsList.map((event, i) => {
                 const availableSeats = event.available_seats.length
                 return (
-                  <>
-                    {availableSeats > 0 ? (
+                    availableSeats > 0 ? (
                       <TouchableOpacity
                         key={i}
                         onPress={() =>
@@ -210,8 +209,7 @@ function CustomerHomepage({ navigation }) {
                       </TouchableOpacity>
                     ) : (
                       <UnavailableEventsCard key={i} event={event} />
-                    )}
-                  </>
+                    )
                 )
               })}
             </View>
