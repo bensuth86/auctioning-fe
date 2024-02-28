@@ -120,7 +120,7 @@ export function CurrentAuction({ navigation }) {
                       per seat
                     </Text>
                     <Text style={currentAuctions.text}>
-                      Ends in:{'\n'}
+                      Ends:{'\n'}
                       <Text style={currentAuctions.textBold}>
                         {convertTime(auction.time_ending)}
                       </Text>
@@ -149,7 +149,7 @@ export function CurrentAuction({ navigation }) {
                           <Text
                             style={[currentAuctions.textBold, { color: 'red' }]}
                           >
-                            loosing!
+                            losing!
                           </Text>
                         </Text>
                       )}
