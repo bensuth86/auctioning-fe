@@ -424,8 +424,8 @@ function CustomerSeating({ navigation, route }) {
                           poster: { poster },
                           certificate: { certificate },
                           run_time: { run_time },
-                          start_time: { startingPrice },
-                          start_price: { start_price },
+                          start_time: { start_time },
+                          start_price: { startingPrice },
                         })
                       }
                     />
