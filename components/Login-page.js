@@ -9,6 +9,7 @@ import { useContext } from 'react'
 import CustomerContext from '../Contexts/LoggedInCustomerContext'
 import { Alert } from 'react-native'
 import { TouchableOpacity } from 'react-native'
+import { ActivityIndicator } from 'react-native-paper'
 import { homeStyles } from '../style-sheet-customer-home'
 import { Pressable } from 'react-native'
 // import * as Device from 'expo-device';
@@ -17,6 +18,7 @@ import { Pressable } from 'react-native'
 
 function Login({ navigation, route }) {
   const usertype = route.params.usertype
+  const [loading, setLoading] = useState(false)
   const [loginName, setLoginName] = useState('')
   const [submitCustomerClicked, setCustomerSubmitClicked] = useState(false)
   const [submitBusinessClicked, setBusinessClicked] = useState(false)
@@ -108,8 +110,10 @@ function Login({ navigation, route }) {
 
   useEffect(() => {
     if (submitCustomerClicked) {
+      setLoading(true)
       getAllUsers().then((response) => {
         let foundMatch = false
+        setLoading(false)
         response.data.users.forEach((user) => {
           if (loginName === user.username) {
             // sendPushNotification(expoPushToken)
@@ -133,8 +137,10 @@ function Login({ navigation, route }) {
     }
 
     if (submitBusinessClicked) {
+      setLoading(true)
       getAllBusinesses().then((response) => {
         let foundMatch = false
+        setLoading(false)
         response.data.businesses.forEach((business) => {
           if (loginName === business.business_name) {
             // sendPushNotification(expoPushToken)
@@ -200,26 +206,33 @@ function Login({ navigation, route }) {
         {errorMessage !== '' && (
           <Text style={styles.error}>{errorMessage}</Text>
         )}
-        <Button
-          btnText="SUBMIT"
-          onPress={() => {
-            if (usertype === 'Customer') {
-              if (loginName === '') {
-                setLoginName('')
-                setErrorMessage('Required: Please enter a username')
-              } else {
-                setCustomerSubmitClicked(true)
+        {!loading ? (
+          <Button
+            btnText="SUBMIT"
+            onPress={() => {
+              if (usertype === 'Customer') {
+                if (loginName === '') {
+                  setLoginName('')
+                  setErrorMessage('Required: Please enter a username')
+                } else {
+                  setCustomerSubmitClicked(true)
+                }
+              } else if (usertype === 'Business') {
+                if (loginName === '') {
+                  setLoginName('')
+                  setErrorMessage('Required: Please enter a business name')
+                } else {
+                  setBusinessClicked(true)
+                }
               }
-            } else if (usertype === 'Business') {
-              if (loginName === '') {
-                setLoginName('')
-                setErrorMessage('Required: Please enter a business name')
-              } else {
-                setBusinessClicked(true)
-              }
-            }
-          }}
-        />
+            }}
+          />
+
+        ): (
+          <View>
+            <ActivityIndicator color="red" size={'large'}/>
+          </View>
+        )}
         <Text
           style={{
             fontFamily: 'Comfortaa-Regular',
@@ -277,6 +290,11 @@ function Login({ navigation, route }) {
             </Text>
           </TouchableOpacity>
         )}
+        {/* {loading && (
+          <View>
+            <ActivityIndicator color="red" />
+          </View>
+        )} */}
       </View>
     </ScrollView>
   )

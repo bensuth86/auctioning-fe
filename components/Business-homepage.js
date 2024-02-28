@@ -37,7 +37,7 @@ function BusinessHomepage({ navigation, route }) {
           })
           setIsLoading(false)
         })
-      }) //add error to jsx
+      })
       .catch((err) => {
         setIsLoading(false)
         if (err.msg === 'Bad request') {

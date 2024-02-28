@@ -9,6 +9,7 @@ import { Button } from '../helpers'
 import { ScrollView } from 'react-native'
 import { homeStyles } from '../style-sheet-customer-home'
 import { Pressable } from 'react-native'
+import { ActivityIndicator } from 'react-native-paper'
 
 function BusinessSignUp({ navigation }) {
   const [businessName, setBusinessName] = useState('')
@@ -20,6 +21,7 @@ function BusinessSignUp({ navigation }) {
   const [selectedRow, setSelectedRow] = useState('')
   const [selectedColumn, setSelectedColumn] = useState('')
   const [success, setSuccess] = useState(false)
+  const [loading, isLoading] = useState(false)
 
   useEffect(() => {
     setErrors({})
@@ -46,6 +48,7 @@ function BusinessSignUp({ navigation }) {
 
   const handleSubmit = () => {
     if (isFormValid) {
+      isLoading(true)
       const formattedPostcode = postcode.replace(/\s/g, '').toUpperCase()
       const seatGrid = generateSeatGrid(
         parseInt(selectedRow),
@@ -53,6 +56,7 @@ function BusinessSignUp({ navigation }) {
       )
       postBusiness({ business_name: businessName }, formattedPostcode, seatGrid)
         .then(() => {
+          isLoading(false)
           navigation.navigate('Login', { usertype: 'Business' })
           console.log('Form submitted successfully!')
           setSnackbarMessage(
@@ -97,11 +101,6 @@ function BusinessSignUp({ navigation }) {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.darkContainer}>
-      {/* <View style={homeStyles.topNavigation}>
-        <Pressable style={styles.backButton}>
-          <Text style={styles.backButtonText}>WELCOME PAGE</Text>
-        </Pressable>
-      </View> */}
         <Text
           style={{
             color: '#f5f5f5',
@@ -168,11 +167,17 @@ function BusinessSignUp({ navigation }) {
             />
           </View>
         </View>
-        <Button
-          btnText="SUBMIT"
-          onPress={handleSubmit}
-          disabled={!isFormValid}
-        />
+        {loading ? (
+          <View>
+            <ActivityIndicator color="red" size={'large'} />
+          </View>
+        ) : (
+          <Button
+            btnText="SUBMIT"
+            onPress={handleSubmit}
+            disabled={!isFormValid}
+          />
+        )}
         {Object.values(errors).map((error, index) => (
           <Text key={index} style={styles.error}>
             {error}
