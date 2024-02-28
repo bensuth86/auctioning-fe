@@ -158,6 +158,13 @@ function CustomerAuctionPage({ navigation, route }) {
       bid_counter: 1,
       active: true,
     })
+    setCountdownStructure({
+      days: 0,
+      hours: 0,
+      minutes: 4,
+      seconds: 59,
+      ended: null,
+    })
     getCountdown(new Date().setMinutes(new Date().getMinutes() + 5))
     setCountdown(true)
     setTempUser(currentCustomer.username)
