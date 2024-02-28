@@ -48,7 +48,7 @@ function CustomerSeating({ navigation, route }) {
   const [seatingPlan, setSeatingPlan] = useState([])
   const auctionSelection = []
   const availableSelection = []
-  const [startingPrice, setStartingPrice] = useState([])
+  const [startingPrice, setStartingPrice] = useState(start_time)
   const [loading, setIsLoading] = useState('true')
   const [err, setErr] = useState('false')
   const [auctionError, setAuctionError] = useState('')
@@ -82,7 +82,7 @@ function CustomerSeating({ navigation, route }) {
             'Sorry - the business ID does not exist.\nCannot fetch the seating selection.'
           )
         }
-        if (err.response.data.msg === 'Bad request') {
+        if (err.response.data.msg === 'Bad Request') {
           setIsLoading(false)
           setErrorMessage(
             'Sorry - the business ID is invalid.\nCannot fetch the seating selection.'
@@ -93,8 +93,9 @@ function CustomerSeating({ navigation, route }) {
   }, [business_id, isFocused])
 
   useEffect(() => {
-    setAvailableSeats(available_seats)
-    setStartingPrice(start_price)
+    getEventByEventId(event_id).then((response) =>
+      setAvailableSeats(response.available_seats)
+    )
     setSelectedSeats([])
   }, [isFocused])
 
@@ -123,7 +124,7 @@ function CustomerSeating({ navigation, route }) {
             'Sorry - the event does not exist.\nBidding is not available.'
           )
         }
-        if (err.response.data.msg === 'Bad request') {
+        if (err.response.data.msg === 'Bad Request') {
           setIsLoading(false)
           setAuctionError('Sorry - Bad request 400.\nBidding is not available.')
         }
@@ -166,10 +167,10 @@ function CustomerSeating({ navigation, route }) {
                 width: '100%',
                 justifyContent: 'center',
                 alignItems: 'center',
-                minHeight: 700
+                minHeight: 700,
               }}
             >
-              <View style={{marginTop: 10}}>
+              <View style={{ marginTop: 10 }}>
                 <Text style={seatStyles.seatHeader}>SELECT YOUR SEATING</Text>
               </View>
               <View style={seatStyles.screen}>
@@ -349,7 +350,7 @@ function CustomerSeating({ navigation, route }) {
                 </View>
               )}
               {auctionError === '' && (
-                <View style={{width: 'auto', height: 125}}>
+                <View style={{ width: 'auto', height: 125 }}>
                   {selectedSeats.length ? (
                     <Text style={seatStyles.textBigger}>
                       Selected seats:{' '}
@@ -400,70 +401,61 @@ function CustomerSeating({ navigation, route }) {
                       Seats must be in the same row.
                     </Text>
                   ) : null}
-                  {
-                    auctionSelection.length && availableSelection.length ? (
-                      <>
-                        <View style={seatStyles.errorContainer}>
-                          <Text style={seatStyles.textbox}>
-                            You cannot select tickets both in auction and not in
-                            auction.
-                          </Text>
-                        </View>
-                      </>
-                    ) : selectedSeats.length &&
-                      !Object.keys(selectedAuction).length ? (
-                      <Button
-                        key={'auctionButton'}
-                        btnText="START AUCTION"
-                        onPress={() =>
-                          navigation.navigate('AuctionPage', {
-                            //  auction_info: { auctionSeatInfo },
-                            seat_selection: { selectedSeats },
-                            event_id: { event_id },
-                            business_id: { business_id },
-                            film_title: { film_title },
-                            poster: { poster },
-                            certificate: { certificate },
-                            run_time: { run_time },
-                            start_time: { start_time },
-                            available_seats: { available_seats },
-                            active: { active },
-                            start_price: { start_price },
-                          })
-                        }
-                      />
-                    ) : selectedSeats.length &&
-                      Object.keys(selectedAuction).length ? (
-                      <Button
-                        key={'auctionButton'}
-                        btnText="GO TO AUCTION"
-                        onPress={() =>
-                          navigation.navigate('AuctionPage', {
-                            // auction_info: { auctionSeatInfo },
-                            seat_selection: { selectedSeats },
-                            event_id: { event_id },
-                            business_id: { business_id },
-                            film_title: { film_title },
-                            poster: { poster },
-                            certificate: { certificate },
-                            run_time: { run_time },
-                            start_time: { start_time },
-                            available_seats: { available_seats },
-                            active: { active },
-                            start_price: { start_price },
-                            selectedAuction: selectedAuction.auction_id,
-                          })
-                        }
-                      />
-                    ) :
-                    (
-                      <DisabledButton
-                        key={'auctionButton'}
-                        style={{ color: 'pink' }}
-                        btnText="GO TO AUCTION"
-                      />
-                    )
-                  }
+                  {auctionSelection.length && availableSelection.length ? (
+                    <>
+                      <View style={seatStyles.errorContainer}>
+                        <Text style={seatStyles.textbox}>
+                          You cannot select tickets both in auction and not in
+                          auction.
+                        </Text>
+                      </View>
+                    </>
+                  ) : selectedSeats.length &&
+                    !Object.keys(selectedAuction).length ? (
+                    <Button
+                      key={'auctionButton'}
+                      btnText="START AUCTION"
+                      onPress={() =>
+                        navigation.navigate('AuctionPage', {
+                          seat_selection: { selectedSeats },
+                          event_id: { event_id },
+                          business_id: { business_id },
+                          film_title: { film_title },
+                          poster: { poster },
+                          certificate: { certificate },
+                          run_time: { run_time },
+                          start_time: { startingPrice },
+                          start_price: { start_price },
+                        })
+                      }
+                    />
+                  ) : selectedSeats.length &&
+                    Object.keys(selectedAuction).length ? (
+                    <Button
+                      key={'auctionButton'}
+                      btnText="GO TO AUCTION"
+                      onPress={() =>
+                        navigation.navigate('AuctionPage', {
+                          seat_selection: { selectedSeats },
+                          event_id: { event_id },
+                          business_id: { business_id },
+                          film_title: { film_title },
+                          poster: { poster },
+                          certificate: { certificate },
+                          run_time: { run_time },
+                          start_time: { start_time },
+                          start_price: { startingPrice },
+                          selectedAuction: selectedAuction.auction_id,
+                        })
+                      }
+                    />
+                  ) : (
+                    <DisabledButton
+                      key={'auctionButton'}
+                      style={{ color: 'pink' }}
+                      btnText="GO TO AUCTION"
+                    />
+                  )}
                 </View>
               )}
             </View>
