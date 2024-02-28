@@ -76,6 +76,7 @@ function SelectedEvent({ event_id }) {
           <Image
             source={{ uri: selectedEvent.poster }}
             style={{ width: 112.5, height: 166.5 }}
+            accessibilityLabel={`${selectedEvent.film_title} poster`}
           />
         </View>
         <View style={selectedMovieStyle.eventInfo}>
@@ -83,19 +84,19 @@ function SelectedEvent({ event_id }) {
             {selectedEvent.film_title}, {selectedEvent.certificate}
           </Text>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <FontAwesome5 name="map-marker-alt" size={12} color="#f5f5f5" />
+            <FontAwesome5 name="map-marker-alt" size={12} color="#f5f5f5" accessibilityLabel="map icon"/>
             <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
               {selectedBusiness.business_name}, {selectedBusiness.postcode}{' '}
             </Text>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <AntDesign name="clockcircleo" size={12} color="#f5f5f5" />
+            <AntDesign name="clockcircleo" size={12} color="#f5f5f5" accessibilityLabel="clock icon"/>
             <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
               {selectedEvent.run_time} minutes
             </Text>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Fontisto name="date" size={12} color="#f5f5f5" />
+            <Fontisto name="date" size={12} color="#f5f5f5" accessibilityLabel="calendar icon"/>
             <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
               {convertTime(selectedEvent.start_time)}
             </Text>

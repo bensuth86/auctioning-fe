@@ -144,7 +144,7 @@ function CustomerHomepage({ navigation }) {
                   style={homeStyles.adjustments}
                   onPress={decreaseRadius}
                 >
-                  <AntDesign name="minus" size={24} color="black" />
+                  <AntDesign name="minus" size={24} color="black" accessibilityLabel="minus icon"/>
                 </TouchableOpacity>
                 <TextInput
                   value={radius.toString()}
@@ -156,7 +156,7 @@ function CustomerHomepage({ navigation }) {
                   style={homeStyles.adjustments}
                   onPress={increaseRadius}
                 >
-                  <AntDesign name="plus" size={24} color="black" />
+                  <AntDesign name="plus" size={24} color="black" accessibilityLabel="addition icon"/>
                 </TouchableOpacity>
               </View>
               <Button btnText={'SUBMIT'} onPress={() => submitRadius()} />

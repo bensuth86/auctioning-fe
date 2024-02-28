@@ -244,6 +244,7 @@ function BusinessCreateScreening({ navigation }) {
                           uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`,
                         }}
                         style={{ width: 130, height: 180.5 }}
+                        accessibilityLabel={`${item.title} poster`}
                       />
                     </View>
                   </TouchableOpacity>

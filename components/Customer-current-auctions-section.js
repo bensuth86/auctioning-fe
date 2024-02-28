@@ -99,7 +99,7 @@ export function CurrentAuction({ navigation }) {
                 <View key={i} style={currentAuctions.container}>
                   <View style={currentAuctions.left}>
                     <Text style={{ textAlign: 'left', paddingLeft: 10 }}>
-                      <Feather name="mouse-pointer" size={20} color="#f5f5f5" />
+                      <Feather name="mouse-pointer" size={20} color="#f5f5f5" accessibilityLabel="click icon"/>
                     </Text>
                   </View>
                   <View style={currentAuctions.right}>

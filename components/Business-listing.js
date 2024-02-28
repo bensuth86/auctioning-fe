@@ -108,11 +108,6 @@ function BusinessListing({ navigation }) {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.darkContainer}>
-        {/* <View style={homeStyles.topNavigation}>
-          <Pressable style={styles.backButton}>
-            <Text style={styles.backButtonText}>FILMS</Text>
-          </Pressable>
-        </View> */}
         <View style={{ maxWidth: 300 }}>
           <Text
             style={{
@@ -213,7 +208,7 @@ function BusinessListing({ navigation }) {
                 style={homeStyles.adjustments}
                 onPress={decreasePrice}
               >
-                <AntDesign name="minus" size={24} color="#f5f5f5" />
+                <AntDesign name="minus" size={24} color="#f5f5f5" accessibilityLabel="minus icon"/>
               </TouchableOpacity>
               <TextInput
                 value={`£${price.toString()}`}
@@ -232,7 +227,7 @@ function BusinessListing({ navigation }) {
                 style={homeStyles.adjustments}
                 onPress={increasePrice}
               >
-                <AntDesign name="plus" size={24} color="#f5f5f5" />
+                <AntDesign name="plus" size={24} color="#f5f5f5" accessibilityLabel="addition icon"/>
               </TouchableOpacity>
             </View>
           </View>

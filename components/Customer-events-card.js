@@ -28,6 +28,7 @@ export function EventsCard({ event }) {
         <Image
           style={{ width: 160, height: 230.5 }}
           source={{ uri: event.poster }}
+          accessibilityLabel={`${event.film_title} poster`}
         />
         <View style={eventStyles.rightSide}>
           <Text style={eventStyles.cardText}>
@@ -35,29 +36,29 @@ export function EventsCard({ event }) {
             {event.postcode}
           </Text>
           <Text style={eventStyles.cardText}>
-            {<FontAwesome5 name="map-marker-alt" size={12} color="black" />}{' '}
+            {<FontAwesome5 name="map-marker-alt" size={12} color="black" accessibilityLabel="map marker icon"/>}{' '}
             {event.distance_in_miles.toFixed(2)} miles
           </Text>
           <Text style={eventStyles.cardText}>
-            <AntDesign name="clockcircleo" size={12} color="black" />{' '}
+            <AntDesign name="clockcircleo" size={12} color="black" accessibilityLabel="clock icon"/>{' '}
             {event.run_time} minutes
           </Text>
           <Text style={eventStyles.cardText}>
-            {<FontAwesome5 name="money-bill-alt" size={12} color="black" />}{' '}
+            {<FontAwesome5 name="money-bill-alt" size={12} color="black" accessibilityLabel="cash note icon"/>}{' '}
             Pricing from{'\n'}£{Number(event.start_price).toFixed(2)}
           </Text>
           <Text style={eventStyles.cardText}>
-            <MaterialIcons name="event-seat" size={12} color="black" /> Seats
+            <MaterialIcons name="event-seat" size={12} color="black" accessibilityLabel="cinema chair icon"/> Seats
             left: {event.available_seats.length}
           </Text>
           <Text style={eventStyles.cardText}>
-            {<Fontisto name="date" size={12} color="black" />}{' '}
+            {<Fontisto name="date" size={12} color="black" accessibilityLabel="calendar icon"/>}{' '}
             {convertTime(event.start_time)}
           </Text>
         </View>
       </View>
           <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-            <Feather name="mouse-pointer" size={25} color="#7bc47f" />
+            <Feather name="mouse-pointer" size={25} color="#7bc47f" accessibilityLabel="click icon"/>
           </View>
     </View>
   )
@@ -72,11 +73,11 @@ export function UnavailableEventsCard({ event }) {
           {event.certificate}
         </Text>
       </Text>
-      {/* <Text style={{marginTop: 20}}>SOLD OUT</Text> */}
       <View style={eventStyles.mainContent}>
         <Image
           style={{ width: 160, height: 230.5, opacity: 0.3 }}
           source={{ uri: event.poster }}
+          accessibilityLabel={`${event.film_title} poster`}
         />
 
         <View style={eventStyles.rightSide}>
@@ -85,20 +86,20 @@ export function UnavailableEventsCard({ event }) {
             {event.postcode}
           </Text>
           <Text style={eventStyles.unavailcardText}>
-            {<FontAwesome5 name="map-marker-alt" size={12} color="grey" />}{' '}
+            {<FontAwesome5 name="map-marker-alt" size={12} color="grey" accessibilityLabel="map marker icon"/>}{' '}
             {event.distance_in_miles.toFixed(2)} miles
           </Text>
           <Text style={eventStyles.unavailcardText}>
-            <AntDesign name="clockcircleo" size={12} color="grey" />{' '}
+            <AntDesign name="clockcircleo" size={12} color="grey" accessibilityLabel="clock icon"/>{' '}
             {event.run_time} minutes
           </Text>
           <Text style={eventStyles.unavailcardText}>
-            {<FontAwesome5 name="money-bill-alt" size={12} color="grey" />}{' '}
+            {<FontAwesome5 name="money-bill-alt" size={12} color="grey" accessibilityLabel="cash note icon"/>}{' '}
             Pricing from{'\n'}
             {Number(event.start_price).toFixed(2)}
           </Text>
           <Text style={eventStyles.unavailcardText}>
-            {<Fontisto name="date" size={12} color="grey" />}{' '}
+            {<Fontisto name="date" size={12} color="grey" accessibilityLabel="calendar icon"/>}{' '}
             {convertTime(event.start_time)}
           </Text>
         </View>
@@ -109,5 +110,3 @@ export function UnavailableEventsCard({ event }) {
     </View>
   )
 }
-
-///add vector
