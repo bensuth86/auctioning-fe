@@ -71,7 +71,7 @@ function BusinessHomepage({ navigation, route }) {
   if (isLoading)
     return (
       <View style={styles.darkContainer}>
-        <ActivityIndicator color="red" size={'large'}/>
+        <ActivityIndicator color="red" size={'large'} />
       </View>
     )
 
@@ -157,6 +157,7 @@ function BusinessHomepage({ navigation, route }) {
                 textAlign: 'center',
                 marginTop: 40,
                 marginBottom: 40,
+                lineHeight: 26.5,
               }}
             >
               Here are your {active ? 'active' : 'past'} events{'\n'}at location{' '}
@@ -167,11 +168,11 @@ function BusinessHomepage({ navigation, route }) {
             </Text>
             {eventLoading ? (
               <View style={{ flex: 1 }}>
-                <ActivityIndicator color="red" size={'large'}/>
+                <ActivityIndicator color="red" size={'large'} />
               </View>
             ) : (
               <View style={eventStyles.eventcard}>
-                {!events.length && (
+                {!events.length && active && (
                   <Text
                     style={{
                       fontFamily: 'Comfortaa-Regular',
@@ -181,11 +182,30 @@ function BusinessHomepage({ navigation, route }) {
                       marginTop: 40,
                       marginBottom: 40,
                       color: 'red',
+                      lineHeight: 20,
                     }}
                   >
-                    Sorry, no events to show!
+                    You do not have any events listed.{'\n'}Create a new listing
+                    with the button above!
                   </Text>
                 )}
+                {!events.length && !active && (
+                  <Text
+                    style={{
+                      fontFamily: 'Comfortaa-Regular',
+                      color: '#f5f5f5',
+                      fontSize: 12,
+                      textAlign: 'center',
+                      marginTop: 40,
+                      marginBottom: 40,
+                      color: 'red',
+                      lineHeight: 20,
+                    }}
+                  >
+                    You do not have any past events.
+                  </Text>
+                )}
+
                 {events.map((event) => (
                   <View key={event.event_id} style={eventStyles.eventcard}>
                     <Text style={orderHistory.cardHeader}>

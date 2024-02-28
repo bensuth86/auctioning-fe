@@ -55,13 +55,16 @@ function BusinessSignUp({ navigation }) {
         parseInt(selectedColumn)
       )
       postBusiness({ business_name: businessName }, formattedPostcode, seatGrid)
-        .then(() => {
+        .then((response) => {
           isLoading(false)
-          navigation.navigate('Login', { usertype: 'Business' })
-          console.log('Form submitted successfully!')
-          setSnackbarMessage(
-            'Business account created successfully! Please go to login...'
-          )
+          // navigation.navigate('Login', { usertype: 'Business' })
+          navigation.navigate('BusinessHomepage', {
+            business_id: response.business.business_id,
+            success: null,
+          })
+          // setSnackbarMessage(
+          //   'Business account created successfully! Please go to login...'
+          // )
           setVisible(true)
           setPostcode('')
           setBusinessName('')
@@ -70,7 +73,6 @@ function BusinessSignUp({ navigation }) {
           setSuccess(true)
         })
         .catch((error) => {
-          console.error('Error submitting form:', error)
           setSnackbarMessage('Failed to submit form. Please try again.')
           setVisible(true)
         })
@@ -80,22 +82,22 @@ function BusinessSignUp({ navigation }) {
   }
 
   const data = [
-    { key: '1', value: '1' },
-    { key: '2', value: '2' },
-    { key: '3', value: '3' },
-    { key: '4', value: '4' },
-    { key: '5', value: '5' },
-    { key: '6', value: '6' },
-    { key: '7', value: '7' },
+    { key: '1', value: '1 row' },
+    { key: '2', value: '2 rows' },
+    { key: '3', value: '3 rows' },
+    { key: '4', value: '4 rows' },
+    { key: '5', value: '5 rows' },
+    { key: '6', value: '6 rows' },
+    { key: '7', value: '7rows' },
   ]
   const data2 = [
-    { key: '1', value: '1' },
-    { key: '2', value: '2' },
-    { key: '3', value: '3' },
-    { key: '4', value: '4' },
-    { key: '5', value: '5' },
-    { key: '6', value: '6' },
-    { key: '7', value: '7' },
+    { key: '1', value: '1 column' },
+    { key: '2', value: '2 columns' },
+    { key: '3', value: '3 columns' },
+    { key: '4', value: '4 columns' },
+    { key: '5', value: '5 columns' },
+    { key: '6', value: '6 columns' },
+    { key: '7', value: '7 columns' },
   ]
 
   return (
@@ -110,7 +112,7 @@ function BusinessSignUp({ navigation }) {
             textAlign: 'center',
           }}
         >
-          Become an **APP NAME** seller
+          Become an TicketDash seller
         </Text>
         <TextInput
           style={styles.textboxLight}
