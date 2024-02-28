@@ -35,6 +35,7 @@ function BusinessListing({ navigation }) {
   const [mode, setMode] = useState('date')
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const [visible, setVisible] = useState(false)
+  const [submitLoading, setSubmitLoading] = useState(false)
   const today = new Date()
 
   useEffect(() => {
@@ -81,13 +82,16 @@ function BusinessListing({ navigation }) {
   }
 
   function handleListing() {
+    setSubmitLoading(true)
     postNewEvent(new_event)
       .then(() => {
+        setSubmitLoading(false)
         setVisible(true)
         setSnackbarMessage("Success! You've listed a new event.")
         navigation.navigate('BusinessHomepage', { business_id, success: true })
       })
       .catch((err) => {
+        setSubmitLoading(false)
         setVisible(true)
         setSnackbarMessage('Error posting a new listing... please try again.')
         console.log(err)
@@ -337,9 +341,14 @@ function BusinessListing({ navigation }) {
                   You must set a date more than 1 hour in the future.
                 </Text>
               </View>
-            ) : selectedSeats.length > 0 ? (
+            ) : selectedSeats.length > 0 && !submitLoading? (
               <Button btnText={'LIST EVENT'} onPress={handleListing} />
-            ) : (
+            ) : submitLoading ? (
+              <View>
+              <ActivityIndicator color="red" size={'large'}/>
+            </View>
+            )
+            :(
               <View>
                 <Text
                   style={[
