@@ -166,74 +166,65 @@ function BusinessHomepage({ navigation, route }) {
                 </Text>
               )}
               {events.map((event) => (
-                <>
+                <View key={event.event_id} style={eventStyles.eventcard}>
                   <Text style={orderHistory.cardHeader}>
                     <Text style={orderHistory.cardHeaderBold}>
                       {event.film_title}, {event.certificate}
                     </Text>
                   </Text>
-                  <View
-                    key={`${event.event_id}25`}
-                    style={eventStyles.eventcard}
-                  >
-                    <View
-                      key={`${event.event_id}26`}
-                      style={eventStyles.mainContent}
-                    >
-                      <Image
-                        key={`${event.event_id}27`}
-                        source={{ uri: event.poster }}
-                        style={{ width: 150.5, height: 230 }}
-                      />
-                      <View style={eventStyles.rightSide}>
-                        {event.available_seats.length === 0 ? (
-                          <Text style={orderHistory.sideInfoHeaders}>
-                            Seats left:{'\n'}
-                            <Text style={orderHistory.info}>sold out!</Text>
-                          </Text>
-                        ) : (
-                          <Text style={orderHistory.sideInfoHeaders}>
-                            Seats left:{'\n'}
-                            <Text style={orderHistory.info}>
-                              {event.available_seats.length}
-                            </Text>
-                          </Text>
-                        )}
+                  <View style={eventStyles.mainContent}>
+                    <Image
+                      source={{ uri: event.poster }}
+                      style={{ width: 150.5, height: 230 }}
+                    />
+                    <View style={eventStyles.rightSide}>
+                      {event.available_seats.length === 0 ? (
                         <Text style={orderHistory.sideInfoHeaders}>
-                          Run time:{'\n'}
+                          Seats left:{'\n'}
+                          <Text style={orderHistory.info}>sold out!</Text>
+                        </Text>
+                      ) : (
+                        <Text style={orderHistory.sideInfoHeaders}>
+                          Seats left:{'\n'}
                           <Text style={orderHistory.info}>
-                            <AntDesign
-                              name="clockcircleo"
+                            {event.available_seats.length}
+                          </Text>
+                        </Text>
+                      )}
+                      <Text style={orderHistory.sideInfoHeaders}>
+                        Run time:{'\n'}
+                        <Text style={orderHistory.info}>
+                          <AntDesign
+                            name="clockcircleo"
+                            size={12}
+                            color="#f5f5f5"
+                          />{' '}
+                          {event.run_time} minutes
+                        </Text>
+                      </Text>
+                      <Text style={orderHistory.sideInfoHeaders}>
+                        Starting price:{'\n'}
+                        <Text style={orderHistory.info}>
+                          {
+                            <FontAwesome5
+                              name="money-bill-wave"
                               size={12}
                               color="#f5f5f5"
-                            />{' '}
-                            {event.run_time} minutes
-                          </Text>
+                            />
+                          }{' '}
+                          £{Number(event.start_price).toFixed(2)}
                         </Text>
-                        <Text style={orderHistory.sideInfoHeaders}>
-                          Starting price:{'\n'}
-                          <Text style={orderHistory.info}>
-                            {
-                              <FontAwesome5
-                                name="money-bill-wave"
-                                size={12}
-                                color="#f5f5f5"
-                              />
-                            }{' '}
-                            £{Number(event.start_price).toFixed(2)}
-                          </Text>
+                      </Text>
+                      <Text style={orderHistory.sideInfoHeaders}>
+                        Screening date:{'\n'}
+                        <Text style={orderHistory.info}>
+                          <Fontisto name="date" size={12} color="#f5f5f5" />{' '}
+                          {convertTime(event.start_time)}
                         </Text>
-                        <Text style={orderHistory.sideInfoHeaders}>
-                          Screening date:{'\n'}
-                          <Text style={orderHistory.info}>
-                            <Fontisto name="date" size={12} color="#f5f5f5" />{' '}
-                            {convertTime(event.start_time)}
-                          </Text>
-                        </Text>
-                      </View>
+                      </Text>
                     </View>
                   </View>
-                </>
+                </View>
               ))}
             </View>
           </>
