@@ -46,14 +46,14 @@ function CustomerAuctionPage({ navigation, route }) {
   const [apiErr, setApiErr] = useState(null)
   const [selectedBusiness, setSelectedBusiness] = useState({})
   const [successBidMessage, setSuccessBidMessage] = useState(false)
-  const [fontsLoaded] = useFonts({
-    'Comfortaa-Bold': require('../assets/Fonts/Comfortaa-Bold.ttf'),
-    'Comfortaa-Light': require('../assets/Fonts/Comfortaa-Light.ttf'),
-    'Comfortaa-Medium': require('../assets/Fonts/Comfortaa-Medium.ttf'),
-    'Comfortaa-Regular': require('../assets/Fonts/Comfortaa-Regular.ttf'),
-    'Comfortaa-SemiBold': require('../assets/Fonts/Comfortaa-SemiBold.ttf'),
-    'KodeMono-Regular': require('../assets/Fonts/KodeMono-Regular.ttf'),
-  })
+  // const [fontsLoaded] = useFonts({
+  //   'Comfortaa-Bold': require('../assets/Fonts/Comfortaa-Bold.ttf'),
+  //   'Comfortaa-Light': require('../assets/Fonts/Comfortaa-Light.ttf'),
+  //   'Comfortaa-Medium': require('../assets/Fonts/Comfortaa-Medium.ttf'),
+  //   'Comfortaa-Regular': require('../assets/Fonts/Comfortaa-Regular.ttf'),
+  //   'Comfortaa-SemiBold': require('../assets/Fonts/Comfortaa-SemiBold.ttf'),
+  //   'KodeMono-Regular': require('../assets/Fonts/KodeMono-Regular.ttf'),
+  // })
   const createAlert = (msg) =>
     Alert.alert('A new bid!', msg, [
       { text: 'OK', onPress: () => console.log('OK Pressed') },
@@ -91,7 +91,7 @@ function CustomerAuctionPage({ navigation, route }) {
   //console.log(displayAuction)
   useEffect(() => {
     function onBidEvent(bidData) {
-      console.log(displayAuction, 'inside')
+      // console.log(displayAuction, 'inside')
       if (
         seat_selection.selectedSeats.some((seat) =>
           bidData.seats.includes(seat)
@@ -280,6 +280,7 @@ function CustomerAuctionPage({ navigation, route }) {
     }, 1000)
   }
 
+  // console.log('start time', start_time)
   if (isLoading) {
     return (
       <View style={styles.darkContainer}>
@@ -300,14 +301,38 @@ function CustomerAuctionPage({ navigation, route }) {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.darkContainer}>
-        {/* <View style={styles.topNavStrip}>
-          <Pressable style={styles.backButton}>
-            <Text style={styles.backButtonText}>← SEATING</Text>
-          </Pressable>
-        </View> */}
+        <View>
+          <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 10}}>
+            <Text style={[selectedMovieStyle.eventHeader, {marginBottom: 0}]}>
+              {film_title.film_title}, <Text style={{fontFamily:'Comfortaa-Light' }}>{certificate.certificate}</Text>
+            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <FontAwesome5
+                name="map-marker-alt"
+                size={12}
+                color='rgba(255, 255, 255, 0.4)'
+                accessibilityLabel="map icon"
+              />
+              <Text style={[selectedMovieStyle.text, { marginLeft: 5, color: 'rgba(255, 255, 255, 0.4)' }]}>
+                {selectedBusiness.business_name}, {selectedBusiness.postcode}{' '}
+              </Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Fontisto
+                name="date"
+                size={12}
+                color='rgba(255, 255, 255, 0.4)'
+                accessibilityLabel="calendar icon"
+              />
+              <Text style={[selectedMovieStyle.text, { marginLeft: 5, color: 'rgba(255, 255, 255, 0.4)' }]}>
+                {convertTime(start_time.start_time)}
+              </Text>
+            </View>
+          </View>
+        </View>
         {countdown && (
           <View style={auctionStyles.timerContainer}>
-            <Text style={auctionStyles.text}>TIME LEFT: </Text>
+            <Text style={{color: 'rgba(255, 255, 255, 0.4)', fontFamily: 'Comfortaa-Light', fontSize: 12}}>Auction ends in: </Text>
             <Text style={auctionStyles.countdownFont}>
               {countdownStructure.days}d {countdownStructure.hours}h{' '}
               {countdownStructure.minutes}m {countdownStructure.seconds}s
@@ -548,14 +573,7 @@ function CustomerAuctionPage({ navigation, route }) {
               </Text>
             </View>
           )}
-          <View style={[selectedMovieStyle.eventContainer, { padding: 20 }]}>
-            <View style={selectedMovieStyle.imageContainer}>
-              <Image
-                source={{ uri: poster.poster }}
-                style={{ width: 112.5, height: 166.5 }}
-                accessibilityLabel={`${film_title.film_title} poster`}
-              />
-            </View>
+          {/* <View style={[selectedMovieStyle.eventContainer, { padding: 20 }]}>
             <View style={selectedMovieStyle.eventInfo}>
               <Text style={selectedMovieStyle.eventHeader}>
                 {film_title.film_title}, {certificate.certificate}
@@ -572,17 +590,6 @@ function CustomerAuctionPage({ navigation, route }) {
                 </Text>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <AntDesign
-                  name="clockcircleo"
-                  size={12}
-                  color="#f5f5f5"
-                  accessibilityLabel="clock icon"
-                />
-                <Text style={[selectedMovieStyle.text, { marginLeft: 5 }]}>
-                  {run_time.run_time} minutes
-                </Text>
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Fontisto
                   name="date"
                   size={12}
@@ -594,7 +601,7 @@ function CustomerAuctionPage({ navigation, route }) {
                 </Text>
               </View>
             </View>
-          </View>
+          </View> */}
         </View>
       </View>
     </ScrollView>
