@@ -1,18 +1,13 @@
 import { StyleSheet } from 'react-native'
 
 export const orderHistory = StyleSheet.create({
-  // container: {
-  //     backgroundColor: 'yellow',
-  // },
   individualContainer: {
     marginBottom: 70,
     padding: 5,
-    // borderWidth: 1,
     flexDirection: 'row',
     height: 'auto',
   },
   rightSideContainer: {
-    // backgroundColor: 'white',
     flexDirection: 'column',
     justifyContent: 'space-between',
     width: 150,
@@ -52,7 +47,6 @@ export const orderHistory = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    // backgroundColor: 'red',
     padding: 20,
     width: '100%'
   }
