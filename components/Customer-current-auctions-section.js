@@ -10,7 +10,6 @@ import { convertTime } from '../helpers'
 import { currentAuctions } from '../style-sheet-current-auctions'
 import { ActivityIndicator } from 'react-native-paper'
 import { useIsFocused } from '@react-navigation/native'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Feather } from '@expo/vector-icons'
 
 export function CurrentAuction({ navigation }) {
