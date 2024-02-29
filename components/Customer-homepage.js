@@ -1,12 +1,9 @@
-/* eslint-disable react/jsx-key */
-/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
 import {
   View,
   ScrollView,
   Text,
   TouchableOpacity,
-  StyleSheet,
   ActivityIndicator,
 } from 'react-native'
 import { Button } from '../helpers'
@@ -186,7 +183,13 @@ function CustomerHomepage({ navigation }) {
                   <Button btnText={'SUBMIT'} onPress={() => submitRadius()} />
                 </View>
                 {resultsLoad ? (
-                  <View style={{height: 600, justifyContent: 'flex-start', alignItems: 'center'}}>
+                  <View
+                    style={{
+                      height: 600,
+                      justifyContent: 'flex-start',
+                      alignItems: 'center',
+                    }}
+                  >
                     <ActivityIndicator color="red" size={'large'} />
                   </View>
                 ) : (

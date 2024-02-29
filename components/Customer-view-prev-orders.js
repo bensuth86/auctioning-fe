@@ -1,6 +1,6 @@
 import { View, Text, ScrollView } from 'react-native'
 import { styles } from '../style-sheet'
-import { getEventByEventId, getWonAuctionsByUser } from '../utils'
+import { getWonAuctionsByUser } from '../utils'
 import CustomerContext from '../Contexts/LoggedInCustomerContext'
 import { useContext } from 'react'
 import { useEffect } from 'react'
@@ -9,13 +9,12 @@ import { orderHistory } from '../style-sheet-previous-orders'
 import { Image } from 'react-native'
 import { convertTime } from '../helpers'
 import { ActivityIndicator } from 'react-native-paper'
-import { homeStyles } from '../style-sheet-customer-home'
 import { Pressable, Modal } from 'react-native'
 import QRCode from 'react-native-qrcode-svg'
 import { Button } from '../helpers'
 
 export function PreviousOrders({ navigation }) {
-  const { currentCustomer, setCurrentCustomer } = useContext(CustomerContext)
+  const { currentCustomer } = useContext(CustomerContext)
   const [allOrders, setAllOrders] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [showQRCode, setShowQRCode] = useState(false)
@@ -47,7 +46,7 @@ export function PreviousOrders({ navigation }) {
   if (isLoading)
     return (
       <View style={styles.darkContainer}>
-        <ActivityIndicator color="red" size={'large'}/>
+        <ActivityIndicator color="red" size={'large'} />
       </View>
     )
 
@@ -168,83 +167,75 @@ export function PreviousOrders({ navigation }) {
               <Text style={styles.error}>Looks like you have no orders!</Text>
             ) : (
               <>
-              <Text style={{
-                color: 'rgba(255, 255, 255, 0.4)',
-                fontFamily: 'Comfortaa-Light',
-                fontSize: 12,
-                textAlign: 'center',
-                width: '90%',
-                marginBottom: 20,
-              }}>Sorted by most recent screening date:</Text>
-              <View style={orderHistory.container}>
-                {allOrders.map((order, i) => (
-                  <View key={order.auction_id}>
-                    <Text style={orderHistory.cardHeader}>
-                      <Text style={orderHistory.cardHeaderBold}>
-                        {order.film_title},
-                      </Text>{' '}
-                      {'\n'}
-                      {order.business_name}
-                    </Text>
-                    <View key={i} style={orderHistory.individualContainer}>
-                      <Image
-                        source={{ uri: order.poster }}
-                        style={{ width: 150.5, height: 230 }}
-                        accessibilityLabel={`${order.film_title} poster`}
-                      />
-                      <View style={orderHistory.rightSideContainer}>
-                        <Text style={orderHistory.sideInfoHeaders}>
-                          Screening date:{'\n'}
-                          <Text style={orderHistory.info}>
-                            {convertTime(order.start_time)}
+                <Text
+                  style={{
+                    color: 'rgba(255, 255, 255, 0.4)',
+                    fontFamily: 'Comfortaa-Light',
+                    fontSize: 12,
+                    textAlign: 'center',
+                    width: '90%',
+                    marginBottom: 20,
+                  }}
+                >
+                  Sorted by most recent screening date:
+                </Text>
+                <View style={orderHistory.container}>
+                  {allOrders.map((order, i) => (
+                    <View key={order.auction_id}>
+                      <Text style={orderHistory.cardHeader}>
+                        <Text style={orderHistory.cardHeaderBold}>
+                          {order.film_title},
+                        </Text>{' '}
+                        {'\n'}
+                        {order.business_name}
+                      </Text>
+                      <View key={i} style={orderHistory.individualContainer}>
+                        <Image
+                          source={{ uri: order.poster }}
+                          style={{ width: 150.5, height: 230 }}
+                          accessibilityLabel={`${order.film_title} poster`}
+                        />
+                        <View style={orderHistory.rightSideContainer}>
+                          <Text style={orderHistory.sideInfoHeaders}>
+                            Screening date:{'\n'}
+                            <Text style={orderHistory.info}>
+                              {convertTime(order.start_time)}
+                            </Text>
                           </Text>
-                        </Text>
-                        <Text style={orderHistory.sideInfoHeaders}>
-                          Total price:{'\n'}
-                          <Text style={orderHistory.info}>
-                            £
-                            {(
-                              Number(order.current_price) *
-                              order.seat_selection.length
-                            ).toFixed(2)}{' '}
-                            ({order.seat_selection.length} x £
-                            {Number(order.current_price).toFixed(2)})
+                          <Text style={orderHistory.sideInfoHeaders}>
+                            Total price:{'\n'}
+                            <Text style={orderHistory.info}>
+                              £
+                              {(
+                                Number(order.current_price) *
+                                order.seat_selection.length
+                              ).toFixed(2)}{' '}
+                              ({order.seat_selection.length} x £
+                              {Number(order.current_price).toFixed(2)})
+                            </Text>
                           </Text>
-                        </Text>
-                        <Text style={orderHistory.sideInfoHeaders}>
-                          QR Code:{'\n'}
-                          {/* <Text style={orderHistory.info}>
-                        {order.event_id}
-                        {order.auction_id}
-                        {currentCustomer.username[0].toUpperCase()}
-                        {currentCustomer.username[
-                          currentCustomer.username.length - 1
-                        ].toUpperCase()}
-                        {currentCustomer.user_id}
-                        {order.time_ending.substring(
-                          order.time_ending.length - 4
-                        )}
-                      </Text> */}
-                          <Button
-                            key={`button-${order.auction_id}`}
-                            btnText={'VIEW'}
-                            onPress={() => {
-                              setQRCodeStr(
-                                `${order.event_id}${order.auction_id}${currentCustomer.username[0].toUpperCase()}${currentCustomer.username[
-                                  currentCustomer.username.length - 1
-                                ].toUpperCase()}${currentCustomer.user_id}${order.time_ending.substring(
-                                  order.time_ending.length - 4
-                                )}`
-                              )
-                              setShowQRCode(true)
-                            }}
-                          ></Button>
-                        </Text>
+                          <Text style={orderHistory.sideInfoHeaders}>
+                            QR Code:{'\n'}
+                            <Button
+                              key={`button-${order.auction_id}`}
+                              btnText={'VIEW'}
+                              onPress={() => {
+                                setQRCodeStr(
+                                  `${order.event_id}${order.auction_id}${currentCustomer.username[0].toUpperCase()}${currentCustomer.username[
+                                    currentCustomer.username.length - 1
+                                  ].toUpperCase()}${currentCustomer.user_id}${order.time_ending.substring(
+                                    order.time_ending.length - 4
+                                  )}`
+                                )
+                                setShowQRCode(true)
+                              }}
+                            ></Button>
+                          </Text>
+                        </View>
                       </View>
                     </View>
-                  </View>
-                ))}
-              </View>
+                  ))}
+                </View>
               </>
             )}
           </>

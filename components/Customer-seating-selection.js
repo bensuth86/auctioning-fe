@@ -2,8 +2,6 @@ import React from 'react'
 import {
   View,
   Text,
-  TouchableOpacity,
-  Alert,
   ScrollView,
   ActivityIndicator,
 } from 'react-native'
@@ -24,8 +22,6 @@ import {
 } from '../utils.js'
 import { useIsFocused } from '@react-navigation/native'
 import { FontAwesome5 } from '@expo/vector-icons'
-// import { useFonts } from 'expo-font'
-// import { Pressable } from 'react-native'
 
 function CustomerSeating({ navigation, route }) {
   const {
@@ -57,19 +53,8 @@ function CustomerSeating({ navigation, route }) {
   const auctionInfoArray = []
   let auctionSeatInfo = {}
   const [auctionInfo, setAuctionInfo] = useState([])
-  // temp auction id
   const [eventAuctions, setEventAuctions] = useState([])
   const [selectedAuction, setSelectedAuction] = useState({})
-  // const [fontsLoaded] = useFonts({
-  //   'Comfortaa-Bold': require('../assets/Fonts/Comfortaa-Bold.ttf'),
-  //   'Comfortaa-Light': require('../assets/Fonts/Comfortaa-Light.ttf'),
-  //   'Comfortaa-Medium': require('../assets/Fonts/Comfortaa-Medium.ttf'),
-  //   'Comfortaa-Regular': require('../assets/Fonts/Comfortaa-Regular.ttf'),
-  //   'Comfortaa-SemiBold': require('../assets/Fonts/Comfortaa-SemiBold.ttf'),
-  // })
-
-  // console.log(start_price)
-  // console.log(start_time)
   const isFocused = useIsFocused()
 
   useEffect(() => {
@@ -333,17 +318,6 @@ function CustomerSeating({ navigation, route }) {
                   </View>
                 </View>
               </View>
-              {/* <TouchableOpacity
-                onPress={() => {
-                  Alert.alert(
-                    'Selection instructions',
-                    'This is where all of the info for seat selections will be.'
-                  )
-                }}
-                title="?"
-              >
-                <Text></Text>
-              </TouchableOpacity> */}
               {auctionError !== '' && (
                 <View
                   style={{
