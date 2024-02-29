@@ -1,6 +1,5 @@
-/* eslint-disable react/react-in-jsx-scope */
-import { useState, useRef } from 'react'
-import { Text, TextInput, View, ScrollView, Platform } from 'react-native'
+import { useState } from 'react'
+import { Text, TextInput, View, ScrollView } from 'react-native'
 import { styles } from '../style-sheet'
 import { Button } from '../helpers'
 import { getAllUsers, getAllBusinesses } from '../utils'
@@ -10,8 +9,6 @@ import CustomerContext from '../Contexts/LoggedInCustomerContext'
 import { Alert } from 'react-native'
 import { TouchableOpacity } from 'react-native'
 import { ActivityIndicator } from 'react-native-paper'
-import { homeStyles } from '../style-sheet-customer-home'
-import { Pressable } from 'react-native'
 
 function Login({ navigation, route }) {
   const usertype = route.params.usertype
@@ -19,7 +16,6 @@ function Login({ navigation, route }) {
   const [loginName, setLoginName] = useState('')
   const [submitCustomerClicked, setCustomerSubmitClicked] = useState(false)
   const [submitBusinessClicked, setBusinessClicked] = useState(false)
-  // const [match, setMatch] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
 
   const { setCurrentCustomer } = useContext(CustomerContext)
@@ -38,7 +34,6 @@ function Login({ navigation, route }) {
               postcode: user.postcode,
             })
             navigation.navigate('CustomerHomepage')
-            // setMatch(true);
             foundMatch = true
             setLoginName('')
             setErrorMessage('')
@@ -58,12 +53,10 @@ function Login({ navigation, route }) {
         setLoading(false)
         response.data.businesses.forEach((business) => {
           if (loginName === business.business_name) {
-            // setCurrentCustomer({ business: business.business_name });
             navigation.navigate('BusinessHomepage', {
               business_id: business.business_id,
               success: null,
             })
-            // setMatch(true);
             foundMatch = true
             setLoginName('')
             setErrorMessage('')
@@ -77,25 +70,7 @@ function Login({ navigation, route }) {
     }
   }, [submitCustomerClicked, submitBusinessClicked])
 
-  const showAlert = (content) =>
-    Alert.alert(
-      'Pre-existing logins',
-      content
-      // [
-      //   {
-      //     text: 'Cancel',
-      //     onPress: () => Alert.alert('Cancel Pressed'),
-      //     style: 'cancel',
-      //   },
-      // ],
-      // {
-      //   cancelable: true,
-      //   onDismiss: () =>
-      //     Alert.alert(
-      //       'This alert was dismissed by tapping outside of the alert dialog.',
-      //     ),
-      // },
-    )
+  const showAlert = (content) => Alert.alert('Pre-existing logins', content)
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -106,7 +81,7 @@ function Login({ navigation, route }) {
             color: '#f5f5f5',
             fontSize: 12,
             textAlign: 'center',
-            lineHeight: 19
+            lineHeight: 19,
           }}
         >
           Already have an account? {`\n`} Enter your {usertype.toLowerCase()}{' '}
@@ -142,10 +117,9 @@ function Login({ navigation, route }) {
               }
             }}
           />
-
-        ): (
+        ) : (
           <View>
-            <ActivityIndicator color="red" size={'large'}/>
+            <ActivityIndicator color="red" size={'large'} />
           </View>
         )}
         <Text

@@ -12,7 +12,6 @@ export const seatStyles = StyleSheet.create({
   },
   seatHeader: {
     textAlign: 'center',
-    // marginBottom: 20,
     fontSize: 15,
     fontFamily: 'Comfortaa-Bold',
   },
@@ -52,9 +51,7 @@ export const seatStyles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     minWidth: 47,
-    minHeight: 35
-
-
+    minHeight: 35,
   },
   availableSeatButton: {
     margin: 2,
@@ -65,9 +62,7 @@ export const seatStyles = StyleSheet.create({
     borderColor: '#7bc47f',
     borderWidth: 3,
     minWidth: 47,
-    minHeight: 35
-
-
+    minHeight: 35,
   },
   auctionSeatButton: {
     margin: 2,
@@ -78,8 +73,7 @@ export const seatStyles = StyleSheet.create({
     borderColor: '#FFBF00',
     borderWidth: 3,
     minWidth: 47,
-    minHeight: 35
-
+    minHeight: 35,
   },
   unavailableSeatButton: {
     margin: 2,
@@ -90,7 +84,7 @@ export const seatStyles = StyleSheet.create({
     borderColor: 'grey',
     borderWidth: 3,
     minWidth: 47,
-    minHeight: 35
+    minHeight: 35,
   },
   selectedSeatButton: {
     margin: 2,
@@ -101,7 +95,7 @@ export const seatStyles = StyleSheet.create({
     borderColor: 'red',
     borderWidth: 3,
     minWidth: 47,
-    minHeight: 35
+    minHeight: 35,
   },
   selectedAuctionSeatButton: {
     margin: 2,
@@ -112,8 +106,7 @@ export const seatStyles = StyleSheet.create({
     borderColor: 'red',
     borderWidth: 3,
     minWidth: 47,
-    minHeight: 35
-  
+    minHeight: 35,
   },
   buttontext: {
     fontSize: 10,
@@ -121,8 +114,7 @@ export const seatStyles = StyleSheet.create({
     lineHeight: 21,
     letterSpacing: 0.25,
     color: 'white',
-    textAlign: 'center'
-
+    textAlign: 'center',
   },
   textbox: {
     padding: 8,
@@ -146,30 +138,27 @@ export const seatStyles = StyleSheet.create({
   },
   bigKeyContainer: {
     flexDirection: 'row',
-    marginTop: 5
+    marginTop: 5,
   },
   text: {
     fontFamily: 'Comfortaa-Light',
     fontSize: 12,
-    textAlign: 'center'
-
+    textAlign: 'center',
   },
   textBigger: {
     fontFamily: 'Comfortaa-Light',
     fontSize: 16,
-    textAlign: 'center'
-
+    textAlign: 'center',
   },
   textBiggerBold: {
     fontFamily: 'Comfortaa-Bold',
     fontSize: 16,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   textBiggerError: {
     fontFamily: 'Comfortaa-Regular',
     fontSize: 12,
     color: 'red',
-    textAlign: 'center'
-
+    textAlign: 'center',
   },
 })

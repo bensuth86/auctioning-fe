@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { View, TextInput, Text, TouchableOpacity } from 'react-native'
+import { View, TextInput, Text } from 'react-native'
 import { styles } from '../style-sheet'
 import { postUser } from '../utils'
 import { Snackbar } from 'react-native-paper'
 import CustomerContext from '../Contexts/LoggedInCustomerContext'
 import { Button } from '../helpers'
-import { homeStyles } from '../style-sheet-customer-home'
-import { Pressable } from 'react-native'
 import { ActivityIndicator } from 'react-native-paper'
 
 function CustomerSignUp({ navigation }) {
@@ -52,11 +50,12 @@ function CustomerSignUp({ navigation }) {
           setCurrentCustomer(user)
           isLoading(false)
           navigation.navigate('CustomerHomepage')
-          setSnackbarMessage('Form submitted successfully!')
-          setVisible(true)
+          setUserName('')
+          setPostcode('')
         })
         .catch((error) => {
-          console.error('Error submitting form:', error)
+          setUserName('')
+          setPostcode('')
           isLoading(false)
           setSnackbarMessage('Failed to submit form. Please try again.')
           setVisible(true)
