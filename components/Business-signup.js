@@ -67,12 +67,10 @@ function BusinessSignUp({ navigation }) {
           isLoading(false)
           setSnackbarMessage('Failed to submit form. Please try again.')
           setVisible(true)
-          setPostcode('')
-          setBusinessName('')
         })
     }
   }
-
+  console.log(selectedRow)
   const data = [
     { key: '1', value: '1 row' },
     { key: '2', value: '2 rows' },
@@ -80,7 +78,7 @@ function BusinessSignUp({ navigation }) {
     { key: '4', value: '4 rows' },
     { key: '5', value: '5 rows' },
     { key: '6', value: '6 rows' },
-    { key: '7', value: '7rows' },
+    { key: '7', value: '7 rows' },
   ]
   const data2 = [
     { key: '1', value: '1 column' },
@@ -142,6 +140,7 @@ function BusinessSignUp({ navigation }) {
               style={styles.dropdown}
               search={false}
               placeholder="Rows"
+              defaultOption={''}
               boxStyles={{ borderRadius: 20, backgroundColor: '#f5f5f5' }}
               dropdownStyles={{ backgroundColor: '#f5f5f5', fontSize: 12 }}
               fontFamily="Comfortaa-Light"
