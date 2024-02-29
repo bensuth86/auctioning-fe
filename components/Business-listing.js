@@ -17,10 +17,7 @@ import { getBusinessById } from '../utils.js'
 import { useEffect } from 'react'
 import { postNewEvent } from '../utils.js'
 import { Snackbar } from 'react-native-paper'
-import { Pressable } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
-
-import { Alert } from 'react-native'
 import { isLoading } from 'expo-font'
 
 function BusinessListing({ navigation }) {
@@ -31,7 +28,6 @@ function BusinessListing({ navigation }) {
   const [loading, setIsLoading] = useState(true)
   const [price, setPrice] = useState(1)
   const [date, setDate] = useState(new Date())
-  const [err, setErr] = useState(null)
   const [show, setShow] = useState(false)
   const [mode, setMode] = useState('date')
   const [snackbarMessage, setSnackbarMessage] = useState('')
@@ -46,25 +42,14 @@ function BusinessListing({ navigation }) {
         setIsLoading(false)
       })
       .catch((err) => {
-        console.error(err)
         setVisible(true)
-        setSnackbarMessage('Failed to get seating plan. Please try again.')
+        setSnackbarMessage('Failed to get business details. Please try again.')
       })
   }, [])
 
   function onChange(e, selectedDate) {
     setShow(false)
     setDate(selectedDate)
-  }
-
-  function increasePrice() {
-    setPrice((prevPrice) => prevPrice + 1)
-  }
-
-  function decreasePrice() {
-    if (price > 1) {
-      setPrice((prevPrice) => prevPrice - 1)
-    }
   }
 
   function showMode(modeToShow) {
@@ -205,7 +190,7 @@ function BusinessListing({ navigation }) {
             >
               <TouchableOpacity
                 style={homeStyles.adjustments}
-                onPress={decreasePrice}
+                onPress={() => setPrice((prevPrice) => prevPrice - 1)}
               >
                 <AntDesign
                   name="minus"
@@ -229,7 +214,7 @@ function BusinessListing({ navigation }) {
               />
               <TouchableOpacity
                 style={homeStyles.adjustments}
-                onPress={increasePrice}
+                onPress={() => setPrice((prevPrice) => prevPrice + 1)}
               >
                 <AntDesign
                   name="plus"
@@ -259,7 +244,6 @@ function BusinessListing({ navigation }) {
               Please select all available seats:
             </Text>
 
-            
             <View style={seatStyles.screen}>
               <Text style={seatStyles.screenText}>SCREEN</Text>
             </View>
