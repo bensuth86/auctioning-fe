@@ -1,8 +1,6 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/prop-types */
-// const postcodes = require('node-postcodes.io')
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import {
   View,
   ScrollView,
@@ -16,12 +14,10 @@ import { styles } from '../style-sheet'
 import { eventStyles } from '../style-sheet-events'
 import { getEventsByUserId } from '../utils'
 import { EventsCard, UnavailableEventsCard } from './Customer-events-card'
-import CustomerSeating from './Customer-seating-selection'
 import CustomerContext from '../Contexts/LoggedInCustomerContext'
 import { useContext } from 'react'
 import { homeStyles } from '../style-sheet-customer-home'
 import { TextInput } from 'react-native-paper'
-import { userLocation } from '../utils'
 import { CurrentAuction } from './Customer-current-auctions-section'
 import { Pressable } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
@@ -33,24 +29,32 @@ function CustomerHomepage({ navigation }) {
   const [isLoading, setIsLoading] = useState(true)
   const [radius, setRadius] = useState(8)
   const [expandRadius, setExpandRadius] = useState(null)
+  const [resultsLoad, setResultsLoad] = useState(false)
 
   useEffect(() => {
-    getEventsByUserId(currentCustomer.user_id, expandRadius).then(
-      (response) => {
+    setResultsLoad(true)
+
+    getEventsByUserId(currentCustomer.user_id, expandRadius)
+      .then((response) => {
         setEventsList(response)
         setIsLoading(false)
-      }
-    )
-    .catch((err) => {
-      setIsLoading(false)
-      if (err.response.data.msg === 'User not found.') {
-        setErrorMessage('Sorry - your user ID does not exist.\nCannot fetch search results.')
-      }
-      if (err.response.data.msg === 'Bad request') {
-        setErrorMessage('Sorry - your user ID is invalid.\nCannot fetch search results.')
-      }
+        setResultsLoad(false)
+      })
+      .catch((err) => {
+        setIsLoading(false)
+        setResultsLoad(false)
 
-    })
+        if (err.response.data.msg === 'User not found.') {
+          setErrorMessage(
+            'Sorry - your user ID does not exist.\nCannot fetch search results.'
+          )
+        }
+        if (err.response.data.msg === 'Bad request') {
+          setErrorMessage(
+            'Sorry - your user ID is invalid.\nCannot fetch search results.'
+          )
+        }
+      })
   }, [currentCustomer.user_id, expandRadius])
 
   function logUserOut() {
@@ -75,7 +79,7 @@ function CustomerHomepage({ navigation }) {
   if (isLoading)
     return (
       <View style={styles.darkContainer}>
-        <ActivityIndicator color="red" size={'large'}/>
+        <ActivityIndicator color="red" size={'large'} />
       </View>
     )
 
@@ -121,102 +125,128 @@ function CustomerHomepage({ navigation }) {
                 paddingBottom: 20,
                 paddingLeft: 40,
                 paddingRight: 40,
-                textAlign: 'center'
+                textAlign: 'center',
               }}
             >
               SEARCH FOR SCREENINGS
             </Text>
             {errorMessage !== '' && (
-              <View style={{height: 300, justifyContent: 'center', alignItems: 'center', padding: 20}}>
+              <View
+                style={{
+                  height: 300,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  padding: 20,
+                }}
+              >
                 <Text style={styles.error}>{errorMessage}</Text>
               </View>
             )}
             {errorMessage === '' && (
               <>
-            <View style={homeStyles.radiusContainer}>
-              <Text
-                style={{ textAlign: 'center', fontFamily: 'Comfortaa-Regular' }}
-              >
-                Adjust radius:{' '}
-              </Text>
-              <View style={homeStyles.radiusSelection}>
-                <TouchableOpacity
-                  style={homeStyles.adjustments}
-                  onPress={decreaseRadius}
-                >
-                  <AntDesign name="minus" size={24} color="black" accessibilityLabel="minus icon"/>
-                </TouchableOpacity>
-                <TextInput
-                  value={radius.toString()}
-                  onChangeText={(text) => setRadius(parseInt(text) || 8)}
-                  keyboardType="numeric"
-                  style={homeStyles.numberDial}
-                />
-                <TouchableOpacity
-                  style={homeStyles.adjustments}
-                  onPress={increaseRadius}
-                >
-                  <AntDesign name="plus" size={24} color="black" accessibilityLabel="addition icon"/>
-                </TouchableOpacity>
-              </View>
-              <Button btnText={'SUBMIT'} onPress={() => submitRadius()} />
-            </View>
-            {!expandRadius ? (
-              <Text style={homeStyles.resultsIntro}>
-                All screenings for auction within an 8 mile radius of{' '}
-                {currentCustomer.postcode}:{' '}
-              </Text>
-            ) : (
-              <Text style={homeStyles.resultsIntro}>
-                All screenings for auction within an {expandRadius} mile radius
-                of {currentCustomer.postcode}:{' '}
-              </Text>
-            )}
-            {eventsList.length === 0 && (
-              <View style={homeStyles.noResults}>
-                <Text style={homeStyles.noResultsText}>
-                  There are currently no auctions near you.
-                </Text>
-                <Text style={homeStyles.noResultsText}>
-                  Try again later, or increase your radius for a wider
-                  selection.
-                </Text>
-              </View>
-            )}
-            <View style={eventStyles.eventslist}>
-              {eventsList.map((event, i) => {
-                const availableSeats = event.available_seats.length
-                return (
-                    availableSeats > 0 ? (
-                      <TouchableOpacity
-                        key={i}
-                        onPress={() =>
-                          navigation.navigate('SeatingPage', {
-                            event_id: event.event_id,
-                            business_id: event.business_id,
-                            start_price: event.start_price,
-                            active: event.active,
-                            available_seats: event.available_seats,
-                            start_time: event.start_time,
-                            film_title: event.film_title,
-                            poster: event.poster,
-                            run_time: event.run_time,
-                            certificate: event.certificate,
-                          })
-                        }
-                      >
-                        <EventsCard key={event.event_id} event={event} />
-                      </TouchableOpacity>
+                <View style={homeStyles.radiusContainer}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontFamily: 'Comfortaa-Regular',
+                    }}
+                  >
+                    Adjust radius:{' '}
+                  </Text>
+                  <View style={homeStyles.radiusSelection}>
+                    <TouchableOpacity
+                      style={homeStyles.adjustments}
+                      onPress={decreaseRadius}
+                    >
+                      <AntDesign
+                        name="minus"
+                        size={24}
+                        color="black"
+                        accessibilityLabel="minus icon"
+                      />
+                    </TouchableOpacity>
+                    <TextInput
+                      value={radius.toString()}
+                      onChangeText={(text) => setRadius(parseInt(text) || 8)}
+                      keyboardType="numeric"
+                      style={homeStyles.numberDial}
+                    />
+                    <TouchableOpacity
+                      style={homeStyles.adjustments}
+                      onPress={increaseRadius}
+                    >
+                      <AntDesign
+                        name="plus"
+                        size={24}
+                        color="black"
+                        accessibilityLabel="addition icon"
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <Button btnText={'SUBMIT'} onPress={() => submitRadius()} />
+                </View>
+                {resultsLoad ? (
+                  <View style={{height: 600, justifyContent: 'flex-start', alignItems: 'center'}}>
+                    <ActivityIndicator color="red" size={'large'} />
+                  </View>
+                ) : (
+                  <>
+                    {!expandRadius ? (
+                      <Text style={homeStyles.resultsIntro}>
+                        {eventsList.length} screenings for auction with an 8
+                        mile radius of {currentCustomer.postcode}:
+                      </Text>
                     ) : (
-                      <UnavailableEventsCard key={i} event={event} />
-                    )
-                )
-              })}
-            </View>
-            
+                      <Text style={homeStyles.resultsIntro}>
+                        {eventsList.length} screenings for auction with a{' '}
+                        {expandRadius} mile radius of {currentCustomer.postcode}
+                        :{' '}
+                      </Text>
+                    )}
+                    {eventsList.length === 0 && (
+                      <View style={homeStyles.noResults}>
+                        <Text style={homeStyles.noResultsText}>
+                          There are currently no auctions near you.
+                        </Text>
+                        <Text style={homeStyles.noResultsText}>
+                          Try again later, or increase your radius for a wider
+                          selection.
+                        </Text>
+                      </View>
+                    )}
+                    <View style={eventStyles.eventslist}>
+                      {eventsList.map((event, i) => {
+                        const availableSeats = event.available_seats.length
+                        return availableSeats > 0 ? (
+                          <TouchableOpacity
+                            key={i}
+                            onPress={() =>
+                              navigation.navigate('SeatingPage', {
+                                event_id: event.event_id,
+                                business_id: event.business_id,
+                                start_price: event.start_price,
+                                active: event.active,
+                                available_seats: event.available_seats,
+                                start_time: event.start_time,
+                                film_title: event.film_title,
+                                poster: event.poster,
+                                run_time: event.run_time,
+                                certificate: event.certificate,
+                              })
+                            }
+                          >
+                            <EventsCard key={event.event_id} event={event} />
+                          </TouchableOpacity>
+                        ) : (
+                          <UnavailableEventsCard key={i} event={event} />
+                        )
+                      })}
+                    </View>
+                  </>
+                )}
               </>
             )}
-            </View>
+          </View>
         </View>
       </ScrollView>
     </>
