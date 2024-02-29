@@ -179,7 +179,13 @@ function BusinessHomepage({ navigation, route }) {
                 <ActivityIndicator color="red" size={'large'} />
               </View>
             ) : (
-              <View style={eventStyles.eventcard}>
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  width: '100%',
+                  paddingTop: 20,
+                }}
+              >
                 {!events.length && active && (
                   <Text
                     style={{
@@ -247,7 +253,7 @@ function BusinessHomepage({ navigation, route }) {
                             <AntDesign
                               name="clockcircleo"
                               size={12}
-                              color="#f5f5f5"
+                              color="black"
                               accessibilityLabel="clock icon"
                             />{' '}
                             {event.run_time} minutes
@@ -260,7 +266,7 @@ function BusinessHomepage({ navigation, route }) {
                               <FontAwesome5
                                 name="money-bill-wave"
                                 size={12}
-                                color="#f5f5f5"
+                                color="black"
                                 accessibilityLabel="cash note icon"
                               />
                             }{' '}
@@ -273,7 +279,7 @@ function BusinessHomepage({ navigation, route }) {
                             <Fontisto
                               name="date"
                               size={12}
-                              color="#f5f5f5"
+                              color="black"
                               accessibilityLabel="calendar icon"
                             />{' '}
                             {convertTime(event.start_time)}
