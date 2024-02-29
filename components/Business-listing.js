@@ -21,13 +21,14 @@ import { Pressable } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 
 import { Alert } from 'react-native'
+import { isLoading } from 'expo-font'
 
 function BusinessListing({ navigation }) {
   const route = useRoute()
   const { business_id, title, poster, runtime, certificate } = route.params
   const [seatingPlan, setSeatingPlan] = useState([])
   const [selectedSeats, setSelectedSeats] = useState([])
-  const [loading, setIsLoading] = useState(false)
+  const [loading, setIsLoading] = useState(true)
   const [price, setPrice] = useState(1)
   const [date, setDate] = useState(new Date())
   const [err, setErr] = useState(null)
@@ -42,6 +43,7 @@ function BusinessListing({ navigation }) {
     getBusinessById(business_id)
       .then((response) => {
         setSeatingPlan(response.seating_layout)
+        setIsLoading(false)
       })
       .catch((err) => {
         console.error(err)
@@ -94,16 +96,14 @@ function BusinessListing({ navigation }) {
         setSubmitLoading(false)
         setVisible(true)
         setSnackbarMessage('Error posting a new listing... please try again.')
-        console.log(err)
       })
   }
 
-  // if (loading)
-  //   return (
-  //     <View style={styles.container}>
-  //       <ActivityIndicator />
-  //     </View>
-  //   )
+  isLoading && (
+    <View style={styles.container}>
+      <ActivityIndicator color="red" size={'large'} />
+    </View>
+  )
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -187,7 +187,6 @@ function BusinessListing({ navigation }) {
               style={{
                 textAlign: 'center',
                 marginTop: 20,
-                // marginBottom: 20,
                 fontFamily: 'Comfortaa-Regular',
                 color: '#f5f5f5',
                 fontSize: 12,
@@ -208,7 +207,12 @@ function BusinessListing({ navigation }) {
                 style={homeStyles.adjustments}
                 onPress={decreasePrice}
               >
-                <AntDesign name="minus" size={24} color="#f5f5f5" accessibilityLabel="minus icon"/>
+                <AntDesign
+                  name="minus"
+                  size={24}
+                  color="#f5f5f5"
+                  accessibilityLabel="minus icon"
+                />
               </TouchableOpacity>
               <TextInput
                 value={`£${price.toString()}`}
@@ -227,7 +231,12 @@ function BusinessListing({ navigation }) {
                 style={homeStyles.adjustments}
                 onPress={increasePrice}
               >
-                <AntDesign name="plus" size={24} color="#f5f5f5" accessibilityLabel="addition icon"/>
+                <AntDesign
+                  name="plus"
+                  size={24}
+                  color="#f5f5f5"
+                  accessibilityLabel="addition icon"
+                />
               </TouchableOpacity>
             </View>
           </View>
@@ -249,6 +258,8 @@ function BusinessListing({ navigation }) {
             >
               Please select all available seats:
             </Text>
+
+            
             <View style={seatStyles.screen}>
               <Text style={seatStyles.screenText}>SCREEN</Text>
             </View>
@@ -287,10 +298,6 @@ function BusinessListing({ navigation }) {
                 </View>
               )
             })}
-            {/* </View> */}
-            {/* <View style={seatStyles.screen}>
-            <Text style={seatStyles.screenText}>SCREEN</Text>
-          </View> */}
             <View style={{ marginTop: 10 }}>
               <View style={seatStyles.keyContainer}>
                 <View
@@ -310,17 +317,6 @@ function BusinessListing({ navigation }) {
                 </Text>
               </View>
             </View>
-            {/* <TouchableOpacity
-            onPress={() => {
-              Alert.alert(
-                'Selection instructions',
-                'This is where all of the info for seat selections will be.'
-              )
-            }}
-            title="?"
-          >
-            <Text>?</Text>
-          </TouchableOpacity> */}
             {date < today.setMinutes(today.getMinutes() + 59) ? (
               <View>
                 <Text
@@ -336,14 +332,13 @@ function BusinessListing({ navigation }) {
                   You must set a date more than 1 hour in the future.
                 </Text>
               </View>
-            ) : selectedSeats.length > 0 && !submitLoading? (
+            ) : selectedSeats.length > 0 && !submitLoading ? (
               <Button btnText={'LIST EVENT'} onPress={handleListing} />
             ) : submitLoading ? (
               <View>
-              <ActivityIndicator color="red" size={'large'}/>
-            </View>
-            )
-            :(
+                <ActivityIndicator color="red" size={'large'} />
+              </View>
+            ) : (
               <View>
                 <Text
                   style={[
