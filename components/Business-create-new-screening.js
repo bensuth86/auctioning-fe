@@ -14,7 +14,6 @@ import { Snackbar } from 'react-native-paper'
 import { styles } from '../style-sheet'
 import { useRoute } from '@react-navigation/native'
 import { useEffect } from 'react'
-import { Pressable } from 'react-native'
 import { Button } from '../helpers'
 
 function BusinessCreateScreening({ navigation }) {
@@ -25,7 +24,6 @@ function BusinessCreateScreening({ navigation }) {
   const [searchQuerySlug, setSearchQuerySlug] = useState('')
   const [data, setData] = useState([])
   const [idNo, setIdNo] = useState('')
-  const [err, setErr] = useState(null)
   const [title, setTitle] = useState('')
   const [poster, setPoster] = useState('')
   const [runtime, setRuntime] = useState('100')
@@ -122,7 +120,6 @@ function BusinessCreateScreening({ navigation }) {
       setIsLoading(false)
     } catch (error) {
       if (searchQuery !== '') {
-        setErr(true)
         setVisible(true)
         setSnackbarMessage(
           'Error fetching data. Please check your network connection...'
@@ -162,27 +159,12 @@ function BusinessCreateScreening({ navigation }) {
           minHeight: 180,
         }}
       >
-        {/* <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            padding: '10',
-            width: '100%',
-          }}
-        >
-          <Pressable style={[styles.backButton, { marginLeft: 20 }]}>
-            <Text style={styles.backButtonText}>HOME</Text>
-          </Pressable>
-        </View> */}
-        {/* <View style={[styles.backButton, { marginLeft: 20 }]}> */}
         <Text
           style={{
             fontFamily: 'Comfortaa-Regular',
             fontSize: 20,
             textAlign: 'center',
             color: '#f5f5f5',
-            // marginTop: 10,
           }}
         >
           Search for a film to list:
@@ -209,123 +191,67 @@ function BusinessCreateScreening({ navigation }) {
             fontFamily: 'Comfortaa-Light',
           }}
         />
-                  {year === currentYear ? (
-            data.length ? (
+        {year === currentYear ? (
+          data.length ? (
+            <Button
+              btnText={`SHOW ALL RELEASES`}
+              onPress={() => setYear(null)}
+            ></Button>
+          ) : (
+            <>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  width: 280,
+                  fontFamily: 'Comfortaa-Regular',
+                  fontSize: 12,
+                  color: 'red',
+                }}
+              >
+                {resultMsg}
+              </Text>
               <Button
                 btnText={`SHOW ALL RELEASES`}
                 onPress={() => setYear(null)}
               ></Button>
-            ) : (
-              <>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    width: 280,
-                    fontFamily: 'Comfortaa-Regular',
-                    fontSize: 12,
-                    // margin: 10,
-                    color: 'red'
-                  }}
-                >
-                  {resultMsg}
-                </Text>
-                <Button
-                  btnText={`SHOW ALL RELEASES`}
-                  onPress={() => setYear(null)}
-                ></Button>
-              </>
-            )
-          ) : null}
-          {year !== currentYear ? (
-            data.length ? (
+            </>
+          )
+        ) : null}
+        {year !== currentYear ? (
+          data.length ? (
+            <Button
+              btnText={`SHOW ${currentYear} RELEASES`}
+              onPress={() => setYear(currentYear)}
+            ></Button>
+          ) : (
+            <>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  width: 280,
+                  fontFamily: 'Comfortaa-Regular',
+                  fontSize: 12,
+                  margin: 10,
+                  color: 'red',
+                }}
+              >
+                {resultMsg}
+              </Text>
               <Button
                 btnText={`SHOW ${currentYear} RELEASES`}
                 onPress={() => setYear(currentYear)}
               ></Button>
-            ) : (
-              <>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    width: 280,
-                    fontFamily: 'Comfortaa-Regular',
-                    fontSize: 12,
-                    margin: 10,
-                    color: 'red'
-                  }}
-                >
-                  {resultMsg}
-                </Text>
-                <Button
-                  btnText={`SHOW ${currentYear} RELEASES`}
-                  onPress={() => setYear(currentYear)}
-                ></Button>
-              </>
-            )
-          ) : null}
+            </>
+          )
+        ) : null}
       </View>
 
       {loading === true ? (
         <View style={styles.container}>
-          <ActivityIndicator color="red" size={'large'}/>
+          <ActivityIndicator color="red" size={'large'} />
         </View>
       ) : (
-        <View
-          style={{ height: '50%', backgroundColor: '#f5f5f5'}}
-        >
-          {/* {year === currentYear ? (
-            data.length ? (
-              <Button
-                btnText={`Search for all releases`}
-                onPress={() => setYear(null)}
-              ></Button>
-            ) : (
-              <>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    width: 280,
-                    fontFamily: 'Comfortaa-Regular',
-                    fontSize: 12,
-                    margin: 10,
-                  }}
-                >
-                  {resultMsg}
-                </Text>
-                <Button
-                  btnText={`Search for all releases`}
-                  onPress={() => setYear(null)}
-                ></Button>
-              </>
-            )
-          ) : null}
-          {year !== currentYear ? (
-            data.length ? (
-              <Button
-                btnText={`Search for ${currentYear} releases only`}
-                onPress={() => setYear(currentYear)}
-              ></Button>
-            ) : (
-              <>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    width: 280,
-                    fontFamily: 'Comfortaa-Regular',
-                    fontSize: 12,
-                    margin: 10,
-                  }}
-                >
-                  {resultMsg}
-                </Text>
-                <Button
-                  btnText={`Search for ${currentYear} releases only`}
-                  onPress={() => setYear(currentYear)}
-                ></Button>
-              </>
-            )
-          ) : null} */}
-
+        <View style={{ height: '50%', backgroundColor: '#f5f5f5' }}>
           <FlatList
             data={data}
             renderItem={({ item }) => {
@@ -382,21 +308,20 @@ function BusinessCreateScreening({ navigation }) {
         }}
       >
         {title && (
-        <Text
-          style={{
-            fontFamily: 'Comfortaa-Regular',
-            fontSize: 12,
-            marginRight: 20,
-            marginLeft: 20,
-            textAlign: 'center',
-          }}
-        >
-          Selected film: {'\n'}
-          <Text style={{ fontFamily: 'Comfortaa-Bold', fontSize: 16 }}>
-            {title}
+          <Text
+            style={{
+              fontFamily: 'Comfortaa-Regular',
+              fontSize: 12,
+              marginRight: 20,
+              marginLeft: 20,
+              textAlign: 'center',
+            }}
+          >
+            Selected film: {'\n'}
+            <Text style={{ fontFamily: 'Comfortaa-Bold', fontSize: 16 }}>
+              {title}
+            </Text>
           </Text>
-        </Text>
-
         )}
         {title && (
           <Button
@@ -413,7 +338,6 @@ function BusinessCreateScreening({ navigation }) {
           />
         )}
       </View>
-      {/* </View> */}
       <Snackbar
         visible={visible}
         onDismiss={() => setVisible(false)}
