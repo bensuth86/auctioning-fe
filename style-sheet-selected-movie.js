@@ -7,7 +7,6 @@ export const selectedMovieStyle = StyleSheet.create({
         justifyContent: 'center',
         flex: 1,
         width: 200,
-        // backgroundColor: 'pink'
     },
     eventContainer: {
         flexDirection: 'row',

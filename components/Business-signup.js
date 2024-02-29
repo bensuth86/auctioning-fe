@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, TextInput, Text, TouchableOpacity } from 'react-native'
+import { View, TextInput, Text } from 'react-native'
 import { styles } from '../style-sheet'
 import { Snackbar } from 'react-native-paper'
 import { postBusiness } from '../utils'
@@ -7,8 +7,6 @@ import { SelectList } from 'react-native-dropdown-select-list'
 import { generateSeatGrid } from '../helpers'
 import { Button } from '../helpers'
 import { ScrollView } from 'react-native'
-import { homeStyles } from '../style-sheet-customer-home'
-import { Pressable } from 'react-native'
 import { ActivityIndicator } from 'react-native-paper'
 
 function BusinessSignUp({ navigation }) {
@@ -20,7 +18,6 @@ function BusinessSignUp({ navigation }) {
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const [selectedRow, setSelectedRow] = useState('')
   const [selectedColumn, setSelectedColumn] = useState('')
-  const [success, setSuccess] = useState(false)
   const [loading, isLoading] = useState(false)
 
   useEffect(() => {
@@ -57,27 +54,22 @@ function BusinessSignUp({ navigation }) {
       postBusiness({ business_name: businessName }, formattedPostcode, seatGrid)
         .then((response) => {
           isLoading(false)
-          // navigation.navigate('Login', { usertype: 'Business' })
           navigation.navigate('BusinessHomepage', {
             business_id: response.business.business_id,
             success: null,
           })
-          // setSnackbarMessage(
-          //   'Business account created successfully! Please go to login...'
-          // )
-          setVisible(true)
           setPostcode('')
           setBusinessName('')
           setSelectedRow('')
           setSelectedColumn('')
-          setSuccess(true)
         })
         .catch((error) => {
+          isLoading(false)
           setSnackbarMessage('Failed to submit form. Please try again.')
           setVisible(true)
+          setPostcode('')
+          setBusinessName('')
         })
-    } else {
-      console.log('Form has errors. Please correct them.')
     }
   }
 
