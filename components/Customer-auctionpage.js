@@ -490,8 +490,8 @@ function CustomerAuctionPage({ navigation, route }) {
                   <Text style={auctionStyles.auctionHeaders}>
                     AUCTION STATUS:{' '}
                   </Text>
-                  {!displayAuction.active ? (
-                    <Text style={auctionStyles.auctionData}>Inactive</Text>
+                  {countdownStructure.ended ? (
+                    <Text style={auctionStyles.auctionData}>Closed</Text>
                   ) : (
                     <Text style={auctionStyles.auctionData}>Active</Text>
                   )}
