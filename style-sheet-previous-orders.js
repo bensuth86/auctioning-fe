@@ -1,11 +1,18 @@
 import { StyleSheet } from 'react-native'
 
 export const orderHistory = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    width: '100%',
+    flexDirection: 'column',
+    paddingTop: 20,
+  },
   individualContainer: {
-    marginBottom: 70,
+    marginBottom: 20,
     padding: 5,
     flexDirection: 'row',
     height: 'auto',
+    justifyContent: 'center',
   },
   rightSideContainer: {
     flexDirection: 'column',
@@ -15,28 +22,24 @@ export const orderHistory = StyleSheet.create({
   },
   info: {
     padding: 2,
-    color: '#f5f5f5',
     fontFamily: 'Comfortaa-Light',
     fontSize: 12,
   },
   cardHeader: {
     textAlign: 'center',
-    color: '#f5f5f5',
     fontFamily: 'Comfortaa-Light',
     fontSize: 16,
     paddingBottom: 5,
   },
   cardHeaderBold: {
     textAlign: 'center',
-    color: '#f5f5f5',
     fontFamily: 'Comfortaa-Bold',
-    fontSize: 16,
+    fontSize: 18,
     paddingBottom: 5,
   },
   sideInfoHeaders: {
     fontFamily: 'Comfortaa-Light',
     fontSize: 12,
-    color: 'rgba(255, 255, 255, 0.4)',
   },
   pageHeader: {
     fontFamily: 'Comfortaa-Regular',
@@ -48,6 +51,6 @@ export const orderHistory = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     padding: 20,
-    width: '100%'
-  }
+    width: '100%',
+  },
 })
