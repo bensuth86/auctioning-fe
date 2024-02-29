@@ -284,7 +284,10 @@ function CustomerSeating({ navigation, route }) {
                   </View>
                   <View style={seatStyles.keyContainer}>
                     <View
-                      style={[seatStyles.seatKey, { backgroundColor: 'grey' }]}
+                      style={[
+                        seatStyles.seatKey,
+                        { backgroundColor: '#FFBF00' },
+                      ]}
                     ></View>
                     <Text style={seatStyles.text}>Auction in process</Text>
                   </View>
@@ -301,10 +304,7 @@ function CustomerSeating({ navigation, route }) {
                   </View>
                   <View style={seatStyles.keyContainer}>
                     <View
-                      style={[
-                        seatStyles.seatKey,
-                        { backgroundColor: '#D0D0D0' },
-                      ]}
+                      style={[seatStyles.seatKey, { backgroundColor: 'grey' }]}
                     ></View>
                     <Text style={seatStyles.text}>Unavailable</Text>
                   </View>
