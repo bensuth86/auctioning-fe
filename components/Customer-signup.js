@@ -94,9 +94,12 @@ function CustomerSignUp({ navigation }) {
         <View>
           <ActivityIndicator color="red" size={'large'} />
         </View>
-      ):(
-        <Button btnText="SUBMIT" onPress={handleSubmit} disabled={!isFormValid} />
-        
+      ) : (
+        <Button
+          btnText="SUBMIT"
+          onPress={handleSubmit}
+          disabled={!isFormValid}
+        />
       )}
       {Object.values(errors).map((error, index) => (
         <Text key={index} style={styles.error}>

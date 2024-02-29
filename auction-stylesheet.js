@@ -4,9 +4,8 @@ export const auctionStyles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
     width: '90%',
-    marginTop: -40,
+    marginTop: 20,
   },
   selectionContainer: {
     justifyContent: 'center',
@@ -45,7 +44,7 @@ export const auctionStyles = StyleSheet.create({
     padding: 20,
     justifyContent: 'center',
     borderRadius: 20,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   highestBidInfoContainer: {
     flex: 1,
@@ -83,7 +82,7 @@ export const auctionStyles = StyleSheet.create({
     paddingLeft: 15,
     borderRadius: 20,
     fontFamily: 'Comfortaa-Regular',
-    fontSize: 12
+    fontSize: 12,
   },
   biddingForm: {
     flexDirection: 'row',
@@ -127,7 +126,7 @@ export const auctionStyles = StyleSheet.create({
     fontSize: 32,
     color: '#f5f5f5',
     textAlign: 'center',
-    padding: 5
+    padding: 5,
   },
   text: {
     fontFamily: 'Comfortaa-Light',

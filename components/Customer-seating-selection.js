@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  View,
-  Text,
-  ScrollView,
-  ActivityIndicator,
-} from 'react-native'
+import { View, Text, ScrollView, ActivityIndicator } from 'react-native'
 import {
   Button,
   SeatButton,
@@ -153,9 +148,9 @@ function CustomerSeating({ navigation, route }) {
               style={{
                 backgroundColor: '#f5f5f5',
                 width: '100%',
-                justifyContent: 'center',
                 alignItems: 'center',
                 minHeight: 700,
+                paddingTop: 20,
               }}
             >
               <View style={{ marginTop: 10 }}>
@@ -167,10 +162,10 @@ function CustomerSeating({ navigation, route }) {
                     marginBottom: 10,
                     marginLeft: 20,
                     marginRight: 20,
-                    fontSize: 12
+                    fontSize: 12,
                   }}
                 >
-                  <FontAwesome5 name="info-circle" size={12} color="black" />
+                  <FontAwesome5 name="info-circle" size={12} color="black" />{' '}
                   Prices shown are the current bidding price per seat.
                 </Text>
               </View>
@@ -289,10 +284,7 @@ function CustomerSeating({ navigation, route }) {
                   </View>
                   <View style={seatStyles.keyContainer}>
                     <View
-                      style={[
-                        seatStyles.seatKey,
-                        { backgroundColor: '#FFBF00' },
-                      ]}
+                      style={[seatStyles.seatKey, { backgroundColor: 'grey' }]}
                     ></View>
                     <Text style={seatStyles.text}>Auction in process</Text>
                   </View>

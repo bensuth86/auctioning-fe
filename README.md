@@ -34,6 +34,8 @@ To run on your phone:
 1. Download Expo Go from the Play Store or App Store.
 2. Run the project as above from the terminal.
 3. In Expo Go to either scan the QR Code that appears in the terminal, or load the app directly from the development server if it appears.
+4. Pre-existing logins can be accessed on either login page.
+5. For auctioning, open the app in both your phone and the browser and login in as two different users.
 
 ```bash
 # If the app fails to load when following the above instructions, try the following instead

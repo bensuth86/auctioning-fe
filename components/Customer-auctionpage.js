@@ -249,13 +249,12 @@ function CustomerAuctionPage({ navigation, route }) {
       setCountdownStructure({
         days: days,
         hours: hours,
-        minutes: minutes,
-        seconds: seconds,
+        minutes: minutes.toString().padStart(2, '0'),
+        seconds: seconds.toString().padStart(2, '0'),
         ended: null,
       })
     }, 1000)
   }
-
   if (isLoading) {
     return (
       <View style={styles.darkContainer}>
@@ -267,52 +266,50 @@ function CustomerAuctionPage({ navigation, route }) {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.darkContainer}>
-        <View>
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: 10,
-            }}
-          >
-            <Text style={[selectedMovieStyle.eventHeader, { marginBottom: 0 }]}>
-              {film_title.film_title},{' '}
-              <Text style={{ fontFamily: 'Comfortaa-Light' }}>
-                {certificate.certificate}
-              </Text>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 10,
+          }}
+        >
+          <Text style={[selectedMovieStyle.eventHeader, { marginBottom: 0 }]}>
+            {film_title.film_title},{' '}
+            <Text style={{ fontFamily: 'Comfortaa-Light' }}>
+              {certificate.certificate}
             </Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <FontAwesome5
-                name="map-marker-alt"
-                size={12}
-                color="rgba(255, 255, 255, 0.4)"
-                accessibilityLabel="map icon"
-              />
-              <Text
-                style={[
-                  selectedMovieStyle.text,
-                  { marginLeft: 5, color: 'rgba(255, 255, 255, 0.4)' },
-                ]}
-              >
-                {selectedBusiness.business_name}, {selectedBusiness.postcode}{' '}
-              </Text>
-            </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Fontisto
-                name="date"
-                size={12}
-                color="rgba(255, 255, 255, 0.4)"
-                accessibilityLabel="calendar icon"
-              />
-              <Text
-                style={[
-                  selectedMovieStyle.text,
-                  { marginLeft: 5, color: 'rgba(255, 255, 255, 0.4)' },
-                ]}
-              >
-                {convertTime(start_time.start_time)}
-              </Text>
-            </View>
+          </Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <FontAwesome5
+              name="map-marker-alt"
+              size={12}
+              color="rgba(255, 255, 255, 0.4)"
+              accessibilityLabel="map icon"
+            />
+            <Text
+              style={[
+                selectedMovieStyle.text,
+                { marginLeft: 5, color: 'rgba(255, 255, 255, 0.4)' },
+              ]}
+            >
+              {selectedBusiness.business_name}, {selectedBusiness.postcode}{' '}
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Fontisto
+              name="date"
+              size={12}
+              color="rgba(255, 255, 255, 0.4)"
+              accessibilityLabel="calendar icon"
+            />
+            <Text
+              style={[
+                selectedMovieStyle.text,
+                { marginLeft: 5, color: 'rgba(255, 255, 255, 0.4)' },
+              ]}
+            >
+              {convertTime(start_time.start_time)}
+            </Text>
           </View>
         </View>
         {countdown && (
@@ -398,10 +395,10 @@ function CustomerAuctionPage({ navigation, route }) {
             <Text style={auctionStyles.errors}>{errorMessage}</Text>
           </View>
         ) : null}
-        <View style={auctionStyles.auctionResultButton}>
-          {countdownStructure.ended &&
-            displayAuction.current_highest_bidder ===
-              currentCustomer.user_id && (
+
+        {countdownStructure.ended &&
+          displayAuction.current_highest_bidder === currentCustomer.user_id && (
+            <View style={auctionStyles.auctionResultButton}>
               <View>
                 <Text
                   style={{
@@ -420,10 +417,11 @@ function CustomerAuctionPage({ navigation, route }) {
                   }}
                 />
               </View>
-            )}
-          {countdownStructure.ended &&
-            displayAuction.current_highest_bidder !==
-              currentCustomer.user_id && (
+            </View>
+          )}
+        {countdownStructure.ended &&
+          displayAuction.current_highest_bidder !== currentCustomer.user_id && (
+            <View style={auctionStyles.auctionResultButton}>
               <View>
                 <Text
                   style={{
@@ -442,8 +440,9 @@ function CustomerAuctionPage({ navigation, route }) {
                   }}
                 />
               </View>
-            )}
-        </View>
+            </View>
+          )}
+
         <View style={auctionStyles.container}>
           <View style={auctionStyles.singleInfoContainer}>
             <Text style={auctionStyles.auctionHeaders}>

@@ -37,9 +37,11 @@ function BusinessCreateScreening({ navigation }) {
   const movieEndpoint = `https://api.themoviedb.org/3/search/movie?api_key=2ff74c9759be7b397da331e5c4e692ee&query=${searchQuerySlug}&include_adult=false&language=en-US&region=gb&sort_by=popularity.desc&primary_release_year=${year}&page=1`
 
   useEffect(() => {
-    setIsLoading(true)
     setVisible(false)
-    fetchData(movieEndpoint)
+    if (searchQuery) {
+      fetchData(movieEndpoint)
+      setIsLoading(true)
+    }
   }, [searchQuery, year])
 
   useEffect(() => {
@@ -252,6 +254,19 @@ function BusinessCreateScreening({ navigation }) {
         </View>
       ) : (
         <View style={{ height: '50%', backgroundColor: '#f5f5f5' }}>
+          <Text
+            style={{
+              fontSize: 20,
+              fontFamily: 'Comfortaa-Regular',
+              paddingTop: 20,
+              paddingBottom: 20,
+              paddingLeft: 40,
+              paddingRight: 40,
+              textAlign: 'center',
+            }}
+          >
+            SEARCH RESULTS
+          </Text>
           <FlatList
             data={data}
             renderItem={({ item }) => {

@@ -24,7 +24,6 @@ export function PreviousOrders({ navigation }) {
   useEffect(() => {
     getWonAuctionsByUser(currentCustomer.user_id)
       .then((response) => {
-        console.log(response.data.auctions)
         setAllOrders(response.data.auctions)
         setIsLoading(false)
       })
@@ -157,7 +156,7 @@ export function PreviousOrders({ navigation }) {
                 fontSize: 12,
                 textAlign: 'center',
                 width: '90%',
-                marginBottom: 80,
+                marginBottom: 30,
               }}
             >
               Please present the QR code at the venue to collect and pay for
@@ -184,7 +183,7 @@ export function PreviousOrders({ navigation }) {
                     <View key={order.auction_id}>
                       <Text style={orderHistory.cardHeader}>
                         <Text style={orderHistory.cardHeaderBold}>
-                          {order.film_title},
+                          {order.film_title}
                         </Text>{' '}
                         {'\n'}
                         {order.business_name}

@@ -6,6 +6,7 @@ import {
   TextInput,
   Text,
   View,
+  Alert,
 } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { SeatButton, Button } from '../helpers'
@@ -27,7 +28,9 @@ function BusinessListing({ navigation }) {
   const [selectedSeats, setSelectedSeats] = useState([])
   const [loading, setIsLoading] = useState(true)
   const [price, setPrice] = useState(1)
-  const [date, setDate] = useState(new Date())
+  const [date, setDate] = useState(
+    new Date(new Date().setHours(new Date().getHours() + 1))
+  )
   const [show, setShow] = useState(false)
   const [mode, setMode] = useState('date')
   const [snackbarMessage, setSnackbarMessage] = useState('')
@@ -67,15 +70,26 @@ function BusinessListing({ navigation }) {
     start_price: price,
     business_id: business_id,
   }
-
+  const exitAlert = (msg) =>
+    Alert.alert('Screening Created', msg, [
+      {
+        text: 'Ok',
+        onPress: () =>
+          navigation.navigate('BusinessHomepage', {
+            business_id,
+            success: true,
+          }),
+      },
+    ])
   function handleListing() {
     setSubmitLoading(true)
     postNewEvent(new_event)
       .then(() => {
         setSubmitLoading(false)
         setVisible(true)
-        setSnackbarMessage("Success! You've listed a new event.")
-        navigation.navigate('BusinessHomepage', { business_id, success: true })
+        exitAlert(`Screening for ${new_event.film_title} created.`)
+        // setSnackbarMessage("Success! You've listed a new event.")
+        //navigation.navigate('BusinessHomepage', { business_id, success: true })
       })
       .catch((err) => {
         setSubmitLoading(false)
@@ -114,21 +128,15 @@ function BusinessListing({ navigation }) {
               alignItems: 'center',
             }}
           >
-            {show === false ? (
-              <Button
-                btnText="CHOOSE DATE"
-                onPress={() => showMode('date')}
-              ></Button>
-            ) : null}
+            <Button
+              btnText="CHOOSE DATE"
+              onPress={() => showMode('date')}
+            ></Button>
 
-            {show === false ? (
-              <Button
-                btnText="CHOOSE TIME"
-                onPress={() => showMode('time')}
-              ></Button>
-            ) : (
-              <Button btnText="CLOSE" onPress={() => setShow(false)}></Button>
-            )}
+            <Button
+              btnText="CHOOSE TIME"
+              onPress={() => showMode('time')}
+            ></Button>
 
             {show && (
               <DateTimePicker

@@ -58,107 +58,110 @@ export function CurrentAuction({ navigation }) {
     )
   }
 
-  if (errorMessage === '') {
-    return (
-      userActiveAuctions.length > 0 && (
-        <View>
-          <Text
-            style={{
-              color: '#f5f5f5',
-              textAlign: 'center',
-              fontFamily: 'Comfortaa-Regular',
-              marginBottom: 10,
-            }}
-          >
-            YOUR LIVE AUCTIONS:{' '}
-          </Text>
-          {!loading && (
-            <View style={{ padding: 20 }}>
-              <ActivityIndicator color="red" size={'large'}/>
-            </View>
-          )}
-          {loading &&
-            userActiveAuctions.map((auction, i) => (
-              <TouchableOpacity
-                key={`auction-${i}`}
-                onPress={() =>
-                  navigation.navigate('AuctionPage', {
-                    selectedAuction: auction.auction_id,
-                    event_id: { event_id: auction.event_id },
-                    business_id: { business_id: auction.business_id },
-                    film_title: { film_title: auction.film_title },
-                    poster: { poster: auction.poster },
-                    certificate: { certificate: auction.certificate },
-                    run_time: { run_time: auction.run_time },
-                    start_time: { start_time: auction.start_time },
-                    seat_selection: { selectedSeats: auction.seat_selection },
-                  })
-                }
-              >
-                <View key={i} style={currentAuctions.container}>
-                  <View style={currentAuctions.left}>
-                    <Text style={{ textAlign: 'left', paddingLeft: 10 }}>
-                      <Feather name="mouse-pointer" size={20} color="#f5f5f5" accessibilityLabel="click icon"/>
-                    </Text>
-                  </View>
-                  <View style={currentAuctions.right}>
-                    <Text style={currentAuctions.textBold}>
-                      {auction.film_title}, {'\n'}
-                      {auction.business_name}
-                    </Text>
-                    <Text style={currentAuctions.text}>
-                      Bidding on{' '}
-                      <Text style={currentAuctions.textBold}>
-                        {auction.seat_selection.join(', ')}
-                      </Text>{' '}
-                      {'\n'}
-                      at{' '}
-                      <Text style={currentAuctions.textBold}>
-                        £{Number(auction.current_price).toFixed(2)}
-                      </Text>{' '}
-                      per seat
-                    </Text>
-                    <Text style={currentAuctions.text}>
-                      Ends:{'\n'}
-                      <Text style={currentAuctions.textBold}>
-                        {convertTime(auction.time_ending)}
-                      </Text>
-                    </Text>
-                    <Text style={currentAuctions.text}>
-                      <Text style={currentAuctions.textBold}>
-                        {auction.users_involved.length}
-                      </Text>{' '}
-                      bidders involved...{'\n'}
-                      {auction.current_highest_bidder ===
-                      currentCustomer.user_id ? (
-                        <Text style={currentAuctions.text}>
-                          You are{' '}
-                          <Text
-                            style={[
-                              currentAuctions.textBold,
-                              { color: '#7bc47f' },
-                            ]}
-                          >
-                            winning!
-                          </Text>
-                        </Text>
-                      ) : (
-                        <Text style={currentAuctions.text}>
-                          You are{' '}
-                          <Text
-                            style={[currentAuctions.textBold, { color: 'red' }]}
-                          >
-                            losing!
-                          </Text>
-                        </Text>
-                      )}
-                    </Text>
-                  </View>
+  return (
+    userActiveAuctions.length > 0 && (
+      <View>
+        <Text
+          style={{
+            color: '#f5f5f5',
+            textAlign: 'center',
+            fontFamily: 'Comfortaa-Regular',
+            marginBottom: 10,
+          }}
+        >
+          YOUR LIVE AUCTIONS:{' '}
+        </Text>
+        {!loading && (
+          <View style={{ padding: 20 }}>
+            <ActivityIndicator color="red" size={'large'} />
+          </View>
+        )}
+        {loading &&
+          userActiveAuctions.map((auction, i) => (
+            <TouchableOpacity
+              key={`auction-${i}`}
+              onPress={() =>
+                navigation.navigate('AuctionPage', {
+                  selectedAuction: auction.auction_id,
+                  event_id: { event_id: auction.event_id },
+                  business_id: { business_id: auction.business_id },
+                  film_title: { film_title: auction.film_title },
+                  poster: { poster: auction.poster },
+                  certificate: { certificate: auction.certificate },
+                  run_time: { run_time: auction.run_time },
+                  start_time: { start_time: auction.start_time },
+                  seat_selection: { selectedSeats: auction.seat_selection },
+                })
+              }
+            >
+              <View key={i} style={currentAuctions.container}>
+                <View style={currentAuctions.left}>
+                  <Text style={{ textAlign: 'left', paddingLeft: 10 }}>
+                    <Feather
+                      name="mouse-pointer"
+                      size={20}
+                      color="#f5f5f5"
+                      accessibilityLabel="click icon"
+                    />
+                  </Text>
                 </View>
-              </TouchableOpacity>
-            ))}
-        </View>
-      )
+                <View style={currentAuctions.right}>
+                  <Text style={currentAuctions.textBold}>
+                    {auction.film_title}, {'\n'}
+                    {auction.business_name}
+                  </Text>
+                  <Text style={currentAuctions.text}>
+                    Bidding on{' '}
+                    <Text style={currentAuctions.textBold}>
+                      {auction.seat_selection.join(', ')}
+                    </Text>{' '}
+                    {'\n'}
+                    at{' '}
+                    <Text style={currentAuctions.textBold}>
+                      £{Number(auction.current_price).toFixed(2)}
+                    </Text>{' '}
+                    per seat
+                  </Text>
+                  <Text style={currentAuctions.text}>
+                    Ends:{'\n'}
+                    <Text style={currentAuctions.textBold}>
+                      {convertTime(auction.time_ending)}
+                    </Text>
+                  </Text>
+                  <Text style={currentAuctions.text}>
+                    <Text style={currentAuctions.textBold}>
+                      {auction.users_involved.length}
+                    </Text>{' '}
+                    bidders involved{'\n'}
+                    {auction.current_highest_bidder ===
+                    currentCustomer.user_id ? (
+                      <Text style={currentAuctions.text}>
+                        You are{' '}
+                        <Text
+                          style={[
+                            currentAuctions.textBold,
+                            { color: '#7bc47f' },
+                          ]}
+                        >
+                          winning!
+                        </Text>
+                      </Text>
+                    ) : (
+                      <Text style={currentAuctions.text}>
+                        You are{' '}
+                        <Text
+                          style={[currentAuctions.textBold, { color: 'red' }]}
+                        >
+                          losing!
+                        </Text>
+                      </Text>
+                    )}
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          ))}
+      </View>
     )
-  }
+  )
 }

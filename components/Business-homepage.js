@@ -134,19 +134,27 @@ function BusinessHomepage({ navigation, route }) {
               )}
             </View>
             {success === true ? (
-              <Text
+              <View
                 style={{
-                  fontFamily: 'Comfortaa-Regular',
-                  color: '#f5f5f5',
-                  fontSize: 16,
-                  textAlign: 'center',
-                  marginTop: 40,
-                  marginBottom: 40,
+                  backgroundColor: '#413454',
+                  margin: 10,
+                  marginTop: 20,
+                  borderRadius: 10,
                 }}
               >
-                Thanks {businessInfo.business_name}, we've created a new listing
-                for you.
-              </Text>
+                <Text
+                  style={{
+                    fontFamily: 'Comfortaa-Regular',
+                    color: '#f5f5f5',
+                    fontSize: 16,
+                    textAlign: 'center',
+                    padding: 10,
+                  }}
+                >
+                  Thanks {businessInfo.business_name}, we've created a new
+                  listing for you.
+                </Text>
+              </View>
             ) : null}
 
             <Text
@@ -155,7 +163,7 @@ function BusinessHomepage({ navigation, route }) {
                 color: '#f5f5f5',
                 fontSize: 16,
                 textAlign: 'center',
-                marginTop: 40,
+                marginTop: 20,
                 marginBottom: 40,
                 lineHeight: 26.5,
               }}
