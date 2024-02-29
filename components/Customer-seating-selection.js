@@ -284,10 +284,7 @@ function CustomerSeating({ navigation, route }) {
                   </View>
                   <View style={seatStyles.keyContainer}>
                     <View
-                      style={[
-                        seatStyles.seatKey,
-                        { backgroundColor: '#FFBF00' },
-                      ]}
+                      style={[seatStyles.seatKey, { backgroundColor: 'grey' }]}
                     ></View>
                     <Text style={seatStyles.text}>Auction in process</Text>
                   </View>
