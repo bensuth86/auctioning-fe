@@ -455,6 +455,7 @@ function CustomerAuctionPage({ navigation, route }) {
                     fontFamily: 'Comfortaa-Regular',
                     fontSize: 16,
                     color: '#f5f5f5',
+                    textAlign: 'center'
                   }}
                 >
                   Congratulations, you won!
@@ -476,6 +477,7 @@ function CustomerAuctionPage({ navigation, route }) {
                     fontFamily: 'Comfortaa-Regular',
                     fontSize: 16,
                     color: '#f5f5f5',
+                    textAlign: 'center'
                   }}
                 >
                   Oh no, you lost!

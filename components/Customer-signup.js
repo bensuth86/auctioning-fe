@@ -57,6 +57,7 @@ function CustomerSignUp({ navigation }) {
         })
         .catch((error) => {
           console.error('Error submitting form:', error)
+          isLoading(false)
           setSnackbarMessage('Failed to submit form. Please try again.')
           setVisible(true)
         })

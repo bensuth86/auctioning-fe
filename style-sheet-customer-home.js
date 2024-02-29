@@ -37,6 +37,7 @@ export const homeStyles = StyleSheet.create({
     paddingRight: 40,
     marginTop: 20,
     fontFamily: 'Comfortaa-Regular',
+    marginBottom: 10
   },
   greetingsOrders: {
     flexDirection: 'column',

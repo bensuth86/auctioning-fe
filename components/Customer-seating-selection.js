@@ -23,6 +23,7 @@ import {
   getAuctionsByEventId,
 } from '../utils.js'
 import { useIsFocused } from '@react-navigation/native'
+import { FontAwesome5 } from '@expo/vector-icons'
 // import { useFonts } from 'expo-font'
 // import { Pressable } from 'react-native'
 
@@ -172,8 +173,21 @@ function CustomerSeating({ navigation, route }) {
                 minHeight: 700,
               }}
             >
-              <View style={{ marginTop: 10}}>
+              <View style={{ marginTop: 10 }}>
                 <Text style={seatStyles.seatHeader}>SELECT YOUR SEATING</Text>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontFamily: 'Comfortaa-Light',
+                    marginBottom: 10,
+                    marginLeft: 20,
+                    marginRight: 20,
+                    fontSize: 12
+                  }}
+                >
+                  <FontAwesome5 name="info-circle" size={12} color="black" />
+                  Prices shown are the current bidding price per seat.
+                </Text>
               </View>
               <View style={seatStyles.screen}>
                 <Text style={seatStyles.screenText}>SCREEN</Text>
@@ -343,7 +357,7 @@ function CustomerSeating({ navigation, route }) {
                 </View>
               )}
               {auctionError === '' && (
-                <View style={{ width: 'auto', height: 130, marginTop: 40}}>
+                <View style={{ width: 'auto', height: 130, marginTop: 40 }}>
                   {selectedSeats.length ? (
                     <Text style={seatStyles.textBigger}>
                       Selected seats:{' '}

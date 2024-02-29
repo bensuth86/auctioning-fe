@@ -12,7 +12,7 @@ export const seatStyles = StyleSheet.create({
   },
   seatHeader: {
     textAlign: 'center',
-    marginBottom: 20,
+    // marginBottom: 20,
     fontSize: 15,
     fontFamily: 'Comfortaa-Bold',
   },
